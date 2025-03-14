@@ -1,0 +1,29 @@
+{
+  "name": "formulatex",
+  "version": "0.1.0",
+  "description": "AI based tool that can automatically convert formula into LaTeX code & other features.",
+  "keywords": [
+    "math",
+    "formula",
+    "AI",
+    "LaTeX"
+  ],
+  "homepage": "https://github.com/Leo204-LKY/FormuLaTeX#readme",
+  "bugs": {
+    "url": "https://github.com/Leo204-LKY/FormuLaTeX/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leo204-LKY/FormuLaTeX.git"
+  },
+  "license": "UNLICENSED",
+  "author": "Group Kappa (UoA JC3510)",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^35.0.1"
+  }
+}
