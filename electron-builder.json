@@ -1,0 +1,23 @@
+{
+    "build": {
+      "appId": "com.kappa.formulatex",
+      "productName": "FormuLaTeX",
+      "directories": {
+        "output": "release"
+      },
+      "files": [
+        "dist/**/*",
+        "renderer/dist/**/*",
+        "node_modules/**/*",
+        "package.json"
+      ],
+      "extraResources": [],
+      "mac": {
+        "target": "dmg"
+      },
+      "win": {
+        "target": "nsis"
+      }
+    }
+  }
+  

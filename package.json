@@ -12,21 +12,26 @@
   "bugs": {
     "url": "https://github.com/Leo204-LKY/FormuLaTeX/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Leo204-LKY/FormuLaTeX.git"
-  },
+  "repository": "git+https://github.com/Leo204-LKY/FormuLaTeX.git",
   "license": "UNLICENSED",
   "author": "Group Kappa (UoA JC3510)",
   "type": "commonjs",
-  "main": "out/main/main.js",
+  "main": "dist/main/main.js",
   "scripts": {
-    "start": "yarn run build && electron .",
-    "dev": "tsc --watch",
-    "build": "tsc"
+    "dev": "concurrently \"yarn dev:main\" \"yarn dev:renderer\"",
+    "dev:main": "tsc --watch",
+    "dev:renderer": "cd src/renderer && yarn dev",
+    "start": "yarn build && electron .",
+    "build": "yarn build:main && yarn build:renderer",
+    "build:main": "tsc",
+    "build:renderer": "cd src/renderer && yarn build",
+    "package": "yarn build && electron-builder"
   },
   "devDependencies": {
-    "electron": "^35.0.1"
+    "electron": "^35.0.1",
+    "electron-builder": "^25.1.8",
+    "ts-node": "^10.9.2",
+    "concurrently": "^8.0.1"
   },
   "dependencies": {
     "@electron/typescript-definitions": "^9.1.2",
