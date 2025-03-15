@@ -19,11 +19,18 @@
   "license": "UNLICENSED",
   "author": "Group Kappa (UoA JC3510)",
   "type": "commonjs",
-  "main": "main.js",
+  "main": "out/main/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "yarn run build && electron .",
+    "dev": "tsc --watch",
+    "build": "tsc"
   },
   "devDependencies": {
     "electron": "^35.0.1"
+  },
+  "dependencies": {
+    "@electron/typescript-definitions": "^9.1.2",
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
   }
 }
