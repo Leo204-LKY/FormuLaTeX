@@ -1,16 +1,22 @@
 import { app, BrowserWindow } from 'electron';
-import * as path from 'path';
+import path from 'path';
+
+let mainWindow: BrowserWindow | null;
 
 const createWindow = () => {
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, '../renderer/preload.js'),
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  win.loadFile(path.join(__dirname, '../../public/index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  })
 };
 
 app.whenReady().then(() => {
