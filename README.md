@@ -1,4 +1,4 @@
-# FormuLaTeX
+![FormuLaTeX](https://socialify.git.ci/Leo204-LKY/FormuLaTeX/image?font=Raleway&issues=1&language=1&name=1&pattern=Plus&pulls=1&stargazers=1&theme=Auto)
 
 ### Introduction
 - An AI-based Electron program that can automatically convert formula into LaTeX code
@@ -21,6 +21,7 @@
 - [`package.json`](/package.json)
 - [`tsconfig.json`](/tsconfig.json) - TypeScript configuration file
 - [`.gitignore`](/.gitignore)
+- [`LICENSE`](/LICENSE) - GPL-3.0 License
 - `README.md` - This Markdown file
 
 ### How to Run
