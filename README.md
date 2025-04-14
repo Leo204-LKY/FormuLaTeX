@@ -16,7 +16,7 @@
 - [`src/`](/src/) - TypeScript source code
     - [`main/`](/src/main/) - Main process code
         - [`main.ts`](/src/main/main.ts) - Main process entry
-        - [`preload.ts`](/src/renderer/preload.ts) - Preload script
+        - [`preload.ts`](/src/main/preload.ts) - Preload script
     - [`renderer/`](/src/renderer/) - Render process (Vue project)
 - [`package.json`](/package.json)
 - [`tsconfig.json`](/tsconfig.json) - TypeScript configuration file
