@@ -13,7 +13,7 @@
     "url": "https://github.com/Leo204-LKY/FormuLaTeX/issues"
   },
   "repository": "git+https://github.com/Leo204-LKY/FormuLaTeX.git",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "author": "Group Kappa (UoA JC3510)",
   "type": "commonjs",
   "main": "dist/main/main.js",
