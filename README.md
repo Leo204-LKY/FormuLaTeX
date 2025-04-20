@@ -12,6 +12,7 @@
 - Roadmap: See [#1](https://github.com/Leo204-LKY/FormuLaTeX/issues/1) or [Project](https://github.com/users/Leo204-LKY/projects/3/views/4)
 
 ### Project Structure
+- [`doc/`](/doc/) - Project documents
 - [`public/`](/public/) - Static resources like HTML and images
 - [`src/`](/src/) - TypeScript source code
     - [`main/`](/src/main/) - Main process code
