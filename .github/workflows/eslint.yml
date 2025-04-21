@@ -1,0 +1,55 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# ESLint is a tool for identifying and reporting on patterns
+# found in ECMAScript/JavaScript code.
+# More details at https://github.com/eslint/eslint
+# and https://eslint.org
+
+name: ESLint PR Annotations with Reviewdog
+
+on:
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "*" ]
+
+jobs:
+  eslint-reviewdog:
+    name: Run eslint scanning with reviewdog
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install ESLint
+        run: |
+          yarn install eslint@latest
+          yarn install @microsoft/eslint-formatter-sarif@3.1.0
+
+      - name: Run ESLint with Flat Config (eslint.config.mjs) + Reviewdog
+        uses: reviewdog/action-eslint@v1.33.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: >-
+            --config eslint.config.mjs
+            --ext .js,.ts,.tsx,.vue
+            .
+          fail_on_error: false
+          level: warning
+          use_eslint_d: false
+        env:
+          NODE_OPTIONS: "--import=eslint/use-at-your-own-risk" # Necessary for flat config
