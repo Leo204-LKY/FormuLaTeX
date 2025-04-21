@@ -1,6 +1,7 @@
-![FormuLaTeX](https://socialify.git.ci/Leo204-LKY/FormuLaTeX/image?custom_description=An+AI-powered+Electron+application+that+automatically+transforms+mathematical+formulas+into+LaTeX+code+%28Course+Project%29&description=1&font=Raleway&language=1&name=1&theme=Auto)  
+![FormuLaTeX](https://socialify.git.ci/Leo204-LKY/FormuLaTeX/image?custom_description=An+AI-powered+Electron+application+that+automatically+transforms+mathematical+formulas+into+LaTeX+code+%28Course+Project%29&description=1&font=Raleway&language=1&name=1&theme=Auto)
+
+![GitHub Repo stars](https://img.shields.io/github/stars/Leo204-LKY/FormuLaTeX?style=for-the-badge)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/t/Leo204-LKY/FormuLaTeX?style=for-the-badge)](https://github.com/Leo204-LKY/FormuLaTeX/commits/main/)
-[![GitHub contributors](https://img.shields.io/github/contributors/Leo204-LKY/FormuLaTeX?style=for-the-badge)](https://github.com/Leo204-LKY/FormuLaTeX/graphs/contributors)
 ![GitHub Issues](https://img.shields.io/github/issues/Leo204-LKY/FormuLaTeX?style=for-the-badge)
 ![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Leo204-LKY/FormuLaTeX?style=for-the-badge)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Leo204-LKY/FormuLaTeX/eslint.yml?style=for-the-badge)](https://github.com/Leo204-LKY/FormuLaTeX/actions/workflows/eslint.yml)
