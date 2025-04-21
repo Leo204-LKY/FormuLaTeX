@@ -6,6 +6,8 @@ import json from "@eslint/json";
 import css from "@eslint/css";
 import vueParser from "vue-eslint-parser";
 import { defineConfig } from "eslint/config";
+import prettier from "eslint-plugin-prettier";
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default defineConfig([
   // Ignore files
@@ -79,4 +81,14 @@ export default defineConfig([
     language: "css/css",
     extends: ["css/recommended"],
   },
+
+  // Prettier config
+  {
+    files: ["**/*.{js,mjs,cjs,ts,tsx,vue,json,css}"],
+    plugins: { prettier },
+    rules: {
+      "prettier/prettier": "error", // Report prettier as ESLint errors
+    },
+  },
+  eslintPluginPrettierRecommended
 ]);
