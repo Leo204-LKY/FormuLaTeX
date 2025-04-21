@@ -48,8 +48,7 @@ jobs:
             --config eslint.config.mjs
             --ext .js,.ts,.tsx,.vue
             .
-          fail_on_error: false
+          fail_level: error
           level: warning
-          use_eslint_d: false
         env:
           NODE_OPTIONS: "--import=eslint/use-at-your-own-risk" # Necessary for flat config
