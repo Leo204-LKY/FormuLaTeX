@@ -16,7 +16,7 @@ on:
 
 jobs:
   eslint-reviewdog:
-    name: Run eslint scanning with reviewdog
+    name: Run ESLint Scanning with Reviewdog
     runs-on: ubuntu-latest
     permissions:
       contents: read
