@@ -16,7 +16,7 @@ const createWindow = () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
-  });
+  })
 };
 
 app.whenReady().then(() => {
