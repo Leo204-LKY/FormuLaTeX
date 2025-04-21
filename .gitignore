@@ -135,5 +135,13 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Visual Studio Code Config
-.vscode/
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
