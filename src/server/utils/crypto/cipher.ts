@@ -3,7 +3,7 @@
  */
 import * as crypto from 'crypto';
 import { machineIdSync } from 'node-machine-id';
-import { generateKeyFromDeviceId } from './crypto-key';
+import { generateKeyFromDeviceId } from './key-generator';
 
 // Encrypt algorithm and IV length
 const ALGORITHM = 'aes-256-cbc';
