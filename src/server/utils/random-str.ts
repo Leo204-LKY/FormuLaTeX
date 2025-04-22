@@ -3,7 +3,7 @@
  * @param length The length of the string
  * @returns Generated random string
  */
-export function getRandomString(length: number): string {
+export function getRandomStr(length: number): string {
   const chars =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   return Array.from(
