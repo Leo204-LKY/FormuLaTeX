@@ -4,6 +4,7 @@
 import * as crypto from 'crypto';
 import { machineIdSync } from 'node-machine-id';
 import { generateKeyFromDeviceId } from './key-generator';
+import * as fs from 'fs';
 
 // Encrypt algorithm and IV length
 const ALGORITHM = 'aes-256-cbc';
@@ -12,6 +13,11 @@ const IV_LENGTH = 16;
 const DEVICE_ID = machineIdSync();
 const ENCRYPTION_KEY = generateKeyFromDeviceId(DEVICE_ID);
 
+/**
+ * @description Encrypt Json object
+ * @param data Data to be encrypted
+ * @returns Encrypted string separated with ':' - {iv}:{encrypted data}
+ */
 export function encryptJson(data: object): string {
   const iv = crypto.randomBytes(IV_LENGTH);
   const CIPHER = crypto.createCipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
@@ -25,6 +31,11 @@ export function encryptJson(data: object): string {
   return iv.toString('hex') + ':' + encrypted.toString('hex');
 }
 
+/**
+ * @description Decrypt data into Json object
+ * @param encryptedData Encrypted Json data separated with ':' - {iv}:{encrypted data}
+ * @returns Decrypted Json object
+ */
 export function decryptJson(encryptedData: string): object | null {
   try {
     const [ivHex, encryptedHex] = encryptedData.split(':');
@@ -42,5 +53,64 @@ export function decryptJson(encryptedData: string): object | null {
   } catch (e) {
     console.error('Decryption failed: ', e);
     return null;
+  }
+}
+
+/**
+ * @description Encrypt file
+ * @param filePath File to be encrypted
+ * @param encryptPath Encrypted file output path
+ */
+export function encryptFile(filePath: string, encryptPath: string): void {
+  try {
+    const iv = crypto.randomBytes(IV_LENGTH);
+    const cipher = crypto.createCipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
+
+    const input = fs.createReadStream(filePath);
+    const output = fs.createWriteStream(encryptPath);
+
+    output.write(iv); // Prepend IV to the encrypted file
+
+    input
+      .pipe(cipher)
+      .pipe(output)
+      .on('finish', () => {
+        console.log(`File encrypted successfully to: ${encryptPath}`);
+      });
+  } catch (e) {
+    console.error('File encryption failed: ', e);
+  }
+}
+
+/**
+ * @description Decrypt encrypted file
+ * @param encryptedPath Encrypted file path
+ * @param decryptPath Decrypted file output path
+ * @param iv Decrypt algorithm IV
+ */
+export function decryptFile(
+  encryptedPath: string,
+  decryptPath: string,
+  iv: string
+): void {
+  try {
+    const encryptedData = fs.readFileSync(encryptedPath);
+    const ivBuffer = Buffer.from(iv, 'hex');
+
+    const decipher = crypto.createDecipheriv(
+      ALGORITHM,
+      ENCRYPTION_KEY,
+      ivBuffer
+    );
+
+    const decrypted = Buffer.concat([
+      decipher.update(encryptedData),
+      decipher.final(),
+    ]);
+
+    fs.writeFileSync(decryptPath, decrypted);
+    console.log(`File decrypted successfully to: ${decryptPath}`);
+  } catch (e) {
+    console.error('File decryption failed: ', e);
   }
 }
