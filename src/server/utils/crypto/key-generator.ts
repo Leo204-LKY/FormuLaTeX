@@ -1,10 +1,15 @@
 /**
- * Get crypto key from device ID
+ * Convert key string into buffer
  */
 import * as crypto from 'crypto';
 
 const ALGORITHM = 'sha256';
 
-export function generateKeyFromDeviceId(deviceId: string) {
-  return crypto.createHash(ALGORITHM).update(deviceId).digest();
+/**
+ * Convert key string into buffer
+ * @param key Key string
+ * @returns Key buffer
+ */
+export function generateKey(key: string): Buffer {
+  return crypto.createHash(ALGORITHM).update(key).digest();
 }
