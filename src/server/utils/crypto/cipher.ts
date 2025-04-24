@@ -82,20 +82,15 @@ export function encryptFile(
   iv: string = getRandomStr(IV_LENGTH)
 ): crypto.BinaryLike | void {
   try {
+    const fileData = fs.readFileSync(filePath);
     const ivBuffer = Buffer.from(iv, 'utf-8');
+
     const cipher = crypto.createCipheriv(ALGORITHM, key, ivBuffer);
 
-    const input = fs.createReadStream(filePath);
-    const output = fs.createWriteStream(encryptPath);
+    const encrypted = Buffer.concat([cipher.update(fileData), cipher.final()]);
 
-    output.write(iv); // Prepend IV to the encrypted file
-
-    input
-      .pipe(cipher)
-      .pipe(output)
-      .on('finish', () => {
-        console.log(`File encrypted successfully to: ${encryptPath}`);
-      });
+    fs.writeFileSync(encryptPath, iv + encrypted.toString('binary'), 'binary');
+    console.log(`File encrypted successfully to: ${encryptPath}`);
 
     return iv;
   } catch (e) {
