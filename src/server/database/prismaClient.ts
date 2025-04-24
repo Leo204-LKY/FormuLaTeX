@@ -1,5 +1,5 @@
 import path from 'path';
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from './generated';
 import { getAppDataDirectory } from '../services';
 import { createTempDecryptedDB } from './temp-db-manager';
 
