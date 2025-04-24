@@ -16,7 +16,7 @@ export async function createTempDecryptedDB(encryptedDbPath: string) {
   const tempDbPath = path.join(tempDir, tempDbName);
 
   // Decrypt database
-  decryptFile(encryptedDbPath, tempDbPath);
+  decryptFile(encryptedDbPath, tempDbPath, undefined, 0o600);
   addTempFile(tempDbPath);
 
   return tempDbPath; // For Prisma conncetion
