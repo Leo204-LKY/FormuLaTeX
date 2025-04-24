@@ -10,7 +10,7 @@ import { decryptFile, getRandomStr } from '../utils';
  * @param encryptedDbPath Encrypt database file path
  * @returns Decrypted database file path
  */
-export function createTempDecryptedDB(encryptedDbPath: string) {
+export function createTempDecryptedDB(encryptedDbPath: string): string {
   const tempDir = getSafeTempDir();
   const tempDbName = `decrypted-${getRandomStr(12)}.sqlite`;
   const tempDbPath = path.join(tempDir, tempDbName);
