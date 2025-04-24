@@ -6,18 +6,30 @@
 
       <!-- 工具栏 -->
       <div
-        class="flex justify-start items-center mb-4 border border-dashed border-gray-200 space-x-4"
+        class="flex items-center space-x-2 border border-dashed border-gray-200 p-2 rounded-md"
       >
-        <button><img src="../assets/icons/withdraw.svg" /></button>
-        <button><img src="../assets/icons/redo.svg" /></button>
+        <button class="btn-icon">
+          <img src="../assets/icons/withdraw.svg" />
+        </button>
+        <button class="btn-icon"><img src="../assets/icons/redo.svg" /></button>
         <select class="bg-gray-200 text-sm px-2 py-1 rounded-md">
           <option>Font</option>
         </select>
-        <button><img src="../assets/icons/T-icon.svg" /></button>
-        <button><img src="../assets/icons/B-icon.svg" /></button>
-        <button><img src="../assets/icons/I-icon.svg" /></button>
-        <button><img src="../assets/icons/color.svg" /></button>
-        <button><img src="../assets/icons/clear.svg" /></button>
+        <button class="btn-icon">
+          <img src="../assets/icons/T-icon.svg" />
+        </button>
+        <button class="btn-icon">
+          <img src="../assets/icons/B-icon.svg" />
+        </button>
+        <button class="btn-icon">
+          <img src="../assets/icons/I-icon.svg" />
+        </button>
+        <button class="btn-icon">
+          <img src="../assets/icons/color.svg" />
+        </button>
+        <button class="btn-icon">
+          <img src="../assets/icons/clear.svg" />
+        </button>
       </div>
 
       <!-- 输入框 -->
@@ -58,11 +70,33 @@
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
 
-  const latexInput = ref('\\frac{a}{b} = c');
+  const props = defineProps<{
+    latexInput?: string;
+  }>();
+
+  const emit = defineEmits<{
+    (e: 'update:latexInput', value: string): void;
+  }>();
+
+  const latexInput = ref(props.latexInput ?? '');
+
+  watch(
+    () => props.latexInput,
+    (newVal) => {
+      if (newVal !== undefined) latexInput.value = newVal;
+    }
+  );
+
+  watch(latexInput, (val) => {
+    emit('update:latexInput', val);
+  });
+
+  // const latexInput = ref(props.latexInput);
   const previewRef = ref<HTMLElement | null>(null);
 
   const renderFormula = () => {
-    if (previewRef.value) {
+    if (previewRef.value && latexInput.value) {
+      previewRef.value.innerHTML = ''; // 清空之前的内容
       try {
         katex.render(latexInput.value, previewRef.value, {
           throwOnError: false,

@@ -12,7 +12,7 @@
       </div>
       <!-- FormulaEdit组件在右下角 -->
       <div class="flex-1">
-        <FormulaEdit />
+        <FormulaEdit v-model:latexInput="latexInput" />
       </div>
     </div>
   </div>
@@ -22,4 +22,21 @@
   import QuickInput from './components/QuickInput.vue';
   import FormulaEdit from './components/FormulaEdit.vue';
   import SymbolSelect from './components/SymbolSelect.vue';
+
+  import { ref, onMounted, onUnmounted } from 'vue';
+  import { eventBus } from './eventBus';
+
+  const latexInput = ref('');
+
+  const handleFormulaSelect = (expr: string) => {
+    latexInput.value = expr;
+  };
+
+  onMounted(() => {
+    eventBus.on('selectExpression', handleFormulaSelect);
+  });
+
+  onUnmounted(() => {
+    eventBus.off('selectExpression', handleFormulaSelect);
+  });
 </script>

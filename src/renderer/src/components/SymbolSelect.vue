@@ -5,10 +5,7 @@
       <button
         v-for="(category, index) in symbolCategories"
         :key="index"
-        :class="[
-          'bg-gray-100 text-base px-4 py-1 rounded-md',
-          selectedCategory === category ? 'bg-blue-200' : '',
-        ]"
+        :class="['btn-secondary']"
         @click="selectCategory(category)"
       >
         {{ category }}
@@ -16,7 +13,9 @@
     </div>
 
     <!-- 符号显示区域 -->
-    <div class="bg-blue-50 text-center p-4 border border-blue-200 rounded-md">
+    <div
+      class="bg-blue-50 text-center p-4 border border-blue-200 rounded-md h-3/4"
+    >
       <div
         v-for="(symbol, symbolIndex) in getCurrentSymbols"
         :key="symbolIndex"
