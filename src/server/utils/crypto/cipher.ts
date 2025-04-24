@@ -35,7 +35,7 @@ export function encryptJson(
     CIPHER.final(),
   ]);
 
-  return iv + ':' + encrypted.toString('hex');
+  return ivBuffer.toString('hex') + ':' + encrypted.toString('hex');
 }
 
 /**
@@ -50,10 +50,10 @@ export function decryptJson(
 ): object | null {
   try {
     const [ivHex, encryptedHex] = encryptedData.split(':');
-    const iv = Buffer.from(ivHex, 'hex');
+    const ivBuffer = Buffer.from(ivHex, 'hex');
     const encryptedText = Buffer.from(encryptedHex, 'hex');
 
-    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
+    const decipher = crypto.createDecipheriv(ALGORITHM, key, ivBuffer);
 
     const decrypted = Buffer.concat([
       decipher.update(encryptedText),
