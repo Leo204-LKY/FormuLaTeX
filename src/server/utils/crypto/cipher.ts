@@ -3,15 +3,16 @@
  */
 import * as crypto from 'crypto';
 import { machineIdSync } from 'node-machine-id';
-import { generateKeyFromDeviceId } from './key-generator';
+import { generateKey } from './key-generator';
 import * as fs from 'fs';
+import { getRandomStr } from '../random-str';
 
 // Encrypt algorithm and IV length
 const ALGORITHM = 'aes-256-cbc';
 const IV_LENGTH = 16;
 
 const DEVICE_ID = machineIdSync();
-const ENCRYPTION_KEY = generateKeyFromDeviceId(DEVICE_ID);
+const ENCRYPTION_KEY = generateKey(DEVICE_ID);
 
 /**
  * Encrypt Json object
@@ -23,9 +24,10 @@ const ENCRYPTION_KEY = generateKeyFromDeviceId(DEVICE_ID);
 export function encryptJson(
   data: object,
   key: crypto.CipherKey = ENCRYPTION_KEY,
-  iv: crypto.BinaryLike = crypto.randomBytes(IV_LENGTH)
+  iv: string = getRandomStr(IV_LENGTH)
 ): string {
-  const CIPHER = crypto.createCipheriv(ALGORITHM, key, iv);
+  const ivBuffer = Buffer.from(iv, 'utf-8');
+  const CIPHER = crypto.createCipheriv(ALGORITHM, key, ivBuffer);
   const jsonData = JSON.stringify(data);
 
   const encrypted = Buffer.concat([
@@ -33,11 +35,7 @@ export function encryptJson(
     CIPHER.final(),
   ]);
 
-  return (
-    Buffer.from(iv as Uint8Array).toString('hex') +
-    ':' +
-    encrypted.toString('hex')
-  );
+  return iv + ':' + encrypted.toString('hex');
 }
 
 /**
@@ -48,7 +46,7 @@ export function encryptJson(
  */
 export function decryptJson(
   encryptedData: string,
-  key: Buffer = ENCRYPTION_KEY
+  key: crypto.CipherKey = ENCRYPTION_KEY
 ): object | null {
   try {
     const [ivHex, encryptedHex] = encryptedData.split(':');
@@ -80,11 +78,12 @@ export function decryptJson(
 export function encryptFile(
   filePath: string,
   encryptPath: string,
-  key: Buffer = ENCRYPTION_KEY,
-  iv: crypto.BinaryLike = crypto.randomBytes(IV_LENGTH)
+  key: crypto.CipherKey = ENCRYPTION_KEY,
+  iv: string = getRandomStr(IV_LENGTH)
 ): crypto.BinaryLike | void {
   try {
-    const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
+    const ivBuffer = Buffer.from(iv, 'utf-8');
+    const cipher = crypto.createCipheriv(ALGORITHM, key, ivBuffer);
 
     const input = fs.createReadStream(filePath);
     const output = fs.createWriteStream(encryptPath);
