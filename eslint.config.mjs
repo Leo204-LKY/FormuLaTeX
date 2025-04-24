@@ -21,6 +21,7 @@ export default defineConfig([
       'electron-builder.json',
       '**/tsconfig*.json',
       '.vscode/**',
+      '**/generated/prisma/**',
     ],
   },
 
