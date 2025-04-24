@@ -21,6 +21,7 @@ export default defineConfig([
       'electron-builder.json',
       '**/tsconfig*.json',
       '.vscode/**',
+      '**/database/generated/**',
     ],
   },
 
@@ -30,7 +31,7 @@ export default defineConfig([
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: {
-      globals: globals.node, // 默认认为主进程环境为 Node.js
+      globals: globals.node, // Main process environment default is Node.js
     },
   },
 

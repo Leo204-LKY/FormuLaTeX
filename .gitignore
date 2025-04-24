@@ -145,3 +145,6 @@ dist
 *.njsproj
 *.sln
 *.sw?
+
+# SQLite files
+*.db
