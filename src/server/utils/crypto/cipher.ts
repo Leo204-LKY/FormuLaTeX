@@ -99,25 +99,24 @@ export function encryptFile(
 }
 
 /**
- * Decrypt encrypted file
+ * Decrypt encrypted file (IV read from file header)
  * @param encryptedPath Encrypted file path
  * @param decryptPath Decrypted file output path
- * @param iv Decrypt algorithm IV
+ * @param key Decrypt key
  */
 export function decryptFile(
   encryptedPath: string,
   decryptPath: string,
-  key: crypto.CipherKey = ENCRYPTION_KEY,
-  iv: string
+  key: crypto.CipherKey = ENCRYPTION_KEY
 ): void {
   try {
     const encryptedData = fs.readFileSync(encryptedPath);
-    const ivBuffer = Buffer.from(iv, 'hex');
+    const ivBuffer = encryptedData.subarray(0, IV_LENGTH);
+    const cipherText = encryptedData.subarray(IV_LENGTH);
 
     const decipher = crypto.createDecipheriv(ALGORITHM, key, ivBuffer);
-
     const decrypted = Buffer.concat([
-      decipher.update(encryptedData),
+      decipher.update(cipherText),
       decipher.final(),
     ]);
 
