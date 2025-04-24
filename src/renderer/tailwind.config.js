@@ -4,11 +4,8 @@ export default {
   theme: {
     extend: {
       height: {
-        full: '100%',
+        '1080px': '1080px',
         '100px': '100px',
-      },
-      weight: {
-        full: '100%',
       },
     },
   },
