@@ -148,3 +148,6 @@ dist
 
 # SQLite files
 *.db
+
+# Yarn RC files
+.yarnrc

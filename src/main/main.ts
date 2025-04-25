@@ -1,35 +1,8 @@
-import { app, BrowserWindow,ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
-import { convertImageToLatex } from './api/simpletex';
-import fs from 'fs/promises';
 
-import os from 'os';
 let mainWindow: BrowserWindow | null;
 
-ipcMain.handle('recognize-formula', async (_, { name, type, data }) => {
-  const tempDir = os.tmpdir();
-  const tempPath = path.join(tempDir, `upload_${Date.now()}_${name}`);
-  
-  try {
-    // 写入临时文件
-    await fs.writeFile(tempPath, Buffer.from(data));
-
-    
-    // 调用识别函数
-    const result = await convertImageToLatex(tempPath);
-    return { success: true, res: result };
-    
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Unknown error occurred' };
-  } finally {
-    // 清理临时文件
-    try { await fs.unlink(tempPath); } 
-    catch (e) { console.warn(e); }
-  }
-});
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
