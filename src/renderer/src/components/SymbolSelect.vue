@@ -5,7 +5,7 @@
       <button
         v-for="(category, index) in symbolCategories"
         :key="index"
-        :class="['btn-secondary']"
+        :class="['btn-style2 btn-status2']"
         @click="selectCategory(category)"
       >
         {{ category }}
