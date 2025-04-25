@@ -12,7 +12,7 @@
       </div>
       <!-- FormulaEdit组件在右下角 -->
       <div class="flex-1">
-        <FormulaEdit v-model:latexInput="latexInput" />
+        <FormulaEdit ref="editorRef" v-model:latexInput="latexInput" />
       </div>
     </div>
   </div>
@@ -27,9 +27,11 @@
   import { eventBus } from './eventBus';
 
   const latexInput = ref('');
+  const editorRef = ref();
 
   const handleFormulaSelect = (expr: string) => {
-    latexInput.value = expr;
+    // 👇 通过引用调用插入函数
+    editorRef.value?.insertFormulaAtCursor(expr);
   };
 
   onMounted(() => {

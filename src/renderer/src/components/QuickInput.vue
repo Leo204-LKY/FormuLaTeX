@@ -11,6 +11,7 @@
         v-for="tag in tags"
         :key="tag"
         class="btn-standard"
+        :class="{ 'outline-none ring-2 ring-blue-400': selectedTag === tag }"
         @click="fetchItemsByTag(tag)"
       >
         {{ tag }}
