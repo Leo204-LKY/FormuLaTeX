@@ -276,27 +276,14 @@
   };
 
   const applySize = (size: string) => {
-    const textarea = textareaRef.value;
-    if (!textarea) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    if (start !== end) {
-      const selectedText = latexInput.value.slice(start, end);
-      const before = latexInput.value.slice(0, start);
-      const after = latexInput.value.slice(end);
-      latexInput.value = `${before}\\${size}{${selectedText}}${after}`;
-
-      // 恢复焦点和选区
-      nextTick(() => {
-        textarea.focus();
-        textarea.selectionStart = start;
-        textarea.selectionEnd =
-          start + size.length + 3 + selectedText.length + 1; // 粗略定位
-      });
+    const selected = getSelectionRange(); // 获取当前选中的文本
+    if (selected) {
+      const wrapped = `\\{${size}{${selected}}`;
+      insertFormulaAtCursor(wrapped);
+    } else {
+      // 没选文本时默认插入占位模板
+      insertFormulaAtCursor(`\\${size}{...}`);
     }
-
     sizePickerVisible.value = false;
   };
 
