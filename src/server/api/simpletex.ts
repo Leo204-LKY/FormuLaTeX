@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { AxiosError } from 'axios';
 import * as crypto from 'crypto';
 import FormData from 'form-data';
 import * as fs from 'fs/promises'; // 使用 Promise API
@@ -26,7 +25,7 @@ function getCurrentTimestamp(): number {
 
 // Generate headers with signature
 function getRequestHeaders(
-  data: Record<string, any>,
+  data: Record<string, string | number | boolean>,
   appId: string,
   appSecret: string
 ): Record<string, string> {
@@ -51,7 +50,7 @@ function getRequestHeaders(
 // Main function to run the request
 export async function convertImageToLatex(filePath: string): Promise<string> {
   try {
-    // 1. 检查文件存在性
+    // 1. Check if file exists
     const stats = await fs.stat(filePath);
     console.log('success:', {
       path: filePath,
@@ -59,18 +58,18 @@ export async function convertImageToLatex(filePath: string): Promise<string> {
       lastModified: stats.mtime,
     });
 
-    // 2. 读取文件内容
+    // 2. Read file
     const imageBuffer = await fs.readFile(filePath);
 
-    // 3. 准备 FormData
+    // 3. Prepare FormData
     const form = new FormData();
     form.append('file', imageBuffer, path.basename(filePath));
 
-    // 4. 生成请求头
-    const data: Record<string, any> = {};
+    // 4. Generate headers
+    const data: Record<string, string | number | boolean> = {};
     const headers = getRequestHeaders(data, APP_ID, APP_SECRET);
 
-    // 5. 发送请求
+    // 5. Send request
     const response = await axios.post(BASE_URL, form, {
       headers: {
         ...headers,
