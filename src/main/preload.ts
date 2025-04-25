@@ -1,12 +1,16 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  recognizeFormula: async (file: File) => {
-    const arrayBuffer = await file.arrayBuffer();
-    return ipcRenderer.invoke('recognize-formula', {
-      name: file.name,
-      type: file.type,
-      data: Array.from(new Uint8Array(arrayBuffer))
-    });
+  sendMessage: (message: string) => ipcRenderer.send('message', message),
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  const replaceText = (selector: string, text: string | undefined) => {
+    const element = document.getElementById(selector);
+    if (element) element.innerText = text!;
+  };
+
+  for (const dependency of ['chrome', 'node', 'electron']) {
+    replaceText(`${dependency}-version`, process.versions[dependency]);
   }
 });
