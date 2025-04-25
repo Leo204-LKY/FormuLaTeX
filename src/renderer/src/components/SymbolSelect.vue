@@ -13,14 +13,24 @@
     </div>
 
     <!-- 符号显示区域 -->
+    <!-- TODO: 完善显示符号的布局，以及补全符号 -->
     <div
       class="bg-blue-50 text-center p-4 border border-blue-200 rounded-md h-3/4"
     >
-      <div
-        v-for="(symbol, symbolIndex) in getCurrentSymbols"
-        :key="symbolIndex"
-      >
-        {{ symbol }}
+      <div class="flex justify-between">
+        <div
+          v-for="(symbolGroup, groupIndex) in getCurrentSymbolGroups"
+          :key="groupIndex"
+          class="grid grid-cols-4 gap-2"
+        >
+          <div
+            v-for="(symbol, symbolIndex) in symbolGroup"
+            :key="symbolIndex"
+            class="bg-white border border-gray-200 rounded-md p-2 cursor-pointer hover:bg-gray-100"
+          >
+            {{ symbol }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -29,16 +39,22 @@
 <script setup lang="ts">
   import { ref, computed } from 'vue';
   // 定义每个标签对应的符号集合
-  const symbolData: { [key: string]: string[] } = {
-    Common: ['+', '-', '*', '/'],
-    Operations: ['∫', '∑', '∏'],
-    Relations: ['<', '>', '='],
-    Arrows: ['→', '←', '↑'],
-    Greek: ['α', 'β', 'γ'],
-    Matric: ['[', ']', '{', '}'],
-    Mark: ['•', '◦', '▫'],
-    Equations: ['x + y = z', 'a² + b² = c²'],
-    'Large...': ['∀', '∃', '∅'],
+  const symbolData: { [key: string]: string[][] } = {
+    Common: [['+', '-', '*', '/']],
+    Operations: [
+      ['+', '−', '∘', '%', '-', '⋅', '×', '⊙', '±', '*', '÷', '⊕'],
+      ['∩', '∀', '∧', '⊤', '∪', '∅', '¬', '∃', '∨', '⊥'],
+      ['π', '′', '△', '∞', 'ℂ', '▽', '∂', 'ℝ'],
+      ['∠', '⊥', '∵', '⊄', '…', '√', '‖', '∶'],
+      ['‰', '‱'],
+    ],
+    Relations: [['<', '>', '=']],
+    Arrows: [['→', '←', '↑']],
+    Greek: [['α', 'β', 'γ']],
+    Matric: [['[', ']', '{', '}']],
+    Mark: [['•', '◦', '▫']],
+    Equations: [['x + y = z', 'a² + b² = c²']],
+    'Large...': [['∀', '∃', '∅']],
   };
 
   // 符号类别数组
@@ -47,7 +63,9 @@
   const selectedCategory = ref(symbolCategories[0]);
 
   // 计算属性获取当前选中类别对应的符号
-  const getCurrentSymbols = computed(() => symbolData[selectedCategory.value]);
+  const getCurrentSymbolGroups = computed(
+    () => symbolData[selectedCategory.value]
+  );
 
   // 选择类别的方法
   const selectCategory = (category: string) => {
