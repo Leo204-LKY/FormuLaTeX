@@ -1,51 +1,65 @@
 <template>
   <div
-    class="bg-white border border-gray-200 rounded-md p-4 flex flex-col h-full"
+    class="bg-white border border-gray-200 rounded-md p-4 flex flex-col h-screen"
     style="height: 100%"
   >
     <h2 class="text-xl font-bold mb-4">Quick Input</h2>
 
     <!-- Tags选择栏 -->
-    <div class="flex justify-around items-center mb-4">
+    <div
+      id="tag-selector"
+      ref="tagSelectorRef"
+      class="flex justify-around items-center mb-4"
+    >
       <button
         v-for="tag in tags"
         :key="tag"
-        class="btn-standard"
+        :id="`tag-${tag}`"
+        class="btn-style1 btn-status1"
         :class="{ 'outline-none ring-2 ring-blue-400': selectedTag === tag }"
         @click="fetchItemsByTag(tag)"
       >
         {{ tag }}
       </button>
     </div>
-    <!-- <div class="flex justify-around items-center mb-4">
-      <button class="btn-standard">History</button>
-      <button class="btn-standard">Common</button>
-      <button class="btn-standard">Math</button>
-      <button class="btn-standard">Physics</button>
-    </div> -->
 
     <!-- 展示公式 -->
-    <div class="flex-1 overflow-y-auto scroll-hidden pr-3">
-      <QuickInputItem
+    <div
+      id="expression-list"
+      ref="expressionListRef"
+      class="flex-1 overflow-y-auto scroll-hidden pr-3"
+    >
+      <ExpressionItem
         v-for="(expr, index) in displayItems"
         :key="index"
+        :id="`expr-${index}`"
+        :ref="
+          (el) => {
+            if (el) {
+              expressionItemRefs[index] = el as InstanceType<
+                typeof ExpressionItem
+              >;
+            }
+          }
+        "
         :expression="expr"
         @select-expression="handleSelectExpression"
       />
     </div>
-    <!-- <div class="flex-1 overflow-y-auto scroll-hidden pr-3">
-      <QuickInputItem
-        v-for="(_, index) in displayItems"
-        :key="index"
-        :expression="`c = \\sqrt{a^2 + b^2}`"
-      />
-    </div> -->
   </div>
 </template>
 
 <script setup lang="ts">
-  import QuickInputItem from './ExpressionItem.vue';
-  import { ref, onMounted } from 'vue';
+  import ExpressionItem from './ExpressionItem.vue';
+  import { ref, onMounted, reactive } from 'vue';
+
+  type ExpressionItemInstance = InstanceType<typeof ExpressionItem>;
+  const tagSelectorRef = ref(null);
+  const expressionListRef = ref(null);
+  const expressionItemRefs: Record<number, ExpressionItemInstance> = reactive(
+    {}
+  );
+
   const tags = ['History', 'Common', 'Operations', 'Relations']; // 举例
   const selectedTag = ref(tags[0]);
   const displayItems = ref<string[]>([]); // 或你具体的数据类型
@@ -57,7 +71,7 @@
     displayItems.value = result;
   };
 
-  // 示例函数
+  // TODO: 替换为实际的数据库查询逻辑
   const fetchFromDB = async (tag: string) => {
     const mockData: Record<string, string[]> = {
       History: [
