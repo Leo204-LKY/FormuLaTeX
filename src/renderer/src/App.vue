@@ -24,21 +24,29 @@
   import SymbolSelect from './components/SymbolSelect.vue';
 
   import { ref, onMounted, onUnmounted } from 'vue';
-  import { eventBus } from './eventBus';
+  import { selectExpressionEventBus, selectSymbolEventBus } from './eventBus';
 
   const latexInput = ref('');
   const editorRef = ref();
 
-  const handleFormulaSelect = (expr: string) => {
+  const handleSelect = (expr: string) => {
     // 👇 通过引用调用插入函数
     editorRef.value?.insertFormulaAtCursor(expr);
   };
 
   onMounted(() => {
-    eventBus.on('selectExpression', handleFormulaSelect);
+    selectExpressionEventBus.on('selectExpression', handleSelect);
   });
 
   onUnmounted(() => {
-    eventBus.off('selectExpression', handleFormulaSelect);
+    selectExpressionEventBus.off('selectExpression', handleSelect);
+  });
+
+  onMounted(() => {
+    selectSymbolEventBus.on('selectSymbol', handleSelect);
+  });
+
+  onUnmounted(() => {
+    selectSymbolEventBus.off('selectSymbol', handleSelect);
   });
 </script>
