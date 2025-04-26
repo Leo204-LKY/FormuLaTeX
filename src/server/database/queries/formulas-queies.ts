@@ -19,7 +19,7 @@ export class FormulasTable {
   /**
    * Get one formula by UUID
    * @param uuid Formula UUID
-   * @returns Formula with given id
+   * @returns Formula with given UUID
    */
   static async getUniqueByUuid(uuid: string): Promise<formulas | null> {
     return FormulasTable.PRISMA_CLIENT.formulas.findUnique({
