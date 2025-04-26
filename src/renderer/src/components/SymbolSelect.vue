@@ -21,12 +21,13 @@
         <div
           v-for="(symbolGroup, groupIndex) in getCurrentSymbolGroups"
           :key="groupIndex"
-          class="grid grid-cols-4 gap-2"
+          :class="currentDisplayRule"
         >
           <div
             v-for="(symbol, symbolIndex) in symbolGroup"
             :key="symbolIndex"
-            class="bg-white border border-gray-200 rounded-md p-2 cursor-pointer hover:bg-gray-100"
+            class="w-8 h-8 bg-white flex items-center justify-center border border-gray-200 rounded-md p-2 cursor-pointer hover:bg-gray-100"
+            @click="handleSymbolClick(symbol)"
           >
             {{ symbol }}
           </div>
@@ -38,6 +39,7 @@
 
 <script setup lang="ts">
   import { ref, computed } from 'vue';
+  import { selectSymbolEventBus } from '../eventBus';
   // 定义每个标签对应的符号集合
   const symbolData: { [key: string]: string[][] } = {
     Common: [['+', '-', '*', '/']],
@@ -48,14 +50,102 @@
       ['∠', '⊥', '∵', '⊄', '…', '√', '‖', '∶'],
       ['‰', '‱'],
     ],
-    Relations: [['<', '>', '=']],
-    Arrows: [['→', '←', '↑']],
-    Greek: [['α', 'β', 'γ']],
+    Relations: [
+      ['=', '≡', '≠', '∼', '≃', '≈', '≅', '≍', '≇', '≉'],
+      ['>', '<', '⊀', '⊁', '≫', '≪', '≥', '≤', '≰', '≱', '∝'],
+      ['∈', '∃', '∉', '⊆', '⊈', '⊉', '⊂', '⊃', '⊄', '⊇', '⊅', '⊈'],
+      ['ℕ', 'ℚ', '∅', 'ℤ', 'ℂ', 'ℙ', 'ℝ'],
+      ['◃', '⊲', '▹', '∧', '⊴', '∨'],
+    ],
+    Arrows: [
+      [
+        '←',
+        '→',
+        '↔',
+        '↕',
+        '↖',
+        '↗',
+        '↘',
+        '↙',
+        '⇐',
+        '⇒',
+        '⇔',
+        '⇑',
+        '⇓',
+        '⇕',
+      ],
+      [
+        '⟵',
+        '⟶',
+        '⟷',
+        '⟸',
+        '⟹',
+        '⟺',
+        '↞',
+        '↠',
+        '↢',
+        '↣',
+        '⇋',
+        '⇌',
+        '⇊',
+        '⇈',
+        '↤',
+      ],
+
+      ['↼', '↽', '⇀', '⇁', '↩', '↪', '↫', '↬', '↭', '↝'],
+      ['⌞', '⌟', '⌜', '⌝', '↶', '↷', '↺', '↻', '↰', '↱'],
+    ],
+    Greek: [
+      [
+        'α',
+        'γ',
+        'ε',
+        'η',
+        'ι',
+        'λ',
+        'ν',
+        'ο',
+        'ρ',
+        'τ',
+        'φ',
+        'ψ',
+        'ϵ',
+        'ϖ',
+        'ς',
+      ],
+      [
+        'β',
+        'δ',
+        'ζ',
+        'θ',
+        'κ',
+        'μ',
+        'ξ',
+        'π',
+        'σ',
+        'υ',
+        'χ',
+        'ω',
+        'ϑ',
+        'ϱ',
+        'ϕ',
+      ],
+      ['Γ', 'Θ', 'Π', 'Φ', 'Ω', 'Δ', 'Λ', 'Σ', 'Ψ', 'Ξ'],
+    ],
     Matric: [['[', ']', '{', '}']],
     Mark: [['•', '◦', '▫']],
     Equations: [['x + y = z', 'a² + b² = c²']],
     'Large...': [['∀', '∃', '∅']],
   };
+
+  const displayRules: Record<string, string> = {
+    default: 'grid grid-cols-4 gap-2 place-content-start',
+    Greek: 'flex flex-wrap gap-2',
+    Arrows: 'grid grid-cols-5 gap-2 place-content-start',
+  };
+  const currentDisplayRule = computed(() => {
+    return displayRules[selectedCategory.value] || displayRules.default;
+  });
 
   // 符号类别数组
   const symbolCategories = Object.keys(symbolData);
@@ -71,4 +161,8 @@
   const selectCategory = (category: string) => {
     selectedCategory.value = category;
   };
+
+  function handleSymbolClick(symbol: string) {
+    selectSymbolEventBus.emit('selectSymbol', symbol);
+  }
 </script>
