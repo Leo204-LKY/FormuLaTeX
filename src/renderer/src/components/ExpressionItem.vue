@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import { eventBus } from '../eventBus';
+  import { selectExpressionEventBus } from '../eventBus';
   import KatexRenderer from './KatexRenderer.vue';
 
   const props = defineProps<{
@@ -21,6 +21,6 @@
   }>();
 
   const handleClick = () => {
-    eventBus.emit('selectExpression', props.expression);
+    selectExpressionEventBus.emit('selectExpression', props.expression);
   };
 </script>
