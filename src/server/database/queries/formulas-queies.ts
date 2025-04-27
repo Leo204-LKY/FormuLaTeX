@@ -65,6 +65,7 @@ export class FormulasTable {
 
   /**
    * Delete one formula by UUID
+   * @param uuid Formula UUID
    */
   static async deleteUniqueByUuid(uuid: string): Promise<void> {
     await FormulasTable.PRISMA_CLIENT.formulas.delete({
