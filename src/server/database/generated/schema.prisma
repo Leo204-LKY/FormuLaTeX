@@ -110,7 +110,7 @@ model favourites {
   /// Unique identifier
   favourite_id String   @id @default(uuid())
   /// Favourited formula UUID
-  formula_id   String
+  formula_id   String   @unique
   /// Favourite time
   created_at   DateTime @default(now())
 

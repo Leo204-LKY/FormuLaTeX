@@ -10868,13 +10868,13 @@ export namespace Prisma {
 
   export type favouritesWhereUniqueInput = Prisma.AtLeast<{
     favourite_id?: string
+    formula_id?: string
     AND?: favouritesWhereInput | favouritesWhereInput[]
     OR?: favouritesWhereInput[]
     NOT?: favouritesWhereInput | favouritesWhereInput[]
-    formula_id?: StringFilter<"favourites"> | string
     created_at?: DateTimeFilter<"favourites"> | Date | string
     formula?: XOR<FormulasScalarRelationFilter, formulasWhereInput>
-  }, "favourite_id">
+  }, "favourite_id" | "formula_id">
 
   export type favouritesOrderByWithAggregationInput = {
     favourite_id?: SortOrder
