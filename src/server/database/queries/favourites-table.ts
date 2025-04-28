@@ -21,7 +21,7 @@ export class FavouritesTable {
    * @param formulaUuid Formula UUID
    * @returns Favourite UUID
    */
-  static async insertByFormulaUuid(formulaUuid: string): Promise<string> {
+  static async insertOneByFormulaUuid(formulaUuid: string): Promise<string> {
     // Check if formula favourite already exist
     const existingFavourite =
       await FavouritesTable.PRISMA_CLIENT.favourites.findUnique({
@@ -52,7 +52,7 @@ export class FavouritesTable {
    * @param formulaUuid Formula UUID
    * @returns Removed formula UUID, return null if not in favourite
    */
-  static async deleteByFormulaUuid(
+  static async deleteUniqueByFormulaUuid(
     formulaUuid: string
   ): Promise<string | null> {
     // Check if favourite exists
@@ -81,7 +81,7 @@ export class FavouritesTable {
    * @param favouriteUuid Formula UUID
    * @returns Removed formula UUID, return null if not in favourite
    */
-  static async deleteByFavouriteUuid(
+  static async deleteUniqueByFavouriteUuid(
     favouriteUuid: string
   ): Promise<string | null> {
     // Check if favourite exists
