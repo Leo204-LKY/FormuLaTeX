@@ -11406,7 +11406,7 @@ export namespace Prisma {
     message_id?: string
     role: string
     content: string
-    created_at: Date | string
+    created_at?: Date | string
     conversation: formula_conversationsCreateNestedOneWithoutMessagesInput
   }
 
@@ -11415,7 +11415,7 @@ export namespace Prisma {
     conversation_id: string
     role: string
     content: string
-    created_at: Date | string
+    created_at?: Date | string
   }
 
   export type messagesUpdateInput = {
@@ -11439,7 +11439,7 @@ export namespace Prisma {
     conversation_id: string
     role: string
     content: string
-    created_at: Date | string
+    created_at?: Date | string
   }
 
   export type messagesUpdateManyMutationInput = {
@@ -13041,14 +13041,14 @@ export namespace Prisma {
     message_id?: string
     role: string
     content: string
-    created_at: Date | string
+    created_at?: Date | string
   }
 
   export type messagesUncheckedCreateWithoutConversationInput = {
     message_id?: string
     role: string
     content: string
-    created_at: Date | string
+    created_at?: Date | string
   }
 
   export type messagesCreateOrConnectWithoutConversationInput = {
@@ -13336,7 +13336,7 @@ export namespace Prisma {
     message_id?: string
     role: string
     content: string
-    created_at: Date | string
+    created_at?: Date | string
   }
 
   export type messagesUpdateWithoutConversationInput = {

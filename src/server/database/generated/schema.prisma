@@ -143,7 +143,7 @@ model messages {
   /// Message content
   content         String
   /// Send time
-  created_at      DateTime
+  created_at      DateTime @default(now())
 
   conversation formula_conversations @relation(fields: [conversation_id], references: [conversation_id])
 }
