@@ -144,7 +144,9 @@
 
         <button class="btn-style3 btn-status2">Generate</button>
 
-        <!-- TODO: 补充对AI分析的接口调用 -->
+        <!-- TODO: 点击 AI按钮 后，
+         将现在输入的公式传入到SideBar输入框中并发送，开始询问
+         (其后点击QuickInput区域的公式同步到SideBar的输入框)-->
         <button
           class="bg-purple-500 text-white text-sm px-4 py-2 rounded-md"
           @click="handleAIAnalysis"

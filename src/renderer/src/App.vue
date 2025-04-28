@@ -15,6 +15,7 @@
         <FormulaEdit ref="editorRef" v-model:latexInput="latexInput" />
       </div>
     </div>
+    <SideBar />
   </div>
 </template>
 
@@ -22,6 +23,7 @@
   import QuickInput from './components/QuickInput.vue';
   import FormulaEdit from './components/FormulaEdit.vue';
   import SymbolSelect from './components/SymbolSelect.vue';
+  import SideBar from './components/SideBar.vue';
 
   import { ref, onMounted, onUnmounted } from 'vue';
   import { selectExpressionEventBus, selectSymbolEventBus } from './eventBus';
