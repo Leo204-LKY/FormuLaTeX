@@ -29,13 +29,13 @@ export class FormulaSessionsTable {
 
   /**
    * Insert one formula session into formula_sessions table
-   * @param formula Formula session to insert
+   * @param formulaSession Formula session to insert
    * @returns The UUID of the inserted formula session
    */
-  static async insertOne(formula: formula_sessions): Promise<string> {
+  static async insertOne(formulaSession: formula_sessions): Promise<string> {
     const result =
       await FormulaSessionsTable.PRISMA_CLIENT.formula_sessions.create({
-        data: formula,
+        data: formulaSession,
       });
 
     return result.session_id;

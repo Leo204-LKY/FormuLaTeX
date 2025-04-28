@@ -33,14 +33,16 @@ export class FormulaInterpretationsTable {
 
   /**
    * Insert one formula interpretation into formula_interpretations table
-   * @param formula Formula interpretation to insert
+   * @param formulaInterpretation Formula interpretation to insert
    * @returns The UUID of the inserted formula interpretation
    */
-  static async insertOne(formula: formula_interpretations): Promise<string> {
+  static async insertOne(
+    formulaInterpretation: formula_interpretations
+  ): Promise<string> {
     const result =
       await FormulaInterpretationsTable.PRISMA_CLIENT.formula_interpretations.create(
         {
-          data: formula,
+          data: formulaInterpretation,
         }
       );
 
