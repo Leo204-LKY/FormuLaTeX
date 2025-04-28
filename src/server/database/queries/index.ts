@@ -1,4 +1,4 @@
-export { FavouritesTable } from './favourites-table';
+export { FavouritesTable } from './favourites-queies';
 export { FormulaConversationsTable } from './formula-conversations-queies';
 export { FormulaInterpretationsTable } from './formula-interpretations-queies';
 export { FormulaSessionsTable } from './formula-sessions-queies';
