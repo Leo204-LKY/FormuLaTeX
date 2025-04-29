@@ -15,7 +15,7 @@
         <FormulaEdit ref="editorRef" v-model:latexInput="latexInput" />
       </div>
     </div>
-    <SideBar />
+    <SideBar ref="sideBarRef" />
   </div>
 </template>
 
@@ -30,25 +30,28 @@
 
   const latexInput = ref('');
   const editorRef = ref();
+  const sideBarRef = ref();
+
+  const isSideBarExpanded = () => {
+    return sideBarRef.value?.isDrawerOpen;
+  };
 
   const handleSelect = (expr: string) => {
     // 👇 通过引用调用插入函数
-    editorRef.value?.insertFormulaAtCursor(expr);
+    if (isSideBarExpanded()) {
+      sideBarRef.value?.insertFormula(expr);
+    } else {
+      editorRef.value?.insertFormulaAtCursor(expr);
+    }
   };
 
   onMounted(() => {
     selectExpressionEventBus.on('selectExpression', handleSelect);
-  });
-
-  onUnmounted(() => {
-    selectExpressionEventBus.off('selectExpression', handleSelect);
-  });
-
-  onMounted(() => {
     selectSymbolEventBus.on('selectSymbol', handleSelect);
   });
 
   onUnmounted(() => {
+    selectExpressionEventBus.off('selectExpression', handleSelect);
     selectSymbolEventBus.off('selectSymbol', handleSelect);
   });
 </script>
