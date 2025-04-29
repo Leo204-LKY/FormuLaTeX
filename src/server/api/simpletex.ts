@@ -3,20 +3,12 @@ import * as crypto from 'crypto';
 import FormData from 'form-data';
 import * as fs from 'fs/promises'; // 使用 Promise API
 import * as path from 'path';
+import { getRandomStr } from '../utils';
+
 const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr_turbo'; // Lightweight Model
 // const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr'; // Standard Model
 const APP_ID = '';
 const APP_SECRET = '';
-
-// Get a random 16-character string (upper/lowercase letters + digits)
-function getRandomStr(): string {
-  const chars =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  return Array.from(
-    { length: 16 },
-    () => chars[Math.floor(Math.random() * chars.length)]
-  ).join('');
-}
 
 // Get current timestamp (in seconds)
 function getCurrentTimestamp(): number {
@@ -31,7 +23,7 @@ function getRequestHeaders(
 ): Record<string, string> {
   const headers: Record<string, string> = {
     timestamp: getCurrentTimestamp().toString(),
-    'random-str': getRandomStr(),
+    'random-str': getRandomStr(16),
     'app-id': appId,
   };
 
