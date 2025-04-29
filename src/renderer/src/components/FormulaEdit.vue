@@ -38,7 +38,7 @@
           <button class="btn-icon" @mousedown.prevent="toggleSizePicker">
             <img src="../assets/icons/T-icon.svg" />
           </button>
-          <!-- 尺寸面板 -->
+          <!-- 字体大小面板 -->
           <div
             v-if="sizePickerVisible"
             class="absolute top-full left-0 mt-1 w-24 bg-white border border-gray-300 rounded-md shadow z-50"
@@ -54,13 +54,15 @@
           </div>
         </div>
 
+        <!-- 字体加粗 -->
         <button class="btn-icon" @click="toggleBold">
           <img src="../assets/icons/B-icon.svg" />
         </button>
+        <!-- 字体斜体 -->
         <button class="btn-icon" @click="toggleItalic">
           <img src="../assets/icons/I-icon.svg" />
         </button>
-
+        <!-- 颜色选择 -->
         <div ref="colorPickerRef" class="relative">
           <!-- 使用mousedown.prevent保留文本选中状态 -->
           <button class="btn-icon" @mousedown.prevent="toggleColorPicker">
@@ -99,12 +101,12 @@
         placeholder="请输入LaTeX公式，如：\\frac{a}{b} = c"
       ></textarea>
 
-      <!-- 功能按钮 -->
+      <!-- 上传图像 -->
       <div class="flex justify-around items-center mt-4">
         <button class="btn-style3 btn-status2" @click="showUploadModal = true">
           Upload Image
         </button>
-        <!-- 上传图像模态框 -->
+        <!-- 上传图像 -->
         <div
           v-if="showUploadModal"
           class="fixed inset-0 bg-white/10 backdrop-blur-sm bg-opacity-40 flex items-center justify-center z-50"
@@ -120,13 +122,13 @@
             >
               ✕
             </button>
-            <h3 class="text-lg font-semibold mb-4 text-center">上传图片</h3>
+            <h3 class="text-lg font-semibold mb-4 text-center">Upload Image</h3>
 
             <div
               class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 cursor-pointer hover:border-blue-400"
               @click="triggerFileInput"
             >
-              拖拽文件到这里，或点击选择文件
+              Drag the file to here, or click to select
               <input
                 type="file"
                 ref="fileInputRef"
@@ -137,7 +139,7 @@
             </div>
 
             <p class="mt-4 text-xs text-gray-400 text-center">
-              支持 PNG / JPG / JPEG
+              PNG / JPG / JPEG
             </p>
           </div>
         </div>
@@ -145,8 +147,7 @@
         <button class="btn-style3 btn-status2">Generate</button>
 
         <!-- TODO: 点击 AI按钮 后，
-         将现在输入的公式传入到SideBar输入框中并发送，开始询问
-         (其后点击QuickInput区域的公式同步到SideBar的输入框)-->
+         将现在输入的公式传入到SideBar输入框中并发送，开始询问 -->
         <button
           class="bg-purple-500 text-white text-sm px-4 py-2 rounded-md"
           @click="handleAIAnalysis"
@@ -157,6 +158,7 @@
     </div>
 
     <!-- Formula Preview区域 -->
+    <!-- TODO: 优化公式显示，如单行公式太长调整显示大小等 -->
     <div class="flex-1 p-4 h-full">
       <h2 class="text-lg font-bold mb-4">Formula Preview</h2>
       <div
@@ -172,6 +174,7 @@
   import { ref, watch, computed, onMounted, defineEmits, nextTick } from 'vue';
   import { useClickOutside } from '../utils/useClickOutside';
   import { HistoryManager } from '../utils/historyStack';
+  import { isDrawerOpenEventBus } from '../eventBus';
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
 
@@ -296,6 +299,7 @@
     wrapSelectionWithCommand(size);
     sizePickerVisible.value = false;
   };
+
   const toggleBold = () => wrapSelectionWithCommand('mathbf');
   const toggleItalic = () => wrapSelectionWithCommand('mathit');
   const toggleClear = () => {
@@ -335,7 +339,9 @@
   };
 
   const handleAIAnalysis = () => {
-    // TODO: 调用后端接口进行AI分析，传入必要的参数
+    // 将当前输入框内容，携带跳转到sideBar输入框并对话分析
     console.log('AI Analysis triggered');
+    isDrawerOpenEventBus.emit('update', true); // 通知打开 Drawer
+    isDrawerOpenEventBus.emit('expression', latexInput.value); // 传递当前输入的公式
   };
 </script>

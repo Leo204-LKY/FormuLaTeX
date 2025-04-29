@@ -5,7 +5,10 @@
       <button
         v-for="(category, index) in symbolCategories"
         :key="index"
-        :class="['btn-style2 btn-status2']"
+        class="btn-style2 btn-status2"
+        :class="{
+          'outline-none ring-2 ring-gray-400': selectedCategory === category,
+        }"
         @click="selectCategory(category)"
       >
         {{ category }}

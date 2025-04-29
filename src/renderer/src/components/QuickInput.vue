@@ -23,7 +23,7 @@
       </button>
     </div>
 
-    <!-- 展示公式 -->
+    <!-- 展示对应Tags下的公式 -->
     <div
       id="expression-list"
       ref="expressionListRef"
@@ -60,7 +60,7 @@
     {}
   );
 
-  const tags = ['History', 'Common', 'Operations', 'Relations']; // 举例
+  const tags = ['History', 'Common', 'Math', 'Physics']; // 举例
   const selectedTag = ref(tags[0]);
   const displayItems = ref<string[]>([]); // 或你具体的数据类型
 
@@ -86,13 +86,13 @@
         `a = \\sqrt{a^2 + b^2}`,
         `a = \\sqrt{a^2 + b^2}`,
       ],
-      Operations: [
+      Math: [
         `b = \\sqrt{a^2 + b^2}`,
         `b = \\sqrt{a^2 + b^2}`,
         `b = \\sqrt{a^2 + b^2}`,
         `b = \\sqrt{a^2 + b^2}`,
       ],
-      Relations: [
+      Physics: [
         `c = \\sqrt{a^2 + b^2}`,
         `c = \\sqrt{a^2 + b^2}`,
         `c = \\sqrt{a^2 + b^2}`,
