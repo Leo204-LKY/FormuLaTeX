@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as crypto from 'crypto';
 import FormData from 'form-data';
 import * as fs from 'fs/promises'; // 使用 Promise API
-import { getRandomStr } from '../utils';
+import { getCurrentTimestamp, getRandomStr } from '../utils';
 
 const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr_turbo'; // Lightweight Model
 // const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr'; // Standard Model
@@ -13,11 +13,7 @@ export interface SimpleTexResponse {
   latex: string;
   confidence?: number;
   requestId?: string;
-}
 
-// Get current timestamp (in seconds)
-function getCurrentTimestamp(): number {
-  return Math.floor(Date.now() / 1000);
 }
 
 // Generate headers with signature
