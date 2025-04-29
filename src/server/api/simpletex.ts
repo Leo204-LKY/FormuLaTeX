@@ -2,13 +2,18 @@ import axios from 'axios';
 import * as crypto from 'crypto';
 import FormData from 'form-data';
 import * as fs from 'fs/promises'; // 使用 Promise API
-import * as path from 'path';
 import { getRandomStr } from '../utils';
 
 const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr_turbo'; // Lightweight Model
 // const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr'; // Standard Model
 const APP_ID = '';
 const APP_SECRET = '';
+
+export interface SimpleTexResponse {
+  latex: string;
+  confidence?: number;
+  requestId?: string;
+}
 
 // Get current timestamp (in seconds)
 function getCurrentTimestamp(): number {
@@ -39,29 +44,63 @@ function getRequestHeaders(
   return headers;
 }
 
+/**
+ * Recognize formula using SimpleTex API
+ * @param filePath Image file path
+ * @param app_id SimpleTex APP ID
+ * @param app_secret SimpleTex App Secret
+ */
+export async function convertImageToLatex(
+  filePath: string,
+  app_id?: string,
+  app_secret?: string
+): Promise<SimpleTexResponse>;
+/**
+ * Recognize formula using SimpleTex API
+ * @param imageBuffer Image buffer
+ * @param app_id SimpleTex APP ID
+ * @param app_secret SimpleTex App Secret
+ */
+export async function convertImageToLatex(
+  imageBuffer: Buffer,
+  app_id?: string,
+  app_secret?: string
+): Promise<SimpleTexResponse>;
+
 // Main function to run the request
-export async function convertImageToLatex(filePath: string): Promise<string> {
+export async function convertImageToLatex(
+  input: string | Buffer,
+  app_id: string = APP_ID,
+  app_secret: string = APP_SECRET
+): Promise<SimpleTexResponse> {
   try {
-    // 1. Check if file exists
-    const stats = await fs.stat(filePath);
-    console.log('success:', {
-      path: filePath,
-      size: stats.size,
-      lastModified: stats.mtime,
-    });
+    let imageBuffer: Buffer;
 
-    // 2. Read file
-    const imageBuffer = await fs.readFile(filePath);
+    if (typeof input === 'string') {
+      // Case 1: File path input
+      const stats = await fs.stat(input);
+      console.log('success:', {
+        path: input,
+        size: stats.size,
+        lastModified: stats.mtime,
+      });
 
-    // 3. Prepare FormData
+      // Read file
+      imageBuffer = await fs.readFile(input);
+    } else {
+      // Case 2: Image buffer input
+      imageBuffer = input;
+    }
+
+    // Prepare FormData
     const form = new FormData();
-    form.append('file', imageBuffer, path.basename(filePath));
+    form.append('file', imageBuffer);
 
-    // 4. Generate headers
+    // Generate headers
     const data: Record<string, string | number | boolean> = {};
-    const headers = getRequestHeaders(data, APP_ID, APP_SECRET);
+    const headers = getRequestHeaders(data, app_id, app_secret);
 
-    // 5. Send request
+    // Send request
     const response = await axios.post(BASE_URL, form, {
       headers: {
         ...headers,
@@ -73,12 +112,13 @@ export async function convertImageToLatex(filePath: string): Promise<string> {
       throw new Error('API error');
     }
 
-    return response.data.res.latex;
-  } catch (error) {
-    console.error('error:', {
-      path: filePath,
-      error: error instanceof Error ? error.message : String(error),
-    });
-    throw new Error(`error: ${filePath}`);
+    return {
+      latex: response.data.res.latex,
+      confidence: response.data.res.conf,
+      requestId: response.data.request_id,
+    } as SimpleTexResponse;
+  } catch (e) {
+    console.error('error:', e);
+    throw new Error(`error: ${e}`);
   }
 }
