@@ -37,5 +37,5 @@ export function saveEncryptedJsonConfig(configName: string, config: object) {
   const configPath = path.join(APP_DATA_DIR, `${configName}.json`);
   const encrypted = encryptJson(config);
 
-  writeFileSync(configPath, encrypted, { encoding: 'utf-8', mode: 'w' });
+  writeFileSync(configPath, encrypted, { encoding: 'utf-8' });
 }
