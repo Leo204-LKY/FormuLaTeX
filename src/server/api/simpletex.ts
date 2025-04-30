@@ -8,6 +8,7 @@ const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr_turbo'; // Lightweig
 // const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr'; // Standard Model
 const APP_ID = '';
 const APP_SECRET = '';
+const TIMEOUT = 10000;
 
 /**
  * SimpleTex API response interface
@@ -62,29 +63,34 @@ function getRequestHeaders(
  * @param filePath Image file path
  * @param app_id SimpleTex APP ID
  * @param app_secret SimpleTex App Secret
+ * @param timeout Request timeout (ms)
  */
 export async function convertImageToLatex(
   filePath: string,
   app_id?: string,
-  app_secret?: string
+  app_secret?: string,
+  timeout?: number
 ): Promise<SimpleTexResponse>;
 /**
  * Recognize formula using SimpleTex API
  * @param imageBuffer Image buffer
  * @param app_id SimpleTex APP ID
  * @param app_secret SimpleTex App Secret
+ * @param timeout Request timeout (ms)
  */
 export async function convertImageToLatex(
   imageBuffer: Buffer,
   app_id?: string,
-  app_secret?: string
+  app_secret?: string,
+  timeout?: number
 ): Promise<SimpleTexResponse>;
 
 // Main function to run the request
 export async function convertImageToLatex(
   input: string | Buffer,
   app_id: string = APP_ID,
-  app_secret: string = APP_SECRET
+  app_secret: string = APP_SECRET,
+  timeout: number = TIMEOUT
 ): Promise<SimpleTexResponse> {
   try {
     let imageBuffer: Buffer;
@@ -107,7 +113,7 @@ export async function convertImageToLatex(
 
     // Prepare FormData
     const form = new FormData();
-    form.append('file', imageBuffer);
+    form.append('file', imageBuffer, 'image.jpg');
 
     // Generate headers
     const data: Record<string, string | number | boolean> = {};
@@ -119,6 +125,7 @@ export async function convertImageToLatex(
         ...headers,
         ...form.getHeaders(),
       },
+      timeout: timeout,
     });
 
     if (!response.data.res) {
