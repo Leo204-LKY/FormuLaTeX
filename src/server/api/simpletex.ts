@@ -3,36 +3,13 @@ import * as crypto from 'crypto';
 import FormData from 'form-data';
 import * as fs from 'fs/promises'; // 使用 Promise API
 import { getCurrentTimestamp, getRandomStr } from '../utils';
+import { SimpleTexResponse } from '../interfaces';
 
 const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr_turbo'; // Lightweight Model
 // const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr'; // Standard Model
 const APP_ID = '';
 const APP_SECRET = '';
 const TIMEOUT = 10000;
-
-/**
- * SimpleTex API response interface
- * Contains necessary data of a SimpleTex response
- */
-export interface SimpleTexResponse {
-  /**
-   * LaTeX code of a recognized image
-   * @example "E=mc^{2}"
-   */
-  latex: string;
-
-  /**
-   * The confidence of the formula
-   * @example 0.9272882342338562
-   */
-  confidence?: number;
-
-  /**
-   * ID of this request
-   * @example "tr_xxxxxxxxxx"
-   */
-  requestId?: string;
-}
 
 // Generate headers with signature
 function getRequestHeaders(
