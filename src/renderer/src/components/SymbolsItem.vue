@@ -1,3 +1,7 @@
+<template>
+  <span ref="containerRef"></span>
+</template>
+
 <script setup lang="ts">
   import { onMounted, ref, watch } from 'vue';
   import katex from 'katex';
@@ -21,7 +25,3 @@
   onMounted(renderLatex);
   watch(() => props.latex, renderLatex);
 </script>
-
-<template>
-  <span ref="containerRef"></span>
-</template>
