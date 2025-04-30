@@ -5,10 +5,10 @@ export interface SimpleTexConfig {
   /**
    * App key
    */
-  app_key: string;
+  appId: string;
 
   /**
    * App secret
    */
-  app_secret: string;
+  appSecret: string;
 }
