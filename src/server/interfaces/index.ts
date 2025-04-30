@@ -1,1 +1,2 @@
-export type { SimpleTexResponse } from './simpletex';
+export type * from './config';
+export type * from './simpletex';
