@@ -24,7 +24,7 @@ export abstract class AbstractChatClient {
     history: ChatMessage[] = [],
     model: string = 'gpt-4'
   ) {
-    if (!question.trim) {
+    if (!question.trim()) {
       throw new Error('`question` cannot be empty');
     }
 
