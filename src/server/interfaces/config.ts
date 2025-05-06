@@ -12,3 +12,13 @@ export interface SimpleTexConfig {
    */
   appSecret: string;
 }
+
+/**
+ * DeepSeek API config
+ */
+export interface DeepSeekConfig {
+  /**
+   * API key
+   */
+  apiKey: string;
+}
