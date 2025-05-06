@@ -81,7 +81,7 @@ export function encryptFile(
   key: crypto.CipherKey = ENCRYPTION_KEY,
   iv: string = getRandomStr(IV_LENGTH),
   writeMode?: fs.Mode
-): void {
+): string {
   try {
     const fileData = fs.readFileSync(filePath);
     const ivBuffer = Buffer.from(iv, 'utf-8');
@@ -95,8 +95,10 @@ export function encryptFile(
       mode: writeMode,
     });
     console.log(`File encrypted successfully to: ${encryptPath}`);
+    return iv;
   } catch (e) {
     console.error('File encryption failed: ', e);
+    return '';
   }
 }
 
