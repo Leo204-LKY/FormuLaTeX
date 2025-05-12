@@ -145,3 +145,9 @@ dist
 *.njsproj
 *.sln
 *.sw?
+
+# SQLite files
+*.db
+
+# Yarn RC files
+.yarnrc
