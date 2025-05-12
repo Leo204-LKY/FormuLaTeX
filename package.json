@@ -46,7 +46,6 @@
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
     "concurrently": "^8.0.1",
-    "electron": "^35.0.1",
     "electron-builder": "^25.1.8",
     "eslint": "^9.25.0",
     "eslint-config-prettier": "^10.1.2",
@@ -57,6 +56,7 @@
     "prettier": "3.5.3",
     "prettier-plugin-prisma": "^5.0.0",
     "prisma": "^6.6.0",
+    "tailwindcss": "^4.1.4",
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
@@ -68,8 +68,12 @@
   "dependencies": {
     "@prisma/client": "^6.6.0",
     "axios": "^1.9.0",
+    "electron": "^35.0.1",
+    "katex": "^0.16.22",
+    "mitt": "^3.0.1",
     "node-machine-id": "^1.1.12",
     "openai": "^4.97.0",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-katex": "^0.5.0"
   }
 }
