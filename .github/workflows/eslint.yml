@@ -39,8 +39,9 @@ jobs:
         run: |
           yarn add eslint@latest
           yarn add @microsoft/eslint-formatter-sarif@3.1.0
+          yarn add jiti
 
-      - name: Run ESLint with Flat Config (eslint.config.mjs) + Reviewdog
+      - name: Run ESLint with TypeScript Config + Reviewdog
         uses: reviewdog/action-eslint@v1.33.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -52,4 +53,4 @@ jobs:
           fail_level: error
           level: warning
         env:
-          NODE_OPTIONS: '--import=eslint/use-at-your-own-risk' # Necessary for flat config
+          NODE_OPTIONS: '--require jiti/register' # Necessary for TypeScript config
