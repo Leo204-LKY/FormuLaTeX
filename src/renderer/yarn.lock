@@ -436,7 +436,7 @@
     "@tailwindcss/oxide-win32-arm64-msvc" "4.1.6"
     "@tailwindcss/oxide-win32-x64-msvc" "4.1.6"
 
-"@tailwindcss/postcss@^4.1.4":
+"@tailwindcss/postcss@^4.1.6":
   version "4.1.6"
   resolved "https://registry.npmmirror.com/@tailwindcss/postcss/-/postcss-4.1.6.tgz#c37ae6fc324ae4ec291976f477fac092357058b4"
   integrity sha512-ELq+gDMBuRXPJlpE3PEen+1MhnHAQQrh2zF0dI1NXOlEWfr2qWf2CQdr5jl9yANv8RErQaQ2l6nIFO9OSCVq/g==
