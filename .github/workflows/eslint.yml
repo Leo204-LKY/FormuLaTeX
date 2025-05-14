@@ -12,7 +12,7 @@ name: ESLint PR Annotations with Reviewdog
 on:
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "*" ]
+    branches: ['*']
 
 jobs:
   eslint-reviewdog:
@@ -39,17 +39,18 @@ jobs:
         run: |
           yarn add eslint@latest
           yarn add @microsoft/eslint-formatter-sarif@3.1.0
+          yarn add jiti
 
-      - name: Run ESLint with Flat Config (eslint.config.mjs) + Reviewdog
+      - name: Run ESLint with TypeScript Config + Reviewdog
         uses: reviewdog/action-eslint@v1.33.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
           eslint_flags: >-
-            --config eslint.config.mjs
+            --config eslint.config.ts
             --ext .js,.ts,.tsx,.vue
             .
           fail_level: error
           level: warning
         env:
-          NODE_OPTIONS: "--import=eslint/use-at-your-own-risk" # Necessary for flat config
+          NODE_OPTIONS: '--require jiti/register' # Necessary for TypeScript config

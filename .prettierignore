@@ -10,3 +10,4 @@ build
 coverage
 package-lock.json
 pnpm-lock.yaml
+tsconfig.json

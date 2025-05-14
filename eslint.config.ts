@@ -1,3 +1,4 @@
+import type { Linter } from 'eslint';
 import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -31,28 +32,28 @@ export default defineConfig([
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: {
-      globals: globals.node, // Main process environment default is Node.js
+      globals: globals.node as Record<string, boolean>, // Main process environment default is Node.js
     },
   },
 
   // TS type checking (main process)
-  tseslint.configs.recommended,
+  tseslint.configs.recommended as Linter.Config,
 
   // Vue 3
   {
     files: ['**/*.vue'],
     plugins: { vue: pluginVue },
-    rules: pluginVue.configs['flat/essential'].rules ?? {},
+    ...pluginVue.configs['flat/essential'][0],
     languageOptions: {
       parser: vueParser,
-      ...pluginVue.configs['flat/essential'].languageOptions,
+      ...pluginVue.configs['flat/essential'][0].languageOptions,
       parserOptions: {
         parser: tseslint.parser,
         ecmaVersion: 'latest',
         sourceType: 'module',
         extraFileExtensions: ['.vue'],
       },
-      globals: globals.browser,
+      globals: globals.browser as Record<string, boolean>,
     },
   },
 
@@ -92,5 +93,5 @@ export default defineConfig([
       'prettier/prettier': 'error', // Report prettier as ESLint errors
     },
   },
-  eslintPluginPrettierRecommended,
+  eslintPluginPrettierRecommended as Linter.Config,
 ]);
