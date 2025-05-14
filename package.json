@@ -48,6 +48,7 @@
     "@types/eslint": "^9.6.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.10",
+    "@types/tailwindcss": "^3.1.0",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
