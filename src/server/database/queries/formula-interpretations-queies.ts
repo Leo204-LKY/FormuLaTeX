@@ -1,6 +1,6 @@
 import { PrismaClient } from '../generated';
 import { getPrismaClient } from '../prisma-client';
-import type { formula_interpretations } from '../generated';
+import type { Prisma, formula_interpretations } from '../generated';
 
 /**
  * `formula_interpretations` table queries, only contains static methods
@@ -37,7 +37,7 @@ export class FormulaInterpretationsTable {
    * @returns The UUID of the inserted formula interpretation
    */
   static async insertOne(
-    formulaInterpretation: formula_interpretations
+    formulaInterpretation: Prisma.formula_interpretationsCreateInput
   ): Promise<string> {
     const result =
       await FormulaInterpretationsTable.PRISMA_CLIENT.formula_interpretations.create(
@@ -53,7 +53,9 @@ export class FormulaInterpretationsTable {
    * Insert many formula interpretations into formula_interpretations table
    * @param formulas Formula interpretations to insert
    */
-  static async insertMany(formulas: formula_interpretations[]): Promise<void> {
+  static async insertMany(
+    formulas: Prisma.formula_interpretationsCreateManyInput[]
+  ): Promise<void> {
     await FormulaInterpretationsTable.PRISMA_CLIENT.$transaction(async (tx) => {
       await tx.formula_interpretations.createMany({
         data: formulas,

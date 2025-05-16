@@ -1,6 +1,6 @@
 import { PrismaClient } from '../generated';
 import { getPrismaClient } from '../prisma-client';
-import type { tags } from '../generated';
+import type { Prisma, tags } from '../generated';
 
 /**
  * `tags` table queries, only contains static methods
@@ -43,7 +43,7 @@ export class TagsTable {
    * @param tag Tag to insert
    * @returns The UUID of the inserted tag
    */
-  static async insertOne(tag: tags): Promise<string> {
+  static async insertOne(tag: Prisma.tagsCreateInput): Promise<string> {
     const result = await TagsTable.PRISMA_CLIENT.tags.create({
       data: tag,
     });
@@ -55,7 +55,7 @@ export class TagsTable {
    * Insert many tags into tags table
    * @param tags Tags to insert
    */
-  static async insertMany(tags: tags[]): Promise<void> {
+  static async insertMany(tags: Prisma.tagsCreateManyInput[]): Promise<void> {
     await TagsTable.PRISMA_CLIENT.$transaction(async (tx) => {
       await tx.tags.createMany({
         data: tags,

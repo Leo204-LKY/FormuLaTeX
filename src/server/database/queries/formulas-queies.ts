@@ -1,6 +1,6 @@
 import { PrismaClient } from '../generated';
 import { getPrismaClient } from '../prisma-client';
-import type { formulas } from '../generated';
+import type { formulas, Prisma } from '../generated';
 
 /**
  * `formulas` table queries, only contains static methods
@@ -43,7 +43,7 @@ export class FormulasTable {
    * @param formula Formula to insert
    * @returns The UUID of the inserted formula
    */
-  static async insertOne(formula: formulas): Promise<string> {
+  static async insertOne(formula: Prisma.formulasCreateInput): Promise<string> {
     const result = await FormulasTable.PRISMA_CLIENT.formulas.create({
       data: formula,
     });
@@ -55,7 +55,9 @@ export class FormulasTable {
    * Insert many formulas into formulas table
    * @param formulas Formulas to insert
    */
-  static async insertMany(formulas: formulas[]): Promise<void> {
+  static async insertMany(
+    formulas: Prisma.formulasCreateManyInput[]
+  ): Promise<void> {
     await FormulasTable.PRISMA_CLIENT.$transaction(async (tx) => {
       await tx.formulas.createMany({
         data: formulas,

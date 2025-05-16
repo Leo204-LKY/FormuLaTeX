@@ -1,6 +1,6 @@
 import { PrismaClient } from '../generated';
 import { getPrismaClient } from '../prisma-client';
-import type { messages } from '../generated';
+import type { messages, Prisma } from '../generated';
 
 /**
  * `messages` table queries, only contains static methods
@@ -35,7 +35,7 @@ export class MessagesTable {
    * @param message Message to insert
    * @returns The UUID of the inserted message
    */
-  static async insertOne(message: messages): Promise<string> {
+  static async insertOne(message: Prisma.messagesCreateInput): Promise<string> {
     const result = await MessagesTable.PRISMA_CLIENT.messages.create({
       data: message,
     });

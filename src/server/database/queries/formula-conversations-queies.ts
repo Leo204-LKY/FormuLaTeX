@@ -1,6 +1,6 @@
 import { PrismaClient } from '../generated';
 import { getPrismaClient } from '../prisma-client';
-import type { formula_conversations } from '../generated';
+import type { Prisma, formula_conversations } from '../generated';
 
 /**
  * `formula_conversations` table queries, only contains static methods
@@ -22,7 +22,7 @@ export class FormulaConversationsTable {
    * @returns Conversation UUID
    */
   static async insertOne(
-    formulaConversation: formula_conversations
+    formulaConversation: Prisma.formula_conversationsCreateInput
   ): Promise<string> {
     const result =
       await FormulaConversationsTable.PRISMA_CLIENT.formula_conversations.create(
