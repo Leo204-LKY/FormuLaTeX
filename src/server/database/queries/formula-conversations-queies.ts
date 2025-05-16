@@ -22,7 +22,7 @@ export class FormulaConversationsTable {
    * @returns Conversation UUID
    */
   static async insertOne(
-    formulaConversation: Prisma.formula_conversationsCreateInput
+    formulaConversation: Prisma.formula_conversationsCreateManyInput
   ): Promise<string> {
     const result =
       await FormulaConversationsTable.PRISMA_CLIENT.formula_conversations.create(

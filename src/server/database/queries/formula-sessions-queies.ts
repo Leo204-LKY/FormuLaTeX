@@ -33,7 +33,7 @@ export class FormulaSessionsTable {
    * @returns The UUID of the inserted formula session
    */
   static async insertOne(
-    formulaSession: Prisma.formula_sessionsCreateInput
+    formulaSession: Prisma.formula_sessionsCreateManyInput
   ): Promise<string> {
     const result =
       await FormulaSessionsTable.PRISMA_CLIENT.formula_sessions.create({

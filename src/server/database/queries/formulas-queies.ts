@@ -43,7 +43,9 @@ export class FormulasTable {
    * @param formula Formula to insert
    * @returns The UUID of the inserted formula
    */
-  static async insertOne(formula: Prisma.formulasCreateInput): Promise<string> {
+  static async insertOne(
+    formula: Prisma.formulasCreateManyInput
+  ): Promise<string> {
     const result = await FormulasTable.PRISMA_CLIENT.formulas.create({
       data: formula,
     });

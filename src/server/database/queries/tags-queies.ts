@@ -43,7 +43,7 @@ export class TagsTable {
    * @param tag Tag to insert
    * @returns The UUID of the inserted tag
    */
-  static async insertOne(tag: Prisma.tagsCreateInput): Promise<string> {
+  static async insertOne(tag: Prisma.tagsCreateManyInput): Promise<string> {
     const result = await TagsTable.PRISMA_CLIENT.tags.create({
       data: tag,
     });

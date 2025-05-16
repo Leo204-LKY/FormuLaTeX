@@ -37,7 +37,7 @@ export class FormulaInterpretationsTable {
    * @returns The UUID of the inserted formula interpretation
    */
   static async insertOne(
-    formulaInterpretation: Prisma.formula_interpretationsCreateInput
+    formulaInterpretation: Prisma.formula_interpretationsCreateManyInput
   ): Promise<string> {
     const result =
       await FormulaInterpretationsTable.PRISMA_CLIENT.formula_interpretations.create(

@@ -35,7 +35,9 @@ export class MessagesTable {
    * @param message Message to insert
    * @returns The UUID of the inserted message
    */
-  static async insertOne(message: Prisma.messagesCreateInput): Promise<string> {
+  static async insertOne(
+    message: Prisma.messagesCreateManyInput
+  ): Promise<string> {
     const result = await MessagesTable.PRISMA_CLIENT.messages.create({
       data: message,
     });
