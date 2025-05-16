@@ -21,7 +21,7 @@ model formula_sessions {
   /// Unique identifier
   session_id     String   @id @default(uuid())
   /// Input type (image/handwritting/text)
-  input_type     String
+  input_type     String?
   /// (Optional) Original input content (file path, text, etc.)
   source_content String?
   /// Create time

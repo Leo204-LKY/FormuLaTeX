@@ -1785,7 +1785,7 @@ export namespace Prisma {
 
   export type Formula_sessionsGroupByOutputType = {
     session_id: string
-    input_type: string
+    input_type: string | null
     source_content: string | null
     created_at: Date
     _count: Formula_sessionsCountAggregateOutputType | null
@@ -1858,7 +1858,7 @@ export namespace Prisma {
       /**
        * Input type (image/handwritting/text)
        */
-      input_type: string
+      input_type: string | null
       /**
        * (Optional) Original input content (file path, text, etc.)
        */
@@ -2513,7 +2513,7 @@ export namespace Prisma {
     /**
      * The data needed to create a formula_sessions.
      */
-    data: XOR<formula_sessionsCreateInput, formula_sessionsUncheckedCreateInput>
+    data?: XOR<formula_sessionsCreateInput, formula_sessionsUncheckedCreateInput>
   }
 
   /**
@@ -10556,7 +10556,7 @@ export namespace Prisma {
     OR?: formula_sessionsWhereInput[]
     NOT?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
     session_id?: StringFilter<"formula_sessions"> | string
-    input_type?: StringFilter<"formula_sessions"> | string
+    input_type?: StringNullableFilter<"formula_sessions"> | string | null
     source_content?: StringNullableFilter<"formula_sessions"> | string | null
     created_at?: DateTimeFilter<"formula_sessions"> | Date | string
     formulas?: FormulasListRelationFilter
@@ -10564,7 +10564,7 @@ export namespace Prisma {
 
   export type formula_sessionsOrderByWithRelationInput = {
     session_id?: SortOrder
-    input_type?: SortOrder
+    input_type?: SortOrderInput | SortOrder
     source_content?: SortOrderInput | SortOrder
     created_at?: SortOrder
     formulas?: formulasOrderByRelationAggregateInput
@@ -10575,7 +10575,7 @@ export namespace Prisma {
     AND?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
     OR?: formula_sessionsWhereInput[]
     NOT?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
-    input_type?: StringFilter<"formula_sessions"> | string
+    input_type?: StringNullableFilter<"formula_sessions"> | string | null
     source_content?: StringNullableFilter<"formula_sessions"> | string | null
     created_at?: DateTimeFilter<"formula_sessions"> | Date | string
     formulas?: FormulasListRelationFilter
@@ -10583,7 +10583,7 @@ export namespace Prisma {
 
   export type formula_sessionsOrderByWithAggregationInput = {
     session_id?: SortOrder
-    input_type?: SortOrder
+    input_type?: SortOrderInput | SortOrder
     source_content?: SortOrderInput | SortOrder
     created_at?: SortOrder
     _count?: formula_sessionsCountOrderByAggregateInput
@@ -10596,7 +10596,7 @@ export namespace Prisma {
     OR?: formula_sessionsScalarWhereWithAggregatesInput[]
     NOT?: formula_sessionsScalarWhereWithAggregatesInput | formula_sessionsScalarWhereWithAggregatesInput[]
     session_id?: StringWithAggregatesFilter<"formula_sessions"> | string
-    input_type?: StringWithAggregatesFilter<"formula_sessions"> | string
+    input_type?: StringNullableWithAggregatesFilter<"formula_sessions"> | string | null
     source_content?: StringNullableWithAggregatesFilter<"formula_sessions"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"formula_sessions"> | Date | string
   }
@@ -11004,7 +11004,7 @@ export namespace Prisma {
 
   export type formula_sessionsCreateInput = {
     session_id?: string
-    input_type: string
+    input_type?: string | null
     source_content?: string | null
     created_at?: Date | string
     formulas?: formulasCreateNestedManyWithoutSessionInput
@@ -11012,7 +11012,7 @@ export namespace Prisma {
 
   export type formula_sessionsUncheckedCreateInput = {
     session_id?: string
-    input_type: string
+    input_type?: string | null
     source_content?: string | null
     created_at?: Date | string
     formulas?: formulasUncheckedCreateNestedManyWithoutSessionInput
@@ -11020,7 +11020,7 @@ export namespace Prisma {
 
   export type formula_sessionsUpdateInput = {
     session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: StringFieldUpdateOperationsInput | string
+    input_type?: NullableStringFieldUpdateOperationsInput | string | null
     source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     formulas?: formulasUpdateManyWithoutSessionNestedInput
@@ -11028,7 +11028,7 @@ export namespace Prisma {
 
   export type formula_sessionsUncheckedUpdateInput = {
     session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: StringFieldUpdateOperationsInput | string
+    input_type?: NullableStringFieldUpdateOperationsInput | string | null
     source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     formulas?: formulasUncheckedUpdateManyWithoutSessionNestedInput
@@ -11036,21 +11036,21 @@ export namespace Prisma {
 
   export type formula_sessionsCreateManyInput = {
     session_id?: string
-    input_type: string
+    input_type?: string | null
     source_content?: string | null
     created_at?: Date | string
   }
 
   export type formula_sessionsUpdateManyMutationInput = {
     session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: StringFieldUpdateOperationsInput | string
+    input_type?: NullableStringFieldUpdateOperationsInput | string | null
     source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type formula_sessionsUncheckedUpdateManyInput = {
     session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: StringFieldUpdateOperationsInput | string
+    input_type?: NullableStringFieldUpdateOperationsInput | string | null
     source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12472,14 +12472,14 @@ export namespace Prisma {
 
   export type formula_sessionsCreateWithoutFormulasInput = {
     session_id?: string
-    input_type: string
+    input_type?: string | null
     source_content?: string | null
     created_at?: Date | string
   }
 
   export type formula_sessionsUncheckedCreateWithoutFormulasInput = {
     session_id?: string
-    input_type: string
+    input_type?: string | null
     source_content?: string | null
     created_at?: Date | string
   }
@@ -12586,14 +12586,14 @@ export namespace Prisma {
 
   export type formula_sessionsUpdateWithoutFormulasInput = {
     session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: StringFieldUpdateOperationsInput | string
+    input_type?: NullableStringFieldUpdateOperationsInput | string | null
     source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type formula_sessionsUncheckedUpdateWithoutFormulasInput = {
     session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: StringFieldUpdateOperationsInput | string
+    input_type?: NullableStringFieldUpdateOperationsInput | string | null
     source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
