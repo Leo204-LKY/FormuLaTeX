@@ -316,8 +316,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 6.7.0
+   * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
    */
   export type PrismaVersion = {
     client: string
@@ -1786,7 +1786,7 @@ export namespace Prisma {
   export type Formula_sessionsGroupByOutputType = {
     session_id: string
     input_type: string
-    source_content: string
+    source_content: string | null
     created_at: Date
     _count: Formula_sessionsCountAggregateOutputType | null
     _min: Formula_sessionsMinAggregateOutputType | null
@@ -1860,9 +1860,9 @@ export namespace Prisma {
        */
       input_type: string
       /**
-       * Original input content (file path, text, etc.)
+       * (Optional) Original input content (file path, text, etc.)
        */
-      source_content: string
+      source_content: string | null
       /**
        * Create time
        */
@@ -10557,7 +10557,7 @@ export namespace Prisma {
     NOT?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
     session_id?: StringFilter<"formula_sessions"> | string
     input_type?: StringFilter<"formula_sessions"> | string
-    source_content?: StringFilter<"formula_sessions"> | string
+    source_content?: StringNullableFilter<"formula_sessions"> | string | null
     created_at?: DateTimeFilter<"formula_sessions"> | Date | string
     formulas?: FormulasListRelationFilter
   }
@@ -10565,7 +10565,7 @@ export namespace Prisma {
   export type formula_sessionsOrderByWithRelationInput = {
     session_id?: SortOrder
     input_type?: SortOrder
-    source_content?: SortOrder
+    source_content?: SortOrderInput | SortOrder
     created_at?: SortOrder
     formulas?: formulasOrderByRelationAggregateInput
   }
@@ -10576,7 +10576,7 @@ export namespace Prisma {
     OR?: formula_sessionsWhereInput[]
     NOT?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
     input_type?: StringFilter<"formula_sessions"> | string
-    source_content?: StringFilter<"formula_sessions"> | string
+    source_content?: StringNullableFilter<"formula_sessions"> | string | null
     created_at?: DateTimeFilter<"formula_sessions"> | Date | string
     formulas?: FormulasListRelationFilter
   }, "session_id">
@@ -10584,7 +10584,7 @@ export namespace Prisma {
   export type formula_sessionsOrderByWithAggregationInput = {
     session_id?: SortOrder
     input_type?: SortOrder
-    source_content?: SortOrder
+    source_content?: SortOrderInput | SortOrder
     created_at?: SortOrder
     _count?: formula_sessionsCountOrderByAggregateInput
     _max?: formula_sessionsMaxOrderByAggregateInput
@@ -10597,7 +10597,7 @@ export namespace Prisma {
     NOT?: formula_sessionsScalarWhereWithAggregatesInput | formula_sessionsScalarWhereWithAggregatesInput[]
     session_id?: StringWithAggregatesFilter<"formula_sessions"> | string
     input_type?: StringWithAggregatesFilter<"formula_sessions"> | string
-    source_content?: StringWithAggregatesFilter<"formula_sessions"> | string
+    source_content?: StringNullableWithAggregatesFilter<"formula_sessions"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"formula_sessions"> | Date | string
   }
 
@@ -11005,7 +11005,7 @@ export namespace Prisma {
   export type formula_sessionsCreateInput = {
     session_id?: string
     input_type: string
-    source_content: string
+    source_content?: string | null
     created_at?: Date | string
     formulas?: formulasCreateNestedManyWithoutSessionInput
   }
@@ -11013,7 +11013,7 @@ export namespace Prisma {
   export type formula_sessionsUncheckedCreateInput = {
     session_id?: string
     input_type: string
-    source_content: string
+    source_content?: string | null
     created_at?: Date | string
     formulas?: formulasUncheckedCreateNestedManyWithoutSessionInput
   }
@@ -11021,7 +11021,7 @@ export namespace Prisma {
   export type formula_sessionsUpdateInput = {
     session_id?: StringFieldUpdateOperationsInput | string
     input_type?: StringFieldUpdateOperationsInput | string
-    source_content?: StringFieldUpdateOperationsInput | string
+    source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     formulas?: formulasUpdateManyWithoutSessionNestedInput
   }
@@ -11029,7 +11029,7 @@ export namespace Prisma {
   export type formula_sessionsUncheckedUpdateInput = {
     session_id?: StringFieldUpdateOperationsInput | string
     input_type?: StringFieldUpdateOperationsInput | string
-    source_content?: StringFieldUpdateOperationsInput | string
+    source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     formulas?: formulasUncheckedUpdateManyWithoutSessionNestedInput
   }
@@ -11037,21 +11037,21 @@ export namespace Prisma {
   export type formula_sessionsCreateManyInput = {
     session_id?: string
     input_type: string
-    source_content: string
+    source_content?: string | null
     created_at?: Date | string
   }
 
   export type formula_sessionsUpdateManyMutationInput = {
     session_id?: StringFieldUpdateOperationsInput | string
     input_type?: StringFieldUpdateOperationsInput | string
-    source_content?: StringFieldUpdateOperationsInput | string
+    source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type formula_sessionsUncheckedUpdateManyInput = {
     session_id?: StringFieldUpdateOperationsInput | string
     input_type?: StringFieldUpdateOperationsInput | string
-    source_content?: StringFieldUpdateOperationsInput | string
+    source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -11351,7 +11351,7 @@ export namespace Prisma {
   }
 
   export type formula_conversationsCreateInput = {
-    conversation_id: string
+    conversation_id?: string
     started_at?: Date | string
     updated_at?: Date | string
     formula: formulasCreateNestedOneWithoutConversationsInput
@@ -11359,7 +11359,7 @@ export namespace Prisma {
   }
 
   export type formula_conversationsUncheckedCreateInput = {
-    conversation_id: string
+    conversation_id?: string
     formula_id: string
     started_at?: Date | string
     updated_at?: Date | string
@@ -11383,7 +11383,7 @@ export namespace Prisma {
   }
 
   export type formula_conversationsCreateManyInput = {
-    conversation_id: string
+    conversation_id?: string
     formula_id: string
     started_at?: Date | string
     updated_at?: Date | string
@@ -11471,6 +11471,20 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -11486,6 +11500,11 @@ export namespace Prisma {
     every?: formulasWhereInput
     some?: formulasWhereInput
     none?: formulasWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type formulasOrderByRelationAggregateInput = {
@@ -11530,6 +11549,23 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -11553,20 +11589,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type Formula_sessionsScalarRelationFilter = {
@@ -11596,11 +11618,6 @@ export namespace Prisma {
     every?: favouritesWhereInput
     some?: favouritesWhereInput
     none?: favouritesWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type formula_interpretationsOrderByRelationAggregateInput = {
@@ -11674,23 +11691,6 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type FormulasScalarRelationFilter = {
@@ -11873,6 +11873,10 @@ export namespace Prisma {
     set?: string
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -11973,10 +11977,6 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type formula_sessionsUpdateOneRequiredWithoutFormulasNestedInput = {
@@ -12281,6 +12281,20 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -12320,6 +12334,34 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -12345,20 +12387,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | null
@@ -12373,34 +12401,6 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type formulasCreateWithoutSessionInput = {
@@ -12473,14 +12473,14 @@ export namespace Prisma {
   export type formula_sessionsCreateWithoutFormulasInput = {
     session_id?: string
     input_type: string
-    source_content: string
+    source_content?: string | null
     created_at?: Date | string
   }
 
   export type formula_sessionsUncheckedCreateWithoutFormulasInput = {
     session_id?: string
     input_type: string
-    source_content: string
+    source_content?: string | null
     created_at?: Date | string
   }
 
@@ -12513,14 +12513,14 @@ export namespace Prisma {
   }
 
   export type formula_conversationsCreateWithoutFormulaInput = {
-    conversation_id: string
+    conversation_id?: string
     started_at?: Date | string
     updated_at?: Date | string
     messages?: messagesCreateNestedManyWithoutConversationInput
   }
 
   export type formula_conversationsUncheckedCreateWithoutFormulaInput = {
-    conversation_id: string
+    conversation_id?: string
     started_at?: Date | string
     updated_at?: Date | string
     messages?: messagesUncheckedCreateNestedManyWithoutConversationInput
@@ -12587,14 +12587,14 @@ export namespace Prisma {
   export type formula_sessionsUpdateWithoutFormulasInput = {
     session_id?: StringFieldUpdateOperationsInput | string
     input_type?: StringFieldUpdateOperationsInput | string
-    source_content?: StringFieldUpdateOperationsInput | string
+    source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type formula_sessionsUncheckedUpdateWithoutFormulasInput = {
     session_id?: StringFieldUpdateOperationsInput | string
     input_type?: StringFieldUpdateOperationsInput | string
-    source_content?: StringFieldUpdateOperationsInput | string
+    source_content?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -13127,14 +13127,14 @@ export namespace Prisma {
   }
 
   export type formula_conversationsCreateWithoutMessagesInput = {
-    conversation_id: string
+    conversation_id?: string
     started_at?: Date | string
     updated_at?: Date | string
     formula: formulasCreateNestedOneWithoutConversationsInput
   }
 
   export type formula_conversationsUncheckedCreateWithoutMessagesInput = {
-    conversation_id: string
+    conversation_id?: string
     formula_id: string
     started_at?: Date | string
     updated_at?: Date | string
@@ -13226,7 +13226,7 @@ export namespace Prisma {
   }
 
   export type formula_conversationsCreateManyFormulaInput = {
-    conversation_id: string
+    conversation_id?: string
     started_at?: Date | string
     updated_at?: Date | string
   }

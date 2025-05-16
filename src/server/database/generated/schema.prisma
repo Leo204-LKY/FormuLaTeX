@@ -22,8 +22,8 @@ model formula_sessions {
   session_id     String   @id @default(uuid())
   /// Input type (image/handwritting/text)
   input_type     String
-  /// Original input content (file path, text, etc.)
-  source_content String
+  /// (Optional) Original input content (file path, text, etc.)
+  source_content String?
   /// Create time
   created_at     DateTime @default(now())
 
@@ -120,7 +120,7 @@ model favourites {
 /// formula_conversations - Conversation record for each conversation
 model formula_conversations {
   /// Conversation unique identifier
-  conversation_id String   @id
+  conversation_id String   @id @default(uuid())
   /// Related formula UUID
   formula_id      String
   /// Conversation start time
