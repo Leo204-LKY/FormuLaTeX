@@ -3,7 +3,7 @@
  */
 import path from 'path';
 import { addTempFile, getSafeTempDir } from '../services';
-import { decryptFile, getRandomStr } from '../utils';
+import { encryptFile, decryptFile, getRandomStr } from '../utils';
 
 /**
  * Decrypt SQLite3 file to system temp dir for Prisma access
@@ -20,4 +20,17 @@ export function createTempDecryptedDB(encryptedDbPath: string): string {
   addTempFile(tempDbPath);
 
   return tempDbPath; // For Prisma conncetion
+}
+
+/**
+ * Encrypt and save SQLite3 file from system temp dir to app data dir
+ * @param tempDbPath Decrypted database file path
+ * @param encryptedDbPath Encrypt database file path
+ */
+export function saveEncryptedDB(
+  encryptedDbPath: string,
+  tempDbPath: string
+): void {
+  // Encrypt database
+  encryptFile(tempDbPath, encryptedDbPath, undefined, undefined, 0o600);
 }

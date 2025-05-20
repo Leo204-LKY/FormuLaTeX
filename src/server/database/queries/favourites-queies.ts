@@ -1,5 +1,5 @@
 import { PrismaClient } from '../generated';
-import { getPrismaClient } from '../prisma-client';
+import { getPrismaClient, saveData } from '../prisma-client';
 import type { favourites } from '../generated';
 
 /**
@@ -44,6 +44,8 @@ export class FavouritesTable {
       select: { favourite_id: true },
     });
 
+    saveData();
+
     return newFavourite.favourite_id;
   }
 
@@ -73,6 +75,8 @@ export class FavouritesTable {
       where: { formula_id: formulaUuid },
     });
 
+    saveData();
+
     return existingFavourite.favourite_id;
   }
 
@@ -101,6 +105,8 @@ export class FavouritesTable {
     await FavouritesTable.PRISMA_CLIENT.favourites.delete({
       where: { favourite_id: favouriteUuid },
     });
+
+    saveData();
 
     return existingFavourite.favourite_id;
   }

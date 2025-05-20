@@ -1,5 +1,5 @@
 import { PrismaClient } from '../generated';
-import { getPrismaClient } from '../prisma-client';
+import { getPrismaClient, saveData } from '../prisma-client';
 import type { Prisma, formula_interpretations } from '../generated';
 
 /**
@@ -46,6 +46,8 @@ export class FormulaInterpretationsTable {
         }
       );
 
+    saveData();
+
     return result.interpretation_id;
   }
 
@@ -61,6 +63,8 @@ export class FormulaInterpretationsTable {
         data: formulas,
       });
     });
+
+    saveData();
   }
 
   /**
@@ -73,5 +77,7 @@ export class FormulaInterpretationsTable {
         where: { interpretation_id: uuid },
       }
     );
+
+    saveData();
   }
 }

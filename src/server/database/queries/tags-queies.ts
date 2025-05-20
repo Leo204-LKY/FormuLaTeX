@@ -1,5 +1,5 @@
 import { PrismaClient } from '../generated';
-import { getPrismaClient } from '../prisma-client';
+import { getPrismaClient, saveData } from '../prisma-client';
 import type { Prisma, tags } from '../generated';
 
 /**
@@ -48,6 +48,8 @@ export class TagsTable {
       data: tag,
     });
 
+    saveData();
+
     return result.tag_id;
   }
 
@@ -61,6 +63,8 @@ export class TagsTable {
         data: tags,
       });
     });
+
+    saveData();
   }
 
   /**
@@ -71,6 +75,8 @@ export class TagsTable {
     await TagsTable.PRISMA_CLIENT.tags.delete({
       where: { tag_id: uuid },
     });
+
+    saveData();
   }
 
   /**
@@ -82,5 +88,7 @@ export class TagsTable {
       where: { tag_id: uuid },
       data: { color },
     });
+
+    saveData();
   }
 }

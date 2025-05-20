@@ -1,9 +1,10 @@
 import path from 'path';
 import { PrismaClient } from './generated';
 import { getAppDataDirectory } from '../services';
-import { createTempDecryptedDB } from './temp-db-manager';
+import { createTempDecryptedDB, saveEncryptedDB } from './temp-db-manager';
 
 const encryptedDbPath = path.join(getAppDataDirectory(), 'encrypted-data.db');
+let tempDbPath: string | undefined;
 
 let prisma: PrismaClient | undefined;
 
@@ -13,11 +14,22 @@ let prisma: PrismaClient | undefined;
  */
 export function getPrismaClient(): PrismaClient {
   if (!prisma) {
-    const tempDbPath = createTempDecryptedDB(encryptedDbPath);
+    tempDbPath = createTempDecryptedDB(encryptedDbPath);
     prisma = new PrismaClient({
       datasources: { db: { url: `file:${tempDbPath}` } },
     });
   }
 
   return prisma;
+}
+
+/**
+ * Save encrypted database file from temp dir
+ */
+export function saveData(): void {
+  if (tempDbPath) {
+    saveEncryptedDB(encryptedDbPath, tempDbPath);
+  } else {
+    console.warn('No temp database path found. Cannot save data.');
+  }
 }

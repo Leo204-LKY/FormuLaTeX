@@ -1,5 +1,5 @@
 import { PrismaClient } from '../generated';
-import { getPrismaClient } from '../prisma-client';
+import { getPrismaClient, saveData } from '../prisma-client';
 import type { messages, Prisma } from '../generated';
 
 /**
@@ -42,6 +42,8 @@ export class MessagesTable {
       data: message,
     });
 
+    saveData();
+
     return result.message_id;
   }
 
@@ -55,5 +57,7 @@ export class MessagesTable {
     await MessagesTable.PRISMA_CLIENT.messages.deleteMany({
       where: { conversation_id: conversationUuid },
     });
+
+    saveData();
   }
 }

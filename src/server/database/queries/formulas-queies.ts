@@ -1,5 +1,5 @@
 import { PrismaClient } from '../generated';
-import { getPrismaClient } from '../prisma-client';
+import { getPrismaClient, saveData } from '../prisma-client';
 import type { formulas, Prisma } from '../generated';
 
 /**
@@ -50,6 +50,8 @@ export class FormulasTable {
       data: formula,
     });
 
+    saveData();
+
     return result.formula_id;
   }
 
@@ -65,6 +67,8 @@ export class FormulasTable {
         data: formulas,
       });
     });
+
+    saveData();
   }
 
   /**
@@ -75,5 +79,7 @@ export class FormulasTable {
     await FormulasTable.PRISMA_CLIENT.formulas.delete({
       where: { formula_id: uuid },
     });
+
+    saveData();
   }
 }
