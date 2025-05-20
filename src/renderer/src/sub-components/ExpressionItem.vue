@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
   import { selectExpressionEventBus } from '../eventBus';
-  import KatexRenderer from './KatexRenderer.vue';
+  import KatexRenderer from '../sub-components/KatexRenderer.vue';
 
   const props = defineProps<{
     expression: string;
