@@ -174,7 +174,8 @@
   import { ref, watch, computed, onMounted, defineEmits, nextTick } from 'vue';
   import { useClickOutside } from '../utils/useClickOutside';
   import { HistoryManager } from '../utils/historyStack';
-  import { isDrawerOpenEventBus } from '../eventBus';
+  import { isDrawerOpenEventBus, inputEventBus } from '../eventBus';
+  // import { createFormula } from '../utils/formulaDB';
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
 
@@ -219,7 +220,9 @@
     () => historyManager.getRedoStack().value.length > 0
   );
 
-  const onInputChange = () => historyManager.saveState(latexInput.value);
+  const onInputChange = () => {
+    historyManager.saveState(latexInput.value);
+  };
 
   const undo = () => {
     const state = historyManager.undo();
@@ -241,10 +244,11 @@
         throwOnError: false,
         displayMode: true,
       });
+      inputEventBus.emit('input', latexInput.value);
     } catch (err) {
-      console.error('KaTeX 渲染错误:', err);
+      console.error('KaTeX render error:', err);
       previewRef.value.innerHTML =
-        '<span class="text-red-500">解析错误：无法渲染</span>';
+        '<span class="text-red-500">Error: render problem!</span>';
     }
   };
 
@@ -333,13 +337,14 @@
   };
 
   const processUpload = (file: File) => {
-    console.log('上传文件:', file);
+    console.log('Upload file:', file);
     // TODO: 在这里处理文件上传逻辑，如上传到服务器或显示预览等
     showUploadModal.value = false;
   };
 
   const handleAIAnalysis = () => {
     // 将当前输入框内容，携带跳转到sideBar输入框并对话分析
+    // const new_formula_id = createFormula();
     console.log('AI Analysis triggered');
     isDrawerOpenEventBus.emit('update', true); // 通知打开 Drawer
     isDrawerOpenEventBus.emit('expression', latexInput.value); // 传递当前输入的公式

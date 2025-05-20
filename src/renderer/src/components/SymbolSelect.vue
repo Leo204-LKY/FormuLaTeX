@@ -44,7 +44,7 @@
 <script setup lang="ts">
   import { ref, computed } from 'vue';
   import { selectSymbolEventBus } from '../eventBus';
-  import SymbolsItem from './SymbolsItem.vue';
+  import SymbolsItem from '../sub-components/SymbolsItem.vue';
   // 定义每个标签对应的符号集合
   const symbolData: { [key: string]: string[][] } = {
     Common: [['+', '-', '*', '/']],

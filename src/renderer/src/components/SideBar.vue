@@ -54,13 +54,37 @@
     <div
       class="flex items-center justify-between p-2 pb-2 border-b border-gray-300"
     >
-      <button
-        class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
-        @click="isHistoryDrawerOpen = !isHistoryDrawerOpen"
-      >
-        <img src="../assets/icons/showMore.svg" />
-      </button>
-      <h2 class="text-xl font-bold">Chat Title</h2>
+      <div class="flex items-center space-x-2">
+        <button
+          class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
+          @click="isHistoryDrawerOpen = !isHistoryDrawerOpen"
+        >
+          <img src="../assets/icons/showMore.svg" alt="History" />
+        </button>
+        <button
+          class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
+          @click="createNewChat"
+        >
+          + New
+        </button>
+      </div>
+      <div class="relative">
+        <h2
+          v-if="!editingTitle"
+          class="text-xl font-bold cursor-pointer"
+          @click="startEditingTitle"
+        >
+          {{ currentTopic }}
+        </h2>
+        <input
+          v-else
+          v-model="editableTitle"
+          @blur="finishEditingTitle"
+          @keydown.enter="finishEditingTitle"
+          class="text-xl font-bold border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ref="titleInput"
+        />
+      </div>
       <div class="flex items-center space-x-2">
         <!-- 设置 -->
         <div class="relative">
@@ -122,8 +146,10 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted } from 'vue';
+  import { ref, nextTick, onMounted, onUnmounted } from 'vue';
   import { isDrawerOpenEventBus } from '../eventBus';
+  import { createNewChatDB } from '../utils/chatDB';
+
   interface Message {
     text: string;
     isUser: boolean;
@@ -132,17 +158,39 @@
   const isDrawerOpen = ref(false);
   const messages = ref<Message[]>([]);
   const inputText = ref('');
+  const currentTopic = ref('Chat Title');
 
   const isHistoryDrawerOpen = ref(false);
   const showSetting = ref(false);
   const apiKey = ref('');
 
+  const editableTitle = ref('');
+  const editingTitle = ref(false);
+  const titleInput = ref<HTMLInputElement | null>(null);
+
+  // TODO: 历史 Topic
   const historyTopics = ref([
     { name: 'Record1', id: 1 },
     { name: 'Record2', id: 2 },
     { name: 'Record3', id: 3 },
     // TODO: 可以根据实际接口拉取
   ]);
+
+  // TODO: Topic - 历史对话数据
+  const historyConversations = ref<Record<string, Message[]>>({
+    Record1: [
+      { text: '你好，这是第一条消息', isUser: true },
+      { text: '你好，请问需要什么帮助？', isUser: false },
+    ],
+    Record2: [
+      { text: '第二个话题的内容', isUser: true },
+      { text: '这是相关的回答', isUser: false },
+    ],
+    Record3: [
+      { text: '测试第三个话题', isUser: true },
+      { text: '好的，我明白了', isUser: false },
+    ],
+  });
 
   function toggleDrawer() {
     isDrawerOpen.value = !isDrawerOpen.value;
@@ -155,7 +203,13 @@
   function selectHistoryTopic(topic: string) {
     console.log('选择了话题:', topic);
     isHistoryDrawerOpen.value = false;
+    currentTopic.value = topic;
     // TODO: 加载对应的聊天内容逻辑在这里处理
+    if (historyConversations.value[topic]) {
+      messages.value = [...historyConversations.value[topic]];
+    } else {
+      messages.value = [{ text: '暂无历史记录', isUser: false }];
+    }
   }
 
   const insertFormula = (formula: string) => {
@@ -181,6 +235,7 @@
     showSetting.value = false;
     // TODO: 处理保存key逻辑
   }
+
   onMounted(() => {
     isDrawerOpenEventBus.on('update', (value: boolean) => {
       isDrawerOpen.value = value;
@@ -193,4 +248,40 @@
     isDrawerOpenEventBus.off('update');
     isDrawerOpenEventBus.off('expression');
   });
+
+  function startEditingTitle() {
+    editableTitle.value = currentTopic.value;
+    editingTitle.value = true;
+
+    nextTick(() => {
+      titleInput.value?.focus();
+    });
+  }
+
+  function finishEditingTitle() {
+    currentTopic.value = editableTitle.value.trim() || currentTopic.value;
+    editingTitle.value = false;
+  }
+
+  // TODO:创建新聊天
+  const createNewChat = () => {
+    // 调用工具函数创建初始数据
+    const newChatData = createNewChatDB(''); // 空标题会自动转为默认值
+
+    // 处理标题自动编号（如果需要）
+    const baseTitle = 'New Chat';
+    const existingTitles = historyTopics.value.map((chat) => chat.name);
+    let uniqueTitle = baseTitle;
+    let counter = 1;
+    while (existingTitles.includes(uniqueTitle)) {
+      uniqueTitle = `${baseTitle} ${counter++}`;
+    }
+    newChatData.title = uniqueTitle;
+    currentTopic.value = uniqueTitle;
+    historyTopics.value.unshift({
+      name: uniqueTitle,
+      id: 222,
+    });
+    messages.value = [];
+  };
 </script>
