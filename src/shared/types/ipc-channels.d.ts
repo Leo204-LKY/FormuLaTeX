@@ -16,16 +16,15 @@ export {};
 
 declare global {
   interface Window {
-    electronAPI: {
-      sendMessage: (message: string) => void;
-    };
-
     chatClientApi: {
       deepseekAsk: (
         question: string,
         history: ChatMessage[],
         model?: DeepSeekModel
       ) => Promise<void>;
+      onDeepseekChunk: (callback: (chunk: any) => void) => void;
+      onDeepseekEnd: (callback: () => void) => void;
+      onDeepseekError: (callback: (error: string) => void) => void;
     };
 
     favouritesTableApi: {

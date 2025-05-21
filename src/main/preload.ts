@@ -18,10 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.style.overflow = 'hidden';
 });
 
-contextBridge.exposeInMainWorld('electronAPI', {
-  sendMessage: (message: string) => ipcRenderer.send('message', message),
-});
-
 contextBridge.exposeInMainWorld('chatClientApi', {
   deepseekAsk: (
     question: string,
@@ -29,6 +25,18 @@ contextBridge.exposeInMainWorld('chatClientApi', {
     model?: DeepSeekModel
   ): Promise<void> => {
     return ipcRenderer.invoke('deepseek:ask', question, history, model);
+  },
+
+  onDeepseekChunk: (callback: (chunk: any) => void) => {
+    ipcRenderer.on('deepseek:ask:chunk', (_event, chunk) => callback(chunk));
+  },
+
+  onDeepseekEnd: (callback: () => void) => {
+    ipcRenderer.on('deepseek:ask:end', () => callback());
+  },
+
+  onDeepseekError: (callback: (error: string) => void) => {
+    ipcRenderer.on('deepseek:ask:error', (_event, error) => callback(error));
   },
 });
 
