@@ -1,4 +1,17 @@
 import { contextBridge, ipcRenderer } from 'electron';
+import { ChatMessage } from '../server';
+import { DeepSeekModel } from '../server/api/chat-client';
+import {
+  favourites,
+  formula_conversations,
+  formula_interpretations,
+  formula_sessions,
+  formula_tags,
+  formulas,
+  messages,
+  Prisma,
+  tags,
+} from '../server/database/generated';
 
 document.addEventListener('DOMContentLoaded', () => {
   document.body.style.overflow = 'hidden';
@@ -7,6 +20,246 @@ document.addEventListener('DOMContentLoaded', () => {
 
 contextBridge.exposeInMainWorld('electronAPI', {
   sendMessage: (message: string) => ipcRenderer.send('message', message),
+});
+
+contextBridge.exposeInMainWorld('chatClientApi', {
+  deepseekAsk: (
+    question: string,
+    history: ChatMessage[],
+    model?: DeepSeekModel
+  ): Promise<void> => {
+    return ipcRenderer.invoke('deepseek:ask', question, history, model);
+  },
+});
+
+contextBridge.exposeInMainWorld('favouritesTableApi', {
+  getAll: (): Promise<favourites[]> => {
+    return ipcRenderer.invoke('database:favourites:getAll');
+  },
+
+  insertOneByFormulaUuid: (formulaUuid: string): Promise<string> => {
+    return ipcRenderer.invoke(
+      'database:favourites:insertOneByFormulaUuid',
+      formulaUuid
+    );
+  },
+
+  deleteUniqueByFormulaUuid: (formulaUuid: string): Promise<string | null> => {
+    return ipcRenderer.invoke(
+      'database:favourites:deleteUniqueByFormulaUuid',
+      formulaUuid
+    );
+  },
+
+  deleteUniqueByFavouriteUuid: (
+    favouriteUuid: string
+  ): Promise<string | null> => {
+    return ipcRenderer.invoke(
+      'database:favourites:deleteUniqueByFavouriteUuid',
+      favouriteUuid
+    );
+  },
+});
+
+contextBridge.exposeInMainWorld('formulaConversationsTableApi', {
+  getAll: (): Promise<formula_conversations[]> => {
+    return ipcRenderer.invoke('database:formula_conversations:getAll');
+  },
+
+  insertOne: (
+    formulaConversation: Prisma.formula_conversationsCreateManyInput
+  ): Promise<string> => {
+    return ipcRenderer.invoke(
+      'database:formula_conversations:insertOne',
+      formulaConversation
+    );
+  },
+
+  deleteUniqueByUuid: (uuid: string): Promise<void> => {
+    return ipcRenderer.invoke(
+      'database:formula_conversations:deleteUniqueByUuid',
+      uuid
+    );
+  },
+});
+
+contextBridge.exposeInMainWorld('formulaInterpretationsTableApi', {
+  getAll: (): Promise<formula_interpretations[]> => {
+    return ipcRenderer.invoke('database:formula_interpretations:getAll');
+  },
+
+  getUniqueByUuid: (uuid: string): Promise<formula_interpretations | null> => {
+    return ipcRenderer.invoke(
+      'database:formula_interpretations:getUniqueByUuid',
+      uuid
+    );
+  },
+
+  insertOne: (
+    formulaInterpretation: Prisma.formula_interpretationsCreateManyInput
+  ): Promise<string> => {
+    return ipcRenderer.invoke(
+      'database:formula_interpretations:insertOne',
+      formulaInterpretation
+    );
+  },
+
+  insertMany: (
+    formulaInterpretations: Prisma.formula_interpretationsCreateManyInput[]
+  ): Promise<void> => {
+    return ipcRenderer.invoke(
+      'database:formula_interpretations:insertMany',
+      formulaInterpretations
+    );
+  },
+
+  deleteOne: (uuid: string): Promise<void> => {
+    return ipcRenderer.invoke(
+      'database:formula_interpretations:deleteOne',
+      uuid
+    );
+  },
+});
+
+contextBridge.exposeInMainWorld('formulaSessionsTableApi', {
+  getAll: (): Promise<formula_sessions[]> => {
+    return ipcRenderer.invoke('database:formula_sessions:getAll');
+  },
+
+  getUniqueByUuid: (uuid: string): Promise<formula_sessions | null> => {
+    return ipcRenderer.invoke(
+      'database:formula_sessions:getUniqueByUuid',
+      uuid
+    );
+  },
+
+  insertOne: (
+    formulaSession: Prisma.formula_sessionsCreateManyInput
+  ): Promise<string> => {
+    return ipcRenderer.invoke(
+      'database:formula_sessions:insertOne',
+      formulaSession
+    );
+  },
+
+  insertMany: (
+    formulaSessions: Prisma.formula_sessionsCreateManyInput[]
+  ): Promise<void> => {
+    return ipcRenderer.invoke(
+      'database:formula_sessions:insertMany',
+      formulaSessions
+    );
+  },
+
+  deleteOne: (uuid: string): Promise<void> => {
+    return ipcRenderer.invoke('database:formula_sessions:deleteOne', uuid);
+  },
+});
+
+contextBridge.exposeInMainWorld('formulaTagsTableApi', {
+  getAll: (): Promise<formula_tags[]> => {
+    return ipcRenderer.invoke('database:formula_tags:getAll');
+  },
+
+  getFormulaIdsByTagId: (tagId: string): Promise<string[]> => {
+    return ipcRenderer.invoke(
+      'database:formula_tags:getFormulaIdsByTagId',
+      tagId
+    );
+  },
+
+  getTagIdsByFormulaId: (formulaId: string): Promise<string[]> => {
+    return ipcRenderer.invoke(
+      'database:formula_tags:getTagIdsByFormulaId',
+      formulaId
+    );
+  },
+});
+
+contextBridge.exposeInMainWorld('formulasTableApi', {
+  getAll: (): Promise<formulas[]> => {
+    return ipcRenderer.invoke('database:formulas:getAll');
+  },
+
+  getUniqueByUuid: (uuid: string): Promise<formulas | null> => {
+    return ipcRenderer.invoke('database:formulas:getUniqueByUuid', uuid);
+  },
+
+  getManyByName: (name: string): Promise<formulas[]> => {
+    return ipcRenderer.invoke('database:formulas:getManyByName', name);
+  },
+
+  insertOne: (formula: Prisma.formulasCreateManyInput): Promise<string> => {
+    return ipcRenderer.invoke('database:formulas:insertOne', formula);
+  },
+
+  insertMany: (formulas: Prisma.formulasCreateManyInput[]): Promise<void> => {
+    return ipcRenderer.invoke('database:formulas:insertMany', formulas);
+  },
+});
+
+contextBridge.exposeInMainWorld('messagesTableApi', {
+  getAll: (): Promise<messages[]> => {
+    return ipcRenderer.invoke('database:messages:getAll');
+  },
+
+  getManyByConversationId: (conversationId: string): Promise<messages[]> => {
+    return ipcRenderer.invoke(
+      'database:messages:getManyByConversationId',
+      conversationId
+    );
+  },
+
+  insertOne: (message: Prisma.messagesCreateManyInput): Promise<string> => {
+    return ipcRenderer.invoke('database:messages:insertOne', message);
+  },
+
+  deleteManyByConversationId: (conversationId: string): Promise<void> => {
+    return ipcRenderer.invoke(
+      'database:messages:deleteManyByConversationId',
+      conversationId
+    );
+  },
+});
+
+contextBridge.exposeInMainWorld('tagsTableApi', {
+  getAll: (): Promise<tags[]> => {
+    return ipcRenderer.invoke('database:tags:getAll');
+  },
+
+  getUniqueByUuid: (uuid: string): Promise<tags | null> => {
+    return ipcRenderer.invoke('database:tags:getUniqueByUuid', uuid);
+  },
+
+  getManyByName: (name: string): Promise<tags[]> => {
+    return ipcRenderer.invoke('database:tags:getManyByName', name);
+  },
+
+  insertOne: (tag: Prisma.tagsCreateManyInput): Promise<string> => {
+    return ipcRenderer.invoke('database:tags:insertOne', tag);
+  },
+
+  insertMany: (tags: Prisma.tagsCreateManyInput[]): Promise<void> => {
+    return ipcRenderer.invoke('database:tags:insertMany', tags);
+  },
+
+  deleteOne: (uuid: string): Promise<void> => {
+    return ipcRenderer.invoke('database:tags:deleteOne', uuid);
+  },
+
+  setColorByUuid: (uuid: string, color: string): Promise<void> => {
+    return ipcRenderer.invoke('database:tags:setColorByUuid', uuid, color);
+  },
+});
+
+contextBridge.exposeInMainWorld('servicesApi', {
+  getJsonConfig: (configName: string): Promise<object> => {
+    return ipcRenderer.invoke('services:getJsonConfig', configName);
+  },
+
+  saveJsonConfig: (configName: string, config: object): Promise<void> => {
+    return ipcRenderer.invoke('services:saveJsonConfig', configName, config);
+  },
 });
 
 window.addEventListener('DOMContentLoaded', () => {
