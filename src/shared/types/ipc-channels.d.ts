@@ -22,7 +22,7 @@ declare global {
         history: ChatMessage[],
         model?: DeepSeekModel
       ) => Promise<void>;
-      onDeepseekChunk: (callback: (chunk: any) => void) => void;
+      onDeepseekChunk: (callback: (chunk: string) => void) => void;
       onDeepseekEnd: (callback: () => void) => void;
       onDeepseekError: (callback: (error: string) => void) => void;
     };

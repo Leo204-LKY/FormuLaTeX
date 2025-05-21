@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld('chatClientApi', {
     return ipcRenderer.invoke('deepseek:ask', question, history, model);
   },
 
-  onDeepseekChunk: (callback: (chunk: any) => void) => {
+  onDeepseekChunk: (callback: (chunk: string) => void) => {
     ipcRenderer.on('deepseek:ask:chunk', (_event, chunk) => callback(chunk));
   },
 
