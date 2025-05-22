@@ -4,9 +4,7 @@
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-import { closePrismaClient, getPrismaClient, saveData } from '../../database';
-
-declare let prisma: any;
+import { closePrismaClient } from '../../database';
 
 const TEMP_FILES: string[] = [
   path.resolve(getSafeTempDir(), 'formulatex'), // Default temp dir
