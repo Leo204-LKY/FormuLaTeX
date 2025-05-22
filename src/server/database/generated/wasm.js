@@ -117,16 +117,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.Formula_sessionsScalarFieldEnum = {
-  session_id: 'session_id',
-  input_type: 'input_type',
-  source_content: 'source_content',
-  created_at: 'created_at'
-};
-
 exports.Prisma.FormulasScalarFieldEnum = {
   formula_id: 'formula_id',
-  session_id: 'session_id',
   latex_code: 'latex_code',
   recognized_by: 'recognized_by',
   confidence: 'confidence',
@@ -166,7 +158,7 @@ exports.Prisma.FavouritesScalarFieldEnum = {
 
 exports.Prisma.Formula_conversationsScalarFieldEnum = {
   conversation_id: 'conversation_id',
-  formula_id: 'formula_id',
+  title: 'title',
   started_at: 'started_at',
   updated_at: 'updated_at'
 };
@@ -191,7 +183,6 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  formula_sessions: 'formula_sessions',
   formulas: 'formulas',
   formula_interpretations: 'formula_interpretations',
   tags: 'tags',

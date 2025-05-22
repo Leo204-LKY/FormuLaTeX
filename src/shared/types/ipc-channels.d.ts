@@ -60,18 +60,6 @@ declare global {
       deleteOne: (uuid: string) => Promise<void>;
     };
 
-    formulaSessionsTableApi: {
-      getAll: () => Promise<formula_sessions[]>;
-      getUniqueByUuid: (uuid: string) => Promise<formula_sessions | null>;
-      insertOne: (
-        data: Prisma.formula_sessionsCreateManyInput
-      ) => Promise<string>;
-      insertMany: (
-        data: Prisma.formula_sessionsCreateManyInput[]
-      ) => Promise<void>;
-      deleteOne: (uuid: string) => Promise<void>;
-    };
-
     formulaTagsTableApi: {
       getAll: () => Promise<formula_tags[]>;
       getFormulaIdsByTagId: (tagId: string) => Promise<string[]>;

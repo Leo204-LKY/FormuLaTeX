@@ -5,7 +5,6 @@ import {
   favourites,
   formula_conversations,
   formula_interpretations,
-  formula_sessions,
   formula_tags,
   formulas,
   messages,
@@ -126,41 +125,6 @@ contextBridge.exposeInMainWorld('formulaInterpretationsTableApi', {
       'database:formula_interpretations:deleteOne',
       uuid
     );
-  },
-});
-
-contextBridge.exposeInMainWorld('formulaSessionsTableApi', {
-  getAll: (): Promise<formula_sessions[]> => {
-    return ipcRenderer.invoke('database:formula_sessions:getAll');
-  },
-
-  getUniqueByUuid: (uuid: string): Promise<formula_sessions | null> => {
-    return ipcRenderer.invoke(
-      'database:formula_sessions:getUniqueByUuid',
-      uuid
-    );
-  },
-
-  insertOne: (
-    formulaSession: Prisma.formula_sessionsCreateManyInput
-  ): Promise<string> => {
-    return ipcRenderer.invoke(
-      'database:formula_sessions:insertOne',
-      formulaSession
-    );
-  },
-
-  insertMany: (
-    formulaSessions: Prisma.formula_sessionsCreateManyInput[]
-  ): Promise<void> => {
-    return ipcRenderer.invoke(
-      'database:formula_sessions:insertMany',
-      formulaSessions
-    );
-  },
-
-  deleteOne: (uuid: string): Promise<void> => {
-    return ipcRenderer.invoke('database:formula_sessions:deleteOne', uuid);
   },
 });
 

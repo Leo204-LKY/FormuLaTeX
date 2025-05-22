@@ -14,11 +14,6 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
- * Model formula_sessions
- * formula_sessions - Session log for each formula operation
- */
-export type formula_sessions = $Result.DefaultSelection<Prisma.$formula_sessionsPayload>
-/**
  * Model formulas
  * formula - Recognised or generated LaTeX formulas
  */
@@ -61,8 +56,8 @@ export type messages = $Result.DefaultSelection<Prisma.$messagesPayload>
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Formula_sessions
- * const formula_sessions = await prisma.formula_sessions.findMany()
+ * // Fetch zero or more Formulas
+ * const formulas = await prisma.formulas.findMany()
  * ```
  *
  *
@@ -82,8 +77,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Formula_sessions
-   * const formula_sessions = await prisma.formula_sessions.findMany()
+   * // Fetch zero or more Formulas
+   * const formulas = await prisma.formulas.findMany()
    * ```
    *
    *
@@ -180,16 +175,6 @@ export class PrismaClient<
   }>>
 
       /**
-   * `prisma.formula_sessions`: Exposes CRUD operations for the **formula_sessions** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Formula_sessions
-    * const formula_sessions = await prisma.formula_sessions.findMany()
-    * ```
-    */
-  get formula_sessions(): Prisma.formula_sessionsDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.formulas`: Exposes CRUD operations for the **formulas** model.
     * Example usage:
     * ```ts
@@ -698,7 +683,6 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    formula_sessions: 'formula_sessions',
     formulas: 'formulas',
     formula_interpretations: 'formula_interpretations',
     tags: 'tags',
@@ -724,84 +708,10 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "formula_sessions" | "formulas" | "formula_interpretations" | "tags" | "formula_tags" | "favourites" | "formula_conversations" | "messages"
+      modelProps: "formulas" | "formula_interpretations" | "tags" | "formula_tags" | "favourites" | "formula_conversations" | "messages"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
-      formula_sessions: {
-        payload: Prisma.$formula_sessionsPayload<ExtArgs>
-        fields: Prisma.formula_sessionsFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.formula_sessionsFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.formula_sessionsFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>
-          }
-          findFirst: {
-            args: Prisma.formula_sessionsFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.formula_sessionsFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>
-          }
-          findMany: {
-            args: Prisma.formula_sessionsFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>[]
-          }
-          create: {
-            args: Prisma.formula_sessionsCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>
-          }
-          createMany: {
-            args: Prisma.formula_sessionsCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.formula_sessionsCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>[]
-          }
-          delete: {
-            args: Prisma.formula_sessionsDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>
-          }
-          update: {
-            args: Prisma.formula_sessionsUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>
-          }
-          deleteMany: {
-            args: Prisma.formula_sessionsDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.formula_sessionsUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.formula_sessionsUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>[]
-          }
-          upsert: {
-            args: Prisma.formula_sessionsUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$formula_sessionsPayload>
-          }
-          aggregate: {
-            args: Prisma.Formula_sessionsAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateFormula_sessions>
-          }
-          groupBy: {
-            args: Prisma.formula_sessionsGroupByArgs<ExtArgs>
-            result: $Utils.Optional<Formula_sessionsGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.formula_sessionsCountArgs<ExtArgs>
-            result: $Utils.Optional<Formula_sessionsCountAggregateOutputType> | number
-          }
-        }
-      }
       formulas: {
         payload: Prisma.$formulasPayload<ExtArgs>
         fields: Prisma.formulasFieldRefs
@@ -1404,7 +1314,6 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
-    formula_sessions?: formula_sessionsOmit
     formulas?: formulasOmit
     formula_interpretations?: formula_interpretationsOmit
     tags?: tagsOmit
@@ -1502,50 +1411,17 @@ export namespace Prisma {
 
 
   /**
-   * Count Type Formula_sessionsCountOutputType
-   */
-
-  export type Formula_sessionsCountOutputType = {
-    formulas: number
-  }
-
-  export type Formula_sessionsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    formulas?: boolean | Formula_sessionsCountOutputTypeCountFormulasArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * Formula_sessionsCountOutputType without action
-   */
-  export type Formula_sessionsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Formula_sessionsCountOutputType
-     */
-    select?: Formula_sessionsCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * Formula_sessionsCountOutputType without action
-   */
-  export type Formula_sessionsCountOutputTypeCountFormulasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: formulasWhereInput
-  }
-
-
-  /**
    * Count Type FormulasCountOutputType
    */
 
   export type FormulasCountOutputType = {
     interpretations: number
-    conversations: number
     tags: number
     favourties: number
   }
 
   export type FormulasCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     interpretations?: boolean | FormulasCountOutputTypeCountInterpretationsArgs
-    conversations?: boolean | FormulasCountOutputTypeCountConversationsArgs
     tags?: boolean | FormulasCountOutputTypeCountTagsArgs
     favourties?: boolean | FormulasCountOutputTypeCountFavourtiesArgs
   }
@@ -1566,13 +1442,6 @@ export namespace Prisma {
    */
   export type FormulasCountOutputTypeCountInterpretationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: formula_interpretationsWhereInput
-  }
-
-  /**
-   * FormulasCountOutputType without action
-   */
-  export type FormulasCountOutputTypeCountConversationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: formula_conversationsWhereInput
   }
 
   /**
@@ -1657,1073 +1526,6 @@ export namespace Prisma {
    */
 
   /**
-   * Model formula_sessions
-   */
-
-  export type AggregateFormula_sessions = {
-    _count: Formula_sessionsCountAggregateOutputType | null
-    _min: Formula_sessionsMinAggregateOutputType | null
-    _max: Formula_sessionsMaxAggregateOutputType | null
-  }
-
-  export type Formula_sessionsMinAggregateOutputType = {
-    session_id: string | null
-    input_type: string | null
-    source_content: string | null
-    created_at: Date | null
-  }
-
-  export type Formula_sessionsMaxAggregateOutputType = {
-    session_id: string | null
-    input_type: string | null
-    source_content: string | null
-    created_at: Date | null
-  }
-
-  export type Formula_sessionsCountAggregateOutputType = {
-    session_id: number
-    input_type: number
-    source_content: number
-    created_at: number
-    _all: number
-  }
-
-
-  export type Formula_sessionsMinAggregateInputType = {
-    session_id?: true
-    input_type?: true
-    source_content?: true
-    created_at?: true
-  }
-
-  export type Formula_sessionsMaxAggregateInputType = {
-    session_id?: true
-    input_type?: true
-    source_content?: true
-    created_at?: true
-  }
-
-  export type Formula_sessionsCountAggregateInputType = {
-    session_id?: true
-    input_type?: true
-    source_content?: true
-    created_at?: true
-    _all?: true
-  }
-
-  export type Formula_sessionsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which formula_sessions to aggregate.
-     */
-    where?: formula_sessionsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of formula_sessions to fetch.
-     */
-    orderBy?: formula_sessionsOrderByWithRelationInput | formula_sessionsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: formula_sessionsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` formula_sessions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` formula_sessions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned formula_sessions
-    **/
-    _count?: true | Formula_sessionsCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Formula_sessionsMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Formula_sessionsMaxAggregateInputType
-  }
-
-  export type GetFormula_sessionsAggregateType<T extends Formula_sessionsAggregateArgs> = {
-        [P in keyof T & keyof AggregateFormula_sessions]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateFormula_sessions[P]>
-      : GetScalarType<T[P], AggregateFormula_sessions[P]>
-  }
-
-
-
-
-  export type formula_sessionsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: formula_sessionsWhereInput
-    orderBy?: formula_sessionsOrderByWithAggregationInput | formula_sessionsOrderByWithAggregationInput[]
-    by: Formula_sessionsScalarFieldEnum[] | Formula_sessionsScalarFieldEnum
-    having?: formula_sessionsScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Formula_sessionsCountAggregateInputType | true
-    _min?: Formula_sessionsMinAggregateInputType
-    _max?: Formula_sessionsMaxAggregateInputType
-  }
-
-  export type Formula_sessionsGroupByOutputType = {
-    session_id: string
-    input_type: string | null
-    source_content: string | null
-    created_at: Date
-    _count: Formula_sessionsCountAggregateOutputType | null
-    _min: Formula_sessionsMinAggregateOutputType | null
-    _max: Formula_sessionsMaxAggregateOutputType | null
-  }
-
-  type GetFormula_sessionsGroupByPayload<T extends formula_sessionsGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<Formula_sessionsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Formula_sessionsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Formula_sessionsGroupByOutputType[P]>
-            : GetScalarType<T[P], Formula_sessionsGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type formula_sessionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    session_id?: boolean
-    input_type?: boolean
-    source_content?: boolean
-    created_at?: boolean
-    formulas?: boolean | formula_sessions$formulasArgs<ExtArgs>
-    _count?: boolean | Formula_sessionsCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["formula_sessions"]>
-
-  export type formula_sessionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    session_id?: boolean
-    input_type?: boolean
-    source_content?: boolean
-    created_at?: boolean
-  }, ExtArgs["result"]["formula_sessions"]>
-
-  export type formula_sessionsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    session_id?: boolean
-    input_type?: boolean
-    source_content?: boolean
-    created_at?: boolean
-  }, ExtArgs["result"]["formula_sessions"]>
-
-  export type formula_sessionsSelectScalar = {
-    session_id?: boolean
-    input_type?: boolean
-    source_content?: boolean
-    created_at?: boolean
-  }
-
-  export type formula_sessionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"session_id" | "input_type" | "source_content" | "created_at", ExtArgs["result"]["formula_sessions"]>
-  export type formula_sessionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    formulas?: boolean | formula_sessions$formulasArgs<ExtArgs>
-    _count?: boolean | Formula_sessionsCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type formula_sessionsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type formula_sessionsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $formula_sessionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "formula_sessions"
-    objects: {
-      formulas: Prisma.$formulasPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      /**
-       * Unique identifier
-       */
-      session_id: string
-      /**
-       * Input type (image/handwritting/text)
-       */
-      input_type: string | null
-      /**
-       * (Optional) Original input content (file path, text, etc.)
-       */
-      source_content: string | null
-      /**
-       * Create time
-       */
-      created_at: Date
-    }, ExtArgs["result"]["formula_sessions"]>
-    composites: {}
-  }
-
-  type formula_sessionsGetPayload<S extends boolean | null | undefined | formula_sessionsDefaultArgs> = $Result.GetResult<Prisma.$formula_sessionsPayload, S>
-
-  type formula_sessionsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<formula_sessionsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: Formula_sessionsCountAggregateInputType | true
-    }
-
-  export interface formula_sessionsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['formula_sessions'], meta: { name: 'formula_sessions' } }
-    /**
-     * Find zero or one Formula_sessions that matches the filter.
-     * @param {formula_sessionsFindUniqueArgs} args - Arguments to find a Formula_sessions
-     * @example
-     * // Get one Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends formula_sessionsFindUniqueArgs>(args: SelectSubset<T, formula_sessionsFindUniqueArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Formula_sessions that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {formula_sessionsFindUniqueOrThrowArgs} args - Arguments to find a Formula_sessions
-     * @example
-     * // Get one Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends formula_sessionsFindUniqueOrThrowArgs>(args: SelectSubset<T, formula_sessionsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Formula_sessions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {formula_sessionsFindFirstArgs} args - Arguments to find a Formula_sessions
-     * @example
-     * // Get one Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends formula_sessionsFindFirstArgs>(args?: SelectSubset<T, formula_sessionsFindFirstArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Formula_sessions that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {formula_sessionsFindFirstOrThrowArgs} args - Arguments to find a Formula_sessions
-     * @example
-     * // Get one Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends formula_sessionsFindFirstOrThrowArgs>(args?: SelectSubset<T, formula_sessionsFindFirstOrThrowArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Formula_sessions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {formula_sessionsFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.findMany()
-     * 
-     * // Get first 10 Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.findMany({ take: 10 })
-     * 
-     * // Only select the `session_id`
-     * const formula_sessionsWithSession_idOnly = await prisma.formula_sessions.findMany({ select: { session_id: true } })
-     * 
-     */
-    findMany<T extends formula_sessionsFindManyArgs>(args?: SelectSubset<T, formula_sessionsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Formula_sessions.
-     * @param {formula_sessionsCreateArgs} args - Arguments to create a Formula_sessions.
-     * @example
-     * // Create one Formula_sessions
-     * const Formula_sessions = await prisma.formula_sessions.create({
-     *   data: {
-     *     // ... data to create a Formula_sessions
-     *   }
-     * })
-     * 
-     */
-    create<T extends formula_sessionsCreateArgs>(args: SelectSubset<T, formula_sessionsCreateArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Formula_sessions.
-     * @param {formula_sessionsCreateManyArgs} args - Arguments to create many Formula_sessions.
-     * @example
-     * // Create many Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends formula_sessionsCreateManyArgs>(args?: SelectSubset<T, formula_sessionsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Formula_sessions and returns the data saved in the database.
-     * @param {formula_sessionsCreateManyAndReturnArgs} args - Arguments to create many Formula_sessions.
-     * @example
-     * // Create many Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Formula_sessions and only return the `session_id`
-     * const formula_sessionsWithSession_idOnly = await prisma.formula_sessions.createManyAndReturn({
-     *   select: { session_id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends formula_sessionsCreateManyAndReturnArgs>(args?: SelectSubset<T, formula_sessionsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Formula_sessions.
-     * @param {formula_sessionsDeleteArgs} args - Arguments to delete one Formula_sessions.
-     * @example
-     * // Delete one Formula_sessions
-     * const Formula_sessions = await prisma.formula_sessions.delete({
-     *   where: {
-     *     // ... filter to delete one Formula_sessions
-     *   }
-     * })
-     * 
-     */
-    delete<T extends formula_sessionsDeleteArgs>(args: SelectSubset<T, formula_sessionsDeleteArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Formula_sessions.
-     * @param {formula_sessionsUpdateArgs} args - Arguments to update one Formula_sessions.
-     * @example
-     * // Update one Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends formula_sessionsUpdateArgs>(args: SelectSubset<T, formula_sessionsUpdateArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Formula_sessions.
-     * @param {formula_sessionsDeleteManyArgs} args - Arguments to filter Formula_sessions to delete.
-     * @example
-     * // Delete a few Formula_sessions
-     * const { count } = await prisma.formula_sessions.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends formula_sessionsDeleteManyArgs>(args?: SelectSubset<T, formula_sessionsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Formula_sessions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {formula_sessionsUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends formula_sessionsUpdateManyArgs>(args: SelectSubset<T, formula_sessionsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Formula_sessions and returns the data updated in the database.
-     * @param {formula_sessionsUpdateManyAndReturnArgs} args - Arguments to update many Formula_sessions.
-     * @example
-     * // Update many Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Formula_sessions and only return the `session_id`
-     * const formula_sessionsWithSession_idOnly = await prisma.formula_sessions.updateManyAndReturn({
-     *   select: { session_id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends formula_sessionsUpdateManyAndReturnArgs>(args: SelectSubset<T, formula_sessionsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Formula_sessions.
-     * @param {formula_sessionsUpsertArgs} args - Arguments to update or create a Formula_sessions.
-     * @example
-     * // Update or create a Formula_sessions
-     * const formula_sessions = await prisma.formula_sessions.upsert({
-     *   create: {
-     *     // ... data to create a Formula_sessions
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Formula_sessions we want to update
-     *   }
-     * })
-     */
-    upsert<T extends formula_sessionsUpsertArgs>(args: SelectSubset<T, formula_sessionsUpsertArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Formula_sessions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {formula_sessionsCountArgs} args - Arguments to filter Formula_sessions to count.
-     * @example
-     * // Count the number of Formula_sessions
-     * const count = await prisma.formula_sessions.count({
-     *   where: {
-     *     // ... the filter for the Formula_sessions we want to count
-     *   }
-     * })
-    **/
-    count<T extends formula_sessionsCountArgs>(
-      args?: Subset<T, formula_sessionsCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Formula_sessionsCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Formula_sessions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Formula_sessionsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Formula_sessionsAggregateArgs>(args: Subset<T, Formula_sessionsAggregateArgs>): Prisma.PrismaPromise<GetFormula_sessionsAggregateType<T>>
-
-    /**
-     * Group by Formula_sessions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {formula_sessionsGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends formula_sessionsGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: formula_sessionsGroupByArgs['orderBy'] }
-        : { orderBy?: formula_sessionsGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, formula_sessionsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFormula_sessionsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the formula_sessions model
-   */
-  readonly fields: formula_sessionsFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for formula_sessions.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__formula_sessionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    formulas<T extends formula_sessions$formulasArgs<ExtArgs> = {}>(args?: Subset<T, formula_sessions$formulasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$formulasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the formula_sessions model
-   */
-  interface formula_sessionsFieldRefs {
-    readonly session_id: FieldRef<"formula_sessions", 'String'>
-    readonly input_type: FieldRef<"formula_sessions", 'String'>
-    readonly source_content: FieldRef<"formula_sessions", 'String'>
-    readonly created_at: FieldRef<"formula_sessions", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * formula_sessions findUnique
-   */
-  export type formula_sessionsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * Filter, which formula_sessions to fetch.
-     */
-    where: formula_sessionsWhereUniqueInput
-  }
-
-  /**
-   * formula_sessions findUniqueOrThrow
-   */
-  export type formula_sessionsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * Filter, which formula_sessions to fetch.
-     */
-    where: formula_sessionsWhereUniqueInput
-  }
-
-  /**
-   * formula_sessions findFirst
-   */
-  export type formula_sessionsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * Filter, which formula_sessions to fetch.
-     */
-    where?: formula_sessionsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of formula_sessions to fetch.
-     */
-    orderBy?: formula_sessionsOrderByWithRelationInput | formula_sessionsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for formula_sessions.
-     */
-    cursor?: formula_sessionsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` formula_sessions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` formula_sessions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of formula_sessions.
-     */
-    distinct?: Formula_sessionsScalarFieldEnum | Formula_sessionsScalarFieldEnum[]
-  }
-
-  /**
-   * formula_sessions findFirstOrThrow
-   */
-  export type formula_sessionsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * Filter, which formula_sessions to fetch.
-     */
-    where?: formula_sessionsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of formula_sessions to fetch.
-     */
-    orderBy?: formula_sessionsOrderByWithRelationInput | formula_sessionsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for formula_sessions.
-     */
-    cursor?: formula_sessionsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` formula_sessions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` formula_sessions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of formula_sessions.
-     */
-    distinct?: Formula_sessionsScalarFieldEnum | Formula_sessionsScalarFieldEnum[]
-  }
-
-  /**
-   * formula_sessions findMany
-   */
-  export type formula_sessionsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * Filter, which formula_sessions to fetch.
-     */
-    where?: formula_sessionsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of formula_sessions to fetch.
-     */
-    orderBy?: formula_sessionsOrderByWithRelationInput | formula_sessionsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing formula_sessions.
-     */
-    cursor?: formula_sessionsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` formula_sessions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` formula_sessions.
-     */
-    skip?: number
-    distinct?: Formula_sessionsScalarFieldEnum | Formula_sessionsScalarFieldEnum[]
-  }
-
-  /**
-   * formula_sessions create
-   */
-  export type formula_sessionsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * The data needed to create a formula_sessions.
-     */
-    data?: XOR<formula_sessionsCreateInput, formula_sessionsUncheckedCreateInput>
-  }
-
-  /**
-   * formula_sessions createMany
-   */
-  export type formula_sessionsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many formula_sessions.
-     */
-    data: formula_sessionsCreateManyInput | formula_sessionsCreateManyInput[]
-  }
-
-  /**
-   * formula_sessions createManyAndReturn
-   */
-  export type formula_sessionsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * The data used to create many formula_sessions.
-     */
-    data: formula_sessionsCreateManyInput | formula_sessionsCreateManyInput[]
-  }
-
-  /**
-   * formula_sessions update
-   */
-  export type formula_sessionsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * The data needed to update a formula_sessions.
-     */
-    data: XOR<formula_sessionsUpdateInput, formula_sessionsUncheckedUpdateInput>
-    /**
-     * Choose, which formula_sessions to update.
-     */
-    where: formula_sessionsWhereUniqueInput
-  }
-
-  /**
-   * formula_sessions updateMany
-   */
-  export type formula_sessionsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update formula_sessions.
-     */
-    data: XOR<formula_sessionsUpdateManyMutationInput, formula_sessionsUncheckedUpdateManyInput>
-    /**
-     * Filter which formula_sessions to update
-     */
-    where?: formula_sessionsWhereInput
-    /**
-     * Limit how many formula_sessions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * formula_sessions updateManyAndReturn
-   */
-  export type formula_sessionsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * The data used to update formula_sessions.
-     */
-    data: XOR<formula_sessionsUpdateManyMutationInput, formula_sessionsUncheckedUpdateManyInput>
-    /**
-     * Filter which formula_sessions to update
-     */
-    where?: formula_sessionsWhereInput
-    /**
-     * Limit how many formula_sessions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * formula_sessions upsert
-   */
-  export type formula_sessionsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * The filter to search for the formula_sessions to update in case it exists.
-     */
-    where: formula_sessionsWhereUniqueInput
-    /**
-     * In case the formula_sessions found by the `where` argument doesn't exist, create a new formula_sessions with this data.
-     */
-    create: XOR<formula_sessionsCreateInput, formula_sessionsUncheckedCreateInput>
-    /**
-     * In case the formula_sessions was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<formula_sessionsUpdateInput, formula_sessionsUncheckedUpdateInput>
-  }
-
-  /**
-   * formula_sessions delete
-   */
-  export type formula_sessionsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-    /**
-     * Filter which formula_sessions to delete.
-     */
-    where: formula_sessionsWhereUniqueInput
-  }
-
-  /**
-   * formula_sessions deleteMany
-   */
-  export type formula_sessionsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which formula_sessions to delete
-     */
-    where?: formula_sessionsWhereInput
-    /**
-     * Limit how many formula_sessions to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * formula_sessions.formulas
-   */
-  export type formula_sessions$formulasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formulas
-     */
-    select?: formulasSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formulas
-     */
-    omit?: formulasOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formulasInclude<ExtArgs> | null
-    where?: formulasWhereInput
-    orderBy?: formulasOrderByWithRelationInput | formulasOrderByWithRelationInput[]
-    cursor?: formulasWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FormulasScalarFieldEnum | FormulasScalarFieldEnum[]
-  }
-
-  /**
-   * formula_sessions without action
-   */
-  export type formula_sessionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_sessions
-     */
-    select?: formula_sessionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_sessions
-     */
-    omit?: formula_sessionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_sessionsInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model formulas
    */
 
@@ -2745,7 +1547,6 @@ export namespace Prisma {
 
   export type FormulasMinAggregateOutputType = {
     formula_id: string | null
-    session_id: string | null
     latex_code: string | null
     recognized_by: string | null
     confidence: number | null
@@ -2756,7 +1557,6 @@ export namespace Prisma {
 
   export type FormulasMaxAggregateOutputType = {
     formula_id: string | null
-    session_id: string | null
     latex_code: string | null
     recognized_by: string | null
     confidence: number | null
@@ -2767,7 +1567,6 @@ export namespace Prisma {
 
   export type FormulasCountAggregateOutputType = {
     formula_id: number
-    session_id: number
     latex_code: number
     recognized_by: number
     confidence: number
@@ -2788,7 +1587,6 @@ export namespace Prisma {
 
   export type FormulasMinAggregateInputType = {
     formula_id?: true
-    session_id?: true
     latex_code?: true
     recognized_by?: true
     confidence?: true
@@ -2799,7 +1597,6 @@ export namespace Prisma {
 
   export type FormulasMaxAggregateInputType = {
     formula_id?: true
-    session_id?: true
     latex_code?: true
     recognized_by?: true
     confidence?: true
@@ -2810,7 +1607,6 @@ export namespace Prisma {
 
   export type FormulasCountAggregateInputType = {
     formula_id?: true
-    session_id?: true
     latex_code?: true
     recognized_by?: true
     confidence?: true
@@ -2908,7 +1704,6 @@ export namespace Prisma {
 
   export type FormulasGroupByOutputType = {
     formula_id: string
-    session_id: string
     latex_code: string
     recognized_by: string
     confidence: number | null
@@ -2938,16 +1733,13 @@ export namespace Prisma {
 
   export type formulasSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     formula_id?: boolean
-    session_id?: boolean
     latex_code?: boolean
     recognized_by?: boolean
     confidence?: boolean
     name?: boolean
     description?: boolean
     created_at?: boolean
-    session?: boolean | formula_sessionsDefaultArgs<ExtArgs>
     interpretations?: boolean | formulas$interpretationsArgs<ExtArgs>
-    conversations?: boolean | formulas$conversationsArgs<ExtArgs>
     tags?: boolean | formulas$tagsArgs<ExtArgs>
     favourties?: boolean | formulas$favourtiesArgs<ExtArgs>
     _count?: boolean | FormulasCountOutputTypeDefaultArgs<ExtArgs>
@@ -2955,31 +1747,26 @@ export namespace Prisma {
 
   export type formulasSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     formula_id?: boolean
-    session_id?: boolean
     latex_code?: boolean
     recognized_by?: boolean
     confidence?: boolean
     name?: boolean
     description?: boolean
     created_at?: boolean
-    session?: boolean | formula_sessionsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formulas"]>
 
   export type formulasSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     formula_id?: boolean
-    session_id?: boolean
     latex_code?: boolean
     recognized_by?: boolean
     confidence?: boolean
     name?: boolean
     description?: boolean
     created_at?: boolean
-    session?: boolean | formula_sessionsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formulas"]>
 
   export type formulasSelectScalar = {
     formula_id?: boolean
-    session_id?: boolean
     latex_code?: boolean
     recognized_by?: boolean
     confidence?: boolean
@@ -2988,28 +1775,20 @@ export namespace Prisma {
     created_at?: boolean
   }
 
-  export type formulasOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"formula_id" | "session_id" | "latex_code" | "recognized_by" | "confidence" | "name" | "description" | "created_at", ExtArgs["result"]["formulas"]>
+  export type formulasOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"formula_id" | "latex_code" | "recognized_by" | "confidence" | "name" | "description" | "created_at", ExtArgs["result"]["formulas"]>
   export type formulasInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    session?: boolean | formula_sessionsDefaultArgs<ExtArgs>
     interpretations?: boolean | formulas$interpretationsArgs<ExtArgs>
-    conversations?: boolean | formulas$conversationsArgs<ExtArgs>
     tags?: boolean | formulas$tagsArgs<ExtArgs>
     favourties?: boolean | formulas$favourtiesArgs<ExtArgs>
     _count?: boolean | FormulasCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type formulasIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    session?: boolean | formula_sessionsDefaultArgs<ExtArgs>
-  }
-  export type formulasIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    session?: boolean | formula_sessionsDefaultArgs<ExtArgs>
-  }
+  export type formulasIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type formulasIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $formulasPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "formulas"
     objects: {
-      session: Prisma.$formula_sessionsPayload<ExtArgs>
       interpretations: Prisma.$formula_interpretationsPayload<ExtArgs>[]
-      conversations: Prisma.$formula_conversationsPayload<ExtArgs>[]
       tags: Prisma.$formula_tagsPayload<ExtArgs>[]
       favourties: Prisma.$favouritesPayload<ExtArgs>[]
     }
@@ -3018,10 +1797,6 @@ export namespace Prisma {
        * Unique identifier
        */
       formula_id: string
-      /**
-       * Source session UUID
-       */
-      session_id: string
       /**
        * Standard LaTeX code
        */
@@ -3440,9 +2215,7 @@ export namespace Prisma {
    */
   export interface Prisma__formulasClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    session<T extends formula_sessionsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, formula_sessionsDefaultArgs<ExtArgs>>): Prisma__formula_sessionsClient<$Result.GetResult<Prisma.$formula_sessionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     interpretations<T extends formulas$interpretationsArgs<ExtArgs> = {}>(args?: Subset<T, formulas$interpretationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$formula_interpretationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    conversations<T extends formulas$conversationsArgs<ExtArgs> = {}>(args?: Subset<T, formulas$conversationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$formula_conversationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tags<T extends formulas$tagsArgs<ExtArgs> = {}>(args?: Subset<T, formulas$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$formula_tagsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     favourties<T extends formulas$favourtiesArgs<ExtArgs> = {}>(args?: Subset<T, formulas$favourtiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$favouritesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -3475,7 +2248,6 @@ export namespace Prisma {
    */
   interface formulasFieldRefs {
     readonly formula_id: FieldRef<"formulas", 'String'>
-    readonly session_id: FieldRef<"formulas", 'String'>
     readonly latex_code: FieldRef<"formulas", 'String'>
     readonly recognized_by: FieldRef<"formulas", 'String'>
     readonly confidence: FieldRef<"formulas", 'Float'>
@@ -3729,10 +2501,6 @@ export namespace Prisma {
      * The data used to create many formulas.
      */
     data: formulasCreateManyInput | formulasCreateManyInput[]
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formulasIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3803,10 +2571,6 @@ export namespace Prisma {
      * Limit how many formulas to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formulasIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3897,30 +2661,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Formula_interpretationsScalarFieldEnum | Formula_interpretationsScalarFieldEnum[]
-  }
-
-  /**
-   * formulas.conversations
-   */
-  export type formulas$conversationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the formula_conversations
-     */
-    select?: formula_conversationsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the formula_conversations
-     */
-    omit?: formula_conversationsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_conversationsInclude<ExtArgs> | null
-    where?: formula_conversationsWhereInput
-    orderBy?: formula_conversationsOrderByWithRelationInput | formula_conversationsOrderByWithRelationInput[]
-    cursor?: formula_conversationsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Formula_conversationsScalarFieldEnum | Formula_conversationsScalarFieldEnum[]
   }
 
   /**
@@ -8258,21 +6998,21 @@ export namespace Prisma {
 
   export type Formula_conversationsMinAggregateOutputType = {
     conversation_id: string | null
-    formula_id: string | null
+    title: string | null
     started_at: Date | null
     updated_at: Date | null
   }
 
   export type Formula_conversationsMaxAggregateOutputType = {
     conversation_id: string | null
-    formula_id: string | null
+    title: string | null
     started_at: Date | null
     updated_at: Date | null
   }
 
   export type Formula_conversationsCountAggregateOutputType = {
     conversation_id: number
-    formula_id: number
+    title: number
     started_at: number
     updated_at: number
     _all: number
@@ -8281,21 +7021,21 @@ export namespace Prisma {
 
   export type Formula_conversationsMinAggregateInputType = {
     conversation_id?: true
-    formula_id?: true
+    title?: true
     started_at?: true
     updated_at?: true
   }
 
   export type Formula_conversationsMaxAggregateInputType = {
     conversation_id?: true
-    formula_id?: true
+    title?: true
     started_at?: true
     updated_at?: true
   }
 
   export type Formula_conversationsCountAggregateInputType = {
     conversation_id?: true
-    formula_id?: true
+    title?: true
     started_at?: true
     updated_at?: true
     _all?: true
@@ -8375,7 +7115,7 @@ export namespace Prisma {
 
   export type Formula_conversationsGroupByOutputType = {
     conversation_id: string
-    formula_id: string
+    title: string | null
     started_at: Date
     updated_at: Date
     _count: Formula_conversationsCountAggregateOutputType | null
@@ -8399,54 +7139,45 @@ export namespace Prisma {
 
   export type formula_conversationsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     conversation_id?: boolean
-    formula_id?: boolean
+    title?: boolean
     started_at?: boolean
     updated_at?: boolean
-    formula?: boolean | formulasDefaultArgs<ExtArgs>
     messages?: boolean | formula_conversations$messagesArgs<ExtArgs>
     _count?: boolean | Formula_conversationsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formula_conversations"]>
 
   export type formula_conversationsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     conversation_id?: boolean
-    formula_id?: boolean
+    title?: boolean
     started_at?: boolean
     updated_at?: boolean
-    formula?: boolean | formulasDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formula_conversations"]>
 
   export type formula_conversationsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     conversation_id?: boolean
-    formula_id?: boolean
+    title?: boolean
     started_at?: boolean
     updated_at?: boolean
-    formula?: boolean | formulasDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formula_conversations"]>
 
   export type formula_conversationsSelectScalar = {
     conversation_id?: boolean
-    formula_id?: boolean
+    title?: boolean
     started_at?: boolean
     updated_at?: boolean
   }
 
-  export type formula_conversationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"conversation_id" | "formula_id" | "started_at" | "updated_at", ExtArgs["result"]["formula_conversations"]>
+  export type formula_conversationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"conversation_id" | "title" | "started_at" | "updated_at", ExtArgs["result"]["formula_conversations"]>
   export type formula_conversationsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    formula?: boolean | formulasDefaultArgs<ExtArgs>
     messages?: boolean | formula_conversations$messagesArgs<ExtArgs>
     _count?: boolean | Formula_conversationsCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type formula_conversationsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    formula?: boolean | formulasDefaultArgs<ExtArgs>
-  }
-  export type formula_conversationsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    formula?: boolean | formulasDefaultArgs<ExtArgs>
-  }
+  export type formula_conversationsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type formula_conversationsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $formula_conversationsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "formula_conversations"
     objects: {
-      formula: Prisma.$formulasPayload<ExtArgs>
       messages: Prisma.$messagesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -8455,9 +7186,9 @@ export namespace Prisma {
        */
       conversation_id: string
       /**
-       * Related formula UUID
+       * Conversation title
        */
-      formula_id: string
+      title: string | null
       /**
        * Conversation start time
        */
@@ -8860,7 +7591,6 @@ export namespace Prisma {
    */
   export interface Prisma__formula_conversationsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    formula<T extends formulasDefaultArgs<ExtArgs> = {}>(args?: Subset<T, formulasDefaultArgs<ExtArgs>>): Prisma__formulasClient<$Result.GetResult<Prisma.$formulasPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     messages<T extends formula_conversations$messagesArgs<ExtArgs> = {}>(args?: Subset<T, formula_conversations$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$messagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8892,7 +7622,7 @@ export namespace Prisma {
    */
   interface formula_conversationsFieldRefs {
     readonly conversation_id: FieldRef<"formula_conversations", 'String'>
-    readonly formula_id: FieldRef<"formula_conversations", 'String'>
+    readonly title: FieldRef<"formula_conversations", 'String'>
     readonly started_at: FieldRef<"formula_conversations", 'DateTime'>
     readonly updated_at: FieldRef<"formula_conversations", 'DateTime'>
   }
@@ -9142,10 +7872,6 @@ export namespace Prisma {
      * The data used to create many formula_conversations.
      */
     data: formula_conversationsCreateManyInput | formula_conversationsCreateManyInput[]
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_conversationsIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -9216,10 +7942,6 @@ export namespace Prisma {
      * Limit how many formula_conversations to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: formula_conversationsIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10413,19 +9135,8 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const Formula_sessionsScalarFieldEnum: {
-    session_id: 'session_id',
-    input_type: 'input_type',
-    source_content: 'source_content',
-    created_at: 'created_at'
-  };
-
-  export type Formula_sessionsScalarFieldEnum = (typeof Formula_sessionsScalarFieldEnum)[keyof typeof Formula_sessionsScalarFieldEnum]
-
-
   export const FormulasScalarFieldEnum: {
     formula_id: 'formula_id',
-    session_id: 'session_id',
     latex_code: 'latex_code',
     recognized_by: 'recognized_by',
     confidence: 'confidence',
@@ -10480,7 +9191,7 @@ export namespace Prisma {
 
   export const Formula_conversationsScalarFieldEnum: {
     conversation_id: 'conversation_id',
-    formula_id: 'formula_id',
+    title: 'title',
     started_at: 'started_at',
     updated_at: 'updated_at'
   };
@@ -10528,16 +9239,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Float'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
 
 
   /**
-   * Reference to a field of type 'Float'
+   * Reference to a field of type 'DateTime'
    */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
 
 
@@ -10551,87 +9262,31 @@ export namespace Prisma {
    */
 
 
-  export type formula_sessionsWhereInput = {
-    AND?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
-    OR?: formula_sessionsWhereInput[]
-    NOT?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
-    session_id?: StringFilter<"formula_sessions"> | string
-    input_type?: StringNullableFilter<"formula_sessions"> | string | null
-    source_content?: StringNullableFilter<"formula_sessions"> | string | null
-    created_at?: DateTimeFilter<"formula_sessions"> | Date | string
-    formulas?: FormulasListRelationFilter
-  }
-
-  export type formula_sessionsOrderByWithRelationInput = {
-    session_id?: SortOrder
-    input_type?: SortOrderInput | SortOrder
-    source_content?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    formulas?: formulasOrderByRelationAggregateInput
-  }
-
-  export type formula_sessionsWhereUniqueInput = Prisma.AtLeast<{
-    session_id?: string
-    AND?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
-    OR?: formula_sessionsWhereInput[]
-    NOT?: formula_sessionsWhereInput | formula_sessionsWhereInput[]
-    input_type?: StringNullableFilter<"formula_sessions"> | string | null
-    source_content?: StringNullableFilter<"formula_sessions"> | string | null
-    created_at?: DateTimeFilter<"formula_sessions"> | Date | string
-    formulas?: FormulasListRelationFilter
-  }, "session_id">
-
-  export type formula_sessionsOrderByWithAggregationInput = {
-    session_id?: SortOrder
-    input_type?: SortOrderInput | SortOrder
-    source_content?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    _count?: formula_sessionsCountOrderByAggregateInput
-    _max?: formula_sessionsMaxOrderByAggregateInput
-    _min?: formula_sessionsMinOrderByAggregateInput
-  }
-
-  export type formula_sessionsScalarWhereWithAggregatesInput = {
-    AND?: formula_sessionsScalarWhereWithAggregatesInput | formula_sessionsScalarWhereWithAggregatesInput[]
-    OR?: formula_sessionsScalarWhereWithAggregatesInput[]
-    NOT?: formula_sessionsScalarWhereWithAggregatesInput | formula_sessionsScalarWhereWithAggregatesInput[]
-    session_id?: StringWithAggregatesFilter<"formula_sessions"> | string
-    input_type?: StringNullableWithAggregatesFilter<"formula_sessions"> | string | null
-    source_content?: StringNullableWithAggregatesFilter<"formula_sessions"> | string | null
-    created_at?: DateTimeWithAggregatesFilter<"formula_sessions"> | Date | string
-  }
-
   export type formulasWhereInput = {
     AND?: formulasWhereInput | formulasWhereInput[]
     OR?: formulasWhereInput[]
     NOT?: formulasWhereInput | formulasWhereInput[]
     formula_id?: StringFilter<"formulas"> | string
-    session_id?: StringFilter<"formulas"> | string
     latex_code?: StringFilter<"formulas"> | string
     recognized_by?: StringFilter<"formulas"> | string
     confidence?: FloatNullableFilter<"formulas"> | number | null
     name?: StringNullableFilter<"formulas"> | string | null
     description?: StringNullableFilter<"formulas"> | string | null
     created_at?: DateTimeFilter<"formulas"> | Date | string
-    session?: XOR<Formula_sessionsScalarRelationFilter, formula_sessionsWhereInput>
     interpretations?: Formula_interpretationsListRelationFilter
-    conversations?: Formula_conversationsListRelationFilter
     tags?: Formula_tagsListRelationFilter
     favourties?: FavouritesListRelationFilter
   }
 
   export type formulasOrderByWithRelationInput = {
     formula_id?: SortOrder
-    session_id?: SortOrder
     latex_code?: SortOrder
     recognized_by?: SortOrder
     confidence?: SortOrderInput | SortOrder
     name?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     created_at?: SortOrder
-    session?: formula_sessionsOrderByWithRelationInput
     interpretations?: formula_interpretationsOrderByRelationAggregateInput
-    conversations?: formula_conversationsOrderByRelationAggregateInput
     tags?: formula_tagsOrderByRelationAggregateInput
     favourties?: favouritesOrderByRelationAggregateInput
   }
@@ -10641,23 +9296,19 @@ export namespace Prisma {
     AND?: formulasWhereInput | formulasWhereInput[]
     OR?: formulasWhereInput[]
     NOT?: formulasWhereInput | formulasWhereInput[]
-    session_id?: StringFilter<"formulas"> | string
     latex_code?: StringFilter<"formulas"> | string
     recognized_by?: StringFilter<"formulas"> | string
     confidence?: FloatNullableFilter<"formulas"> | number | null
     name?: StringNullableFilter<"formulas"> | string | null
     description?: StringNullableFilter<"formulas"> | string | null
     created_at?: DateTimeFilter<"formulas"> | Date | string
-    session?: XOR<Formula_sessionsScalarRelationFilter, formula_sessionsWhereInput>
     interpretations?: Formula_interpretationsListRelationFilter
-    conversations?: Formula_conversationsListRelationFilter
     tags?: Formula_tagsListRelationFilter
     favourties?: FavouritesListRelationFilter
   }, "formula_id">
 
   export type formulasOrderByWithAggregationInput = {
     formula_id?: SortOrder
-    session_id?: SortOrder
     latex_code?: SortOrder
     recognized_by?: SortOrder
     confidence?: SortOrderInput | SortOrder
@@ -10676,7 +9327,6 @@ export namespace Prisma {
     OR?: formulasScalarWhereWithAggregatesInput[]
     NOT?: formulasScalarWhereWithAggregatesInput | formulasScalarWhereWithAggregatesInput[]
     formula_id?: StringWithAggregatesFilter<"formulas"> | string
-    session_id?: StringWithAggregatesFilter<"formulas"> | string
     latex_code?: StringWithAggregatesFilter<"formulas"> | string
     recognized_by?: StringWithAggregatesFilter<"formulas"> | string
     confidence?: FloatNullableWithAggregatesFilter<"formulas"> | number | null
@@ -10899,19 +9549,17 @@ export namespace Prisma {
     OR?: formula_conversationsWhereInput[]
     NOT?: formula_conversationsWhereInput | formula_conversationsWhereInput[]
     conversation_id?: StringFilter<"formula_conversations"> | string
-    formula_id?: StringFilter<"formula_conversations"> | string
+    title?: StringNullableFilter<"formula_conversations"> | string | null
     started_at?: DateTimeFilter<"formula_conversations"> | Date | string
     updated_at?: DateTimeFilter<"formula_conversations"> | Date | string
-    formula?: XOR<FormulasScalarRelationFilter, formulasWhereInput>
     messages?: MessagesListRelationFilter
   }
 
   export type formula_conversationsOrderByWithRelationInput = {
     conversation_id?: SortOrder
-    formula_id?: SortOrder
+    title?: SortOrderInput | SortOrder
     started_at?: SortOrder
     updated_at?: SortOrder
-    formula?: formulasOrderByWithRelationInput
     messages?: messagesOrderByRelationAggregateInput
   }
 
@@ -10920,16 +9568,15 @@ export namespace Prisma {
     AND?: formula_conversationsWhereInput | formula_conversationsWhereInput[]
     OR?: formula_conversationsWhereInput[]
     NOT?: formula_conversationsWhereInput | formula_conversationsWhereInput[]
-    formula_id?: StringFilter<"formula_conversations"> | string
+    title?: StringNullableFilter<"formula_conversations"> | string | null
     started_at?: DateTimeFilter<"formula_conversations"> | Date | string
     updated_at?: DateTimeFilter<"formula_conversations"> | Date | string
-    formula?: XOR<FormulasScalarRelationFilter, formulasWhereInput>
     messages?: MessagesListRelationFilter
   }, "conversation_id">
 
   export type formula_conversationsOrderByWithAggregationInput = {
     conversation_id?: SortOrder
-    formula_id?: SortOrder
+    title?: SortOrderInput | SortOrder
     started_at?: SortOrder
     updated_at?: SortOrder
     _count?: formula_conversationsCountOrderByAggregateInput
@@ -10942,7 +9589,7 @@ export namespace Prisma {
     OR?: formula_conversationsScalarWhereWithAggregatesInput[]
     NOT?: formula_conversationsScalarWhereWithAggregatesInput | formula_conversationsScalarWhereWithAggregatesInput[]
     conversation_id?: StringWithAggregatesFilter<"formula_conversations"> | string
-    formula_id?: StringWithAggregatesFilter<"formula_conversations"> | string
+    title?: StringNullableWithAggregatesFilter<"formula_conversations"> | string | null
     started_at?: DateTimeWithAggregatesFilter<"formula_conversations"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"formula_conversations"> | Date | string
   }
@@ -11002,59 +9649,6 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"messages"> | Date | string
   }
 
-  export type formula_sessionsCreateInput = {
-    session_id?: string
-    input_type?: string | null
-    source_content?: string | null
-    created_at?: Date | string
-    formulas?: formulasCreateNestedManyWithoutSessionInput
-  }
-
-  export type formula_sessionsUncheckedCreateInput = {
-    session_id?: string
-    input_type?: string | null
-    source_content?: string | null
-    created_at?: Date | string
-    formulas?: formulasUncheckedCreateNestedManyWithoutSessionInput
-  }
-
-  export type formula_sessionsUpdateInput = {
-    session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: NullableStringFieldUpdateOperationsInput | string | null
-    source_content?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    formulas?: formulasUpdateManyWithoutSessionNestedInput
-  }
-
-  export type formula_sessionsUncheckedUpdateInput = {
-    session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: NullableStringFieldUpdateOperationsInput | string | null
-    source_content?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    formulas?: formulasUncheckedUpdateManyWithoutSessionNestedInput
-  }
-
-  export type formula_sessionsCreateManyInput = {
-    session_id?: string
-    input_type?: string | null
-    source_content?: string | null
-    created_at?: Date | string
-  }
-
-  export type formula_sessionsUpdateManyMutationInput = {
-    session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: NullableStringFieldUpdateOperationsInput | string | null
-    source_content?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type formula_sessionsUncheckedUpdateManyInput = {
-    session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: NullableStringFieldUpdateOperationsInput | string | null
-    source_content?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type formulasCreateInput = {
     formula_id?: string
     latex_code: string
@@ -11063,16 +9657,13 @@ export namespace Prisma {
     name?: string | null
     description?: string | null
     created_at?: Date | string
-    session: formula_sessionsCreateNestedOneWithoutFormulasInput
     interpretations?: formula_interpretationsCreateNestedManyWithoutFormulaInput
-    conversations?: formula_conversationsCreateNestedManyWithoutFormulaInput
     tags?: formula_tagsCreateNestedManyWithoutFormulaInput
     favourties?: favouritesCreateNestedManyWithoutFormulaInput
   }
 
   export type formulasUncheckedCreateInput = {
     formula_id?: string
-    session_id: string
     latex_code: string
     recognized_by: string
     confidence?: number | null
@@ -11080,7 +9671,6 @@ export namespace Prisma {
     description?: string | null
     created_at?: Date | string
     interpretations?: formula_interpretationsUncheckedCreateNestedManyWithoutFormulaInput
-    conversations?: formula_conversationsUncheckedCreateNestedManyWithoutFormulaInput
     tags?: formula_tagsUncheckedCreateNestedManyWithoutFormulaInput
     favourties?: favouritesUncheckedCreateNestedManyWithoutFormulaInput
   }
@@ -11093,16 +9683,13 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    session?: formula_sessionsUpdateOneRequiredWithoutFormulasNestedInput
     interpretations?: formula_interpretationsUpdateManyWithoutFormulaNestedInput
-    conversations?: formula_conversationsUpdateManyWithoutFormulaNestedInput
     tags?: formula_tagsUpdateManyWithoutFormulaNestedInput
     favourties?: favouritesUpdateManyWithoutFormulaNestedInput
   }
 
   export type formulasUncheckedUpdateInput = {
     formula_id?: StringFieldUpdateOperationsInput | string
-    session_id?: StringFieldUpdateOperationsInput | string
     latex_code?: StringFieldUpdateOperationsInput | string
     recognized_by?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -11110,14 +9697,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     interpretations?: formula_interpretationsUncheckedUpdateManyWithoutFormulaNestedInput
-    conversations?: formula_conversationsUncheckedUpdateManyWithoutFormulaNestedInput
     tags?: formula_tagsUncheckedUpdateManyWithoutFormulaNestedInput
     favourties?: favouritesUncheckedUpdateManyWithoutFormulaNestedInput
   }
 
   export type formulasCreateManyInput = {
     formula_id?: string
-    session_id: string
     latex_code: string
     recognized_by: string
     confidence?: number | null
@@ -11138,7 +9723,6 @@ export namespace Prisma {
 
   export type formulasUncheckedUpdateManyInput = {
     formula_id?: StringFieldUpdateOperationsInput | string
-    session_id?: StringFieldUpdateOperationsInput | string
     latex_code?: StringFieldUpdateOperationsInput | string
     recognized_by?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -11352,15 +9936,15 @@ export namespace Prisma {
 
   export type formula_conversationsCreateInput = {
     conversation_id?: string
+    title?: string | null
     started_at?: Date | string
     updated_at?: Date | string
-    formula: formulasCreateNestedOneWithoutConversationsInput
     messages?: messagesCreateNestedManyWithoutConversationInput
   }
 
   export type formula_conversationsUncheckedCreateInput = {
     conversation_id?: string
-    formula_id: string
+    title?: string | null
     started_at?: Date | string
     updated_at?: Date | string
     messages?: messagesUncheckedCreateNestedManyWithoutConversationInput
@@ -11368,15 +9952,15 @@ export namespace Prisma {
 
   export type formula_conversationsUpdateInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    formula?: formulasUpdateOneRequiredWithoutConversationsNestedInput
     messages?: messagesUpdateManyWithoutConversationNestedInput
   }
 
   export type formula_conversationsUncheckedUpdateInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
-    formula_id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: messagesUncheckedUpdateManyWithoutConversationNestedInput
@@ -11384,20 +9968,21 @@ export namespace Prisma {
 
   export type formula_conversationsCreateManyInput = {
     conversation_id?: string
-    formula_id: string
+    title?: string | null
     started_at?: Date | string
     updated_at?: Date | string
   }
 
   export type formula_conversationsUpdateManyMutationInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type formula_conversationsUncheckedUpdateManyInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
-    formula_id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11471,6 +10056,17 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -11496,10 +10092,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type FormulasListRelationFilter = {
-    every?: formulasWhereInput
-    some?: formulasWhereInput
-    none?: formulasWhereInput
+  export type Formula_interpretationsListRelationFilter = {
+    every?: formula_interpretationsWhereInput
+    some?: formula_interpretationsWhereInput
+    none?: formula_interpretationsWhereInput
+  }
+
+  export type Formula_tagsListRelationFilter = {
+    every?: formula_tagsWhereInput
+    some?: formula_tagsWhereInput
+    none?: formula_tagsWhereInput
+  }
+
+  export type FavouritesListRelationFilter = {
+    every?: favouritesWhereInput
+    some?: favouritesWhereInput
+    none?: favouritesWhereInput
   }
 
   export type SortOrderInput = {
@@ -11507,29 +10115,54 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type formulasOrderByRelationAggregateInput = {
+  export type formula_interpretationsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type formula_sessionsCountOrderByAggregateInput = {
-    session_id?: SortOrder
-    input_type?: SortOrder
-    source_content?: SortOrder
+  export type formula_tagsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type favouritesOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type formulasCountOrderByAggregateInput = {
+    formula_id?: SortOrder
+    latex_code?: SortOrder
+    recognized_by?: SortOrder
+    confidence?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
     created_at?: SortOrder
   }
 
-  export type formula_sessionsMaxOrderByAggregateInput = {
-    session_id?: SortOrder
-    input_type?: SortOrder
-    source_content?: SortOrder
+  export type formulasAvgOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type formulasMaxOrderByAggregateInput = {
+    formula_id?: SortOrder
+    latex_code?: SortOrder
+    recognized_by?: SortOrder
+    confidence?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
     created_at?: SortOrder
   }
 
-  export type formula_sessionsMinOrderByAggregateInput = {
-    session_id?: SortOrder
-    input_type?: SortOrder
-    source_content?: SortOrder
+  export type formulasMinOrderByAggregateInput = {
+    formula_id?: SortOrder
+    latex_code?: SortOrder
+    recognized_by?: SortOrder
+    confidence?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
     created_at?: SortOrder
+  }
+
+  export type formulasSumOrderByAggregateInput = {
+    confidence?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -11547,6 +10180,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11578,119 +10227,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type Formula_sessionsScalarRelationFilter = {
-    is?: formula_sessionsWhereInput
-    isNot?: formula_sessionsWhereInput
-  }
-
-  export type Formula_interpretationsListRelationFilter = {
-    every?: formula_interpretationsWhereInput
-    some?: formula_interpretationsWhereInput
-    none?: formula_interpretationsWhereInput
-  }
-
-  export type Formula_conversationsListRelationFilter = {
-    every?: formula_conversationsWhereInput
-    some?: formula_conversationsWhereInput
-    none?: formula_conversationsWhereInput
-  }
-
-  export type Formula_tagsListRelationFilter = {
-    every?: formula_tagsWhereInput
-    some?: formula_tagsWhereInput
-    none?: formula_tagsWhereInput
-  }
-
-  export type FavouritesListRelationFilter = {
-    every?: favouritesWhereInput
-    some?: favouritesWhereInput
-    none?: favouritesWhereInput
-  }
-
-  export type formula_interpretationsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type formula_conversationsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type formula_tagsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type favouritesOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type formulasCountOrderByAggregateInput = {
-    formula_id?: SortOrder
-    session_id?: SortOrder
-    latex_code?: SortOrder
-    recognized_by?: SortOrder
-    confidence?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    created_at?: SortOrder
-  }
-
-  export type formulasAvgOrderByAggregateInput = {
-    confidence?: SortOrder
-  }
-
-  export type formulasMaxOrderByAggregateInput = {
-    formula_id?: SortOrder
-    session_id?: SortOrder
-    latex_code?: SortOrder
-    recognized_by?: SortOrder
-    confidence?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    created_at?: SortOrder
-  }
-
-  export type formulasMinOrderByAggregateInput = {
-    formula_id?: SortOrder
-    session_id?: SortOrder
-    latex_code?: SortOrder
-    recognized_by?: SortOrder
-    confidence?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    created_at?: SortOrder
-  }
-
-  export type formulasSumOrderByAggregateInput = {
-    confidence?: SortOrder
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type FormulasScalarRelationFilter = {
@@ -11807,21 +10343,21 @@ export namespace Prisma {
 
   export type formula_conversationsCountOrderByAggregateInput = {
     conversation_id?: SortOrder
-    formula_id?: SortOrder
+    title?: SortOrder
     started_at?: SortOrder
     updated_at?: SortOrder
   }
 
   export type formula_conversationsMaxOrderByAggregateInput = {
     conversation_id?: SortOrder
-    formula_id?: SortOrder
+    title?: SortOrder
     started_at?: SortOrder
     updated_at?: SortOrder
   }
 
   export type formula_conversationsMinOrderByAggregateInput = {
     conversation_id?: SortOrder
-    formula_id?: SortOrder
+    title?: SortOrder
     started_at?: SortOrder
     updated_at?: SortOrder
   }
@@ -11855,78 +10391,11 @@ export namespace Prisma {
     created_at?: SortOrder
   }
 
-  export type formulasCreateNestedManyWithoutSessionInput = {
-    create?: XOR<formulasCreateWithoutSessionInput, formulasUncheckedCreateWithoutSessionInput> | formulasCreateWithoutSessionInput[] | formulasUncheckedCreateWithoutSessionInput[]
-    connectOrCreate?: formulasCreateOrConnectWithoutSessionInput | formulasCreateOrConnectWithoutSessionInput[]
-    createMany?: formulasCreateManySessionInputEnvelope
-    connect?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-  }
-
-  export type formulasUncheckedCreateNestedManyWithoutSessionInput = {
-    create?: XOR<formulasCreateWithoutSessionInput, formulasUncheckedCreateWithoutSessionInput> | formulasCreateWithoutSessionInput[] | formulasUncheckedCreateWithoutSessionInput[]
-    connectOrCreate?: formulasCreateOrConnectWithoutSessionInput | formulasCreateOrConnectWithoutSessionInput[]
-    createMany?: formulasCreateManySessionInputEnvelope
-    connect?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-  }
-
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
-  export type formulasUpdateManyWithoutSessionNestedInput = {
-    create?: XOR<formulasCreateWithoutSessionInput, formulasUncheckedCreateWithoutSessionInput> | formulasCreateWithoutSessionInput[] | formulasUncheckedCreateWithoutSessionInput[]
-    connectOrCreate?: formulasCreateOrConnectWithoutSessionInput | formulasCreateOrConnectWithoutSessionInput[]
-    upsert?: formulasUpsertWithWhereUniqueWithoutSessionInput | formulasUpsertWithWhereUniqueWithoutSessionInput[]
-    createMany?: formulasCreateManySessionInputEnvelope
-    set?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-    disconnect?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-    delete?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-    connect?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-    update?: formulasUpdateWithWhereUniqueWithoutSessionInput | formulasUpdateWithWhereUniqueWithoutSessionInput[]
-    updateMany?: formulasUpdateManyWithWhereWithoutSessionInput | formulasUpdateManyWithWhereWithoutSessionInput[]
-    deleteMany?: formulasScalarWhereInput | formulasScalarWhereInput[]
-  }
-
-  export type formulasUncheckedUpdateManyWithoutSessionNestedInput = {
-    create?: XOR<formulasCreateWithoutSessionInput, formulasUncheckedCreateWithoutSessionInput> | formulasCreateWithoutSessionInput[] | formulasUncheckedCreateWithoutSessionInput[]
-    connectOrCreate?: formulasCreateOrConnectWithoutSessionInput | formulasCreateOrConnectWithoutSessionInput[]
-    upsert?: formulasUpsertWithWhereUniqueWithoutSessionInput | formulasUpsertWithWhereUniqueWithoutSessionInput[]
-    createMany?: formulasCreateManySessionInputEnvelope
-    set?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-    disconnect?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-    delete?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-    connect?: formulasWhereUniqueInput | formulasWhereUniqueInput[]
-    update?: formulasUpdateWithWhereUniqueWithoutSessionInput | formulasUpdateWithWhereUniqueWithoutSessionInput[]
-    updateMany?: formulasUpdateManyWithWhereWithoutSessionInput | formulasUpdateManyWithWhereWithoutSessionInput[]
-    deleteMany?: formulasScalarWhereInput | formulasScalarWhereInput[]
-  }
-
-  export type formula_sessionsCreateNestedOneWithoutFormulasInput = {
-    create?: XOR<formula_sessionsCreateWithoutFormulasInput, formula_sessionsUncheckedCreateWithoutFormulasInput>
-    connectOrCreate?: formula_sessionsCreateOrConnectWithoutFormulasInput
-    connect?: formula_sessionsWhereUniqueInput
-  }
-
   export type formula_interpretationsCreateNestedManyWithoutFormulaInput = {
     create?: XOR<formula_interpretationsCreateWithoutFormulaInput, formula_interpretationsUncheckedCreateWithoutFormulaInput> | formula_interpretationsCreateWithoutFormulaInput[] | formula_interpretationsUncheckedCreateWithoutFormulaInput[]
     connectOrCreate?: formula_interpretationsCreateOrConnectWithoutFormulaInput | formula_interpretationsCreateOrConnectWithoutFormulaInput[]
     createMany?: formula_interpretationsCreateManyFormulaInputEnvelope
     connect?: formula_interpretationsWhereUniqueInput | formula_interpretationsWhereUniqueInput[]
-  }
-
-  export type formula_conversationsCreateNestedManyWithoutFormulaInput = {
-    create?: XOR<formula_conversationsCreateWithoutFormulaInput, formula_conversationsUncheckedCreateWithoutFormulaInput> | formula_conversationsCreateWithoutFormulaInput[] | formula_conversationsUncheckedCreateWithoutFormulaInput[]
-    connectOrCreate?: formula_conversationsCreateOrConnectWithoutFormulaInput | formula_conversationsCreateOrConnectWithoutFormulaInput[]
-    createMany?: formula_conversationsCreateManyFormulaInputEnvelope
-    connect?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
   }
 
   export type formula_tagsCreateNestedManyWithoutFormulaInput = {
@@ -11950,13 +10419,6 @@ export namespace Prisma {
     connect?: formula_interpretationsWhereUniqueInput | formula_interpretationsWhereUniqueInput[]
   }
 
-  export type formula_conversationsUncheckedCreateNestedManyWithoutFormulaInput = {
-    create?: XOR<formula_conversationsCreateWithoutFormulaInput, formula_conversationsUncheckedCreateWithoutFormulaInput> | formula_conversationsCreateWithoutFormulaInput[] | formula_conversationsUncheckedCreateWithoutFormulaInput[]
-    connectOrCreate?: formula_conversationsCreateOrConnectWithoutFormulaInput | formula_conversationsCreateOrConnectWithoutFormulaInput[]
-    createMany?: formula_conversationsCreateManyFormulaInputEnvelope
-    connect?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-  }
-
   export type formula_tagsUncheckedCreateNestedManyWithoutFormulaInput = {
     create?: XOR<formula_tagsCreateWithoutFormulaInput, formula_tagsUncheckedCreateWithoutFormulaInput> | formula_tagsCreateWithoutFormulaInput[] | formula_tagsUncheckedCreateWithoutFormulaInput[]
     connectOrCreate?: formula_tagsCreateOrConnectWithoutFormulaInput | formula_tagsCreateOrConnectWithoutFormulaInput[]
@@ -11971,6 +10433,10 @@ export namespace Prisma {
     connect?: favouritesWhereUniqueInput | favouritesWhereUniqueInput[]
   }
 
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -11979,12 +10445,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type formula_sessionsUpdateOneRequiredWithoutFormulasNestedInput = {
-    create?: XOR<formula_sessionsCreateWithoutFormulasInput, formula_sessionsUncheckedCreateWithoutFormulasInput>
-    connectOrCreate?: formula_sessionsCreateOrConnectWithoutFormulasInput
-    upsert?: formula_sessionsUpsertWithoutFormulasInput
-    connect?: formula_sessionsWhereUniqueInput
-    update?: XOR<XOR<formula_sessionsUpdateToOneWithWhereWithoutFormulasInput, formula_sessionsUpdateWithoutFormulasInput>, formula_sessionsUncheckedUpdateWithoutFormulasInput>
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type formula_interpretationsUpdateManyWithoutFormulaNestedInput = {
@@ -11999,20 +10465,6 @@ export namespace Prisma {
     update?: formula_interpretationsUpdateWithWhereUniqueWithoutFormulaInput | formula_interpretationsUpdateWithWhereUniqueWithoutFormulaInput[]
     updateMany?: formula_interpretationsUpdateManyWithWhereWithoutFormulaInput | formula_interpretationsUpdateManyWithWhereWithoutFormulaInput[]
     deleteMany?: formula_interpretationsScalarWhereInput | formula_interpretationsScalarWhereInput[]
-  }
-
-  export type formula_conversationsUpdateManyWithoutFormulaNestedInput = {
-    create?: XOR<formula_conversationsCreateWithoutFormulaInput, formula_conversationsUncheckedCreateWithoutFormulaInput> | formula_conversationsCreateWithoutFormulaInput[] | formula_conversationsUncheckedCreateWithoutFormulaInput[]
-    connectOrCreate?: formula_conversationsCreateOrConnectWithoutFormulaInput | formula_conversationsCreateOrConnectWithoutFormulaInput[]
-    upsert?: formula_conversationsUpsertWithWhereUniqueWithoutFormulaInput | formula_conversationsUpsertWithWhereUniqueWithoutFormulaInput[]
-    createMany?: formula_conversationsCreateManyFormulaInputEnvelope
-    set?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-    disconnect?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-    delete?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-    connect?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-    update?: formula_conversationsUpdateWithWhereUniqueWithoutFormulaInput | formula_conversationsUpdateWithWhereUniqueWithoutFormulaInput[]
-    updateMany?: formula_conversationsUpdateManyWithWhereWithoutFormulaInput | formula_conversationsUpdateManyWithWhereWithoutFormulaInput[]
-    deleteMany?: formula_conversationsScalarWhereInput | formula_conversationsScalarWhereInput[]
   }
 
   export type formula_tagsUpdateManyWithoutFormulaNestedInput = {
@@ -12055,20 +10507,6 @@ export namespace Prisma {
     update?: formula_interpretationsUpdateWithWhereUniqueWithoutFormulaInput | formula_interpretationsUpdateWithWhereUniqueWithoutFormulaInput[]
     updateMany?: formula_interpretationsUpdateManyWithWhereWithoutFormulaInput | formula_interpretationsUpdateManyWithWhereWithoutFormulaInput[]
     deleteMany?: formula_interpretationsScalarWhereInput | formula_interpretationsScalarWhereInput[]
-  }
-
-  export type formula_conversationsUncheckedUpdateManyWithoutFormulaNestedInput = {
-    create?: XOR<formula_conversationsCreateWithoutFormulaInput, formula_conversationsUncheckedCreateWithoutFormulaInput> | formula_conversationsCreateWithoutFormulaInput[] | formula_conversationsUncheckedCreateWithoutFormulaInput[]
-    connectOrCreate?: formula_conversationsCreateOrConnectWithoutFormulaInput | formula_conversationsCreateOrConnectWithoutFormulaInput[]
-    upsert?: formula_conversationsUpsertWithWhereUniqueWithoutFormulaInput | formula_conversationsUpsertWithWhereUniqueWithoutFormulaInput[]
-    createMany?: formula_conversationsCreateManyFormulaInputEnvelope
-    set?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-    disconnect?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-    delete?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-    connect?: formula_conversationsWhereUniqueInput | formula_conversationsWhereUniqueInput[]
-    update?: formula_conversationsUpdateWithWhereUniqueWithoutFormulaInput | formula_conversationsUpdateWithWhereUniqueWithoutFormulaInput[]
-    updateMany?: formula_conversationsUpdateManyWithWhereWithoutFormulaInput | formula_conversationsUpdateManyWithWhereWithoutFormulaInput[]
-    deleteMany?: formula_conversationsScalarWhereInput | formula_conversationsScalarWhereInput[]
   }
 
   export type formula_tagsUncheckedUpdateManyWithoutFormulaNestedInput = {
@@ -12197,12 +10635,6 @@ export namespace Prisma {
     update?: XOR<XOR<formulasUpdateToOneWithWhereWithoutFavourtiesInput, formulasUpdateWithoutFavourtiesInput>, formulasUncheckedUpdateWithoutFavourtiesInput>
   }
 
-  export type formulasCreateNestedOneWithoutConversationsInput = {
-    create?: XOR<formulasCreateWithoutConversationsInput, formulasUncheckedCreateWithoutConversationsInput>
-    connectOrCreate?: formulasCreateOrConnectWithoutConversationsInput
-    connect?: formulasWhereUniqueInput
-  }
-
   export type messagesCreateNestedManyWithoutConversationInput = {
     create?: XOR<messagesCreateWithoutConversationInput, messagesUncheckedCreateWithoutConversationInput> | messagesCreateWithoutConversationInput[] | messagesUncheckedCreateWithoutConversationInput[]
     connectOrCreate?: messagesCreateOrConnectWithoutConversationInput | messagesCreateOrConnectWithoutConversationInput[]
@@ -12215,14 +10647,6 @@ export namespace Prisma {
     connectOrCreate?: messagesCreateOrConnectWithoutConversationInput | messagesCreateOrConnectWithoutConversationInput[]
     createMany?: messagesCreateManyConversationInputEnvelope
     connect?: messagesWhereUniqueInput | messagesWhereUniqueInput[]
-  }
-
-  export type formulasUpdateOneRequiredWithoutConversationsNestedInput = {
-    create?: XOR<formulasCreateWithoutConversationsInput, formulasUncheckedCreateWithoutConversationsInput>
-    connectOrCreate?: formulasCreateOrConnectWithoutConversationsInput
-    upsert?: formulasUpsertWithoutConversationsInput
-    connect?: formulasWhereUniqueInput
-    update?: XOR<XOR<formulasUpdateToOneWithWhereWithoutConversationsInput, formulasUpdateWithoutConversationsInput>, formulasUncheckedUpdateWithoutConversationsInput>
   }
 
   export type messagesUpdateManyWithoutConversationNestedInput = {
@@ -12281,6 +10705,17 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -12334,6 +10769,33 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -12351,17 +10813,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -12374,119 +10825,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type formulasCreateWithoutSessionInput = {
-    formula_id?: string
-    latex_code: string
-    recognized_by: string
-    confidence?: number | null
-    name?: string | null
-    description?: string | null
-    created_at?: Date | string
-    interpretations?: formula_interpretationsCreateNestedManyWithoutFormulaInput
-    conversations?: formula_conversationsCreateNestedManyWithoutFormulaInput
-    tags?: formula_tagsCreateNestedManyWithoutFormulaInput
-    favourties?: favouritesCreateNestedManyWithoutFormulaInput
-  }
-
-  export type formulasUncheckedCreateWithoutSessionInput = {
-    formula_id?: string
-    latex_code: string
-    recognized_by: string
-    confidence?: number | null
-    name?: string | null
-    description?: string | null
-    created_at?: Date | string
-    interpretations?: formula_interpretationsUncheckedCreateNestedManyWithoutFormulaInput
-    conversations?: formula_conversationsUncheckedCreateNestedManyWithoutFormulaInput
-    tags?: formula_tagsUncheckedCreateNestedManyWithoutFormulaInput
-    favourties?: favouritesUncheckedCreateNestedManyWithoutFormulaInput
-  }
-
-  export type formulasCreateOrConnectWithoutSessionInput = {
-    where: formulasWhereUniqueInput
-    create: XOR<formulasCreateWithoutSessionInput, formulasUncheckedCreateWithoutSessionInput>
-  }
-
-  export type formulasCreateManySessionInputEnvelope = {
-    data: formulasCreateManySessionInput | formulasCreateManySessionInput[]
-  }
-
-  export type formulasUpsertWithWhereUniqueWithoutSessionInput = {
-    where: formulasWhereUniqueInput
-    update: XOR<formulasUpdateWithoutSessionInput, formulasUncheckedUpdateWithoutSessionInput>
-    create: XOR<formulasCreateWithoutSessionInput, formulasUncheckedCreateWithoutSessionInput>
-  }
-
-  export type formulasUpdateWithWhereUniqueWithoutSessionInput = {
-    where: formulasWhereUniqueInput
-    data: XOR<formulasUpdateWithoutSessionInput, formulasUncheckedUpdateWithoutSessionInput>
-  }
-
-  export type formulasUpdateManyWithWhereWithoutSessionInput = {
-    where: formulasScalarWhereInput
-    data: XOR<formulasUpdateManyMutationInput, formulasUncheckedUpdateManyWithoutSessionInput>
-  }
-
-  export type formulasScalarWhereInput = {
-    AND?: formulasScalarWhereInput | formulasScalarWhereInput[]
-    OR?: formulasScalarWhereInput[]
-    NOT?: formulasScalarWhereInput | formulasScalarWhereInput[]
-    formula_id?: StringFilter<"formulas"> | string
-    session_id?: StringFilter<"formulas"> | string
-    latex_code?: StringFilter<"formulas"> | string
-    recognized_by?: StringFilter<"formulas"> | string
-    confidence?: FloatNullableFilter<"formulas"> | number | null
-    name?: StringNullableFilter<"formulas"> | string | null
-    description?: StringNullableFilter<"formulas"> | string | null
-    created_at?: DateTimeFilter<"formulas"> | Date | string
-  }
-
-  export type formula_sessionsCreateWithoutFormulasInput = {
-    session_id?: string
-    input_type?: string | null
-    source_content?: string | null
-    created_at?: Date | string
-  }
-
-  export type formula_sessionsUncheckedCreateWithoutFormulasInput = {
-    session_id?: string
-    input_type?: string | null
-    source_content?: string | null
-    created_at?: Date | string
-  }
-
-  export type formula_sessionsCreateOrConnectWithoutFormulasInput = {
-    where: formula_sessionsWhereUniqueInput
-    create: XOR<formula_sessionsCreateWithoutFormulasInput, formula_sessionsUncheckedCreateWithoutFormulasInput>
   }
 
   export type formula_interpretationsCreateWithoutFormulaInput = {
@@ -12510,29 +10848,6 @@ export namespace Prisma {
 
   export type formula_interpretationsCreateManyFormulaInputEnvelope = {
     data: formula_interpretationsCreateManyFormulaInput | formula_interpretationsCreateManyFormulaInput[]
-  }
-
-  export type formula_conversationsCreateWithoutFormulaInput = {
-    conversation_id?: string
-    started_at?: Date | string
-    updated_at?: Date | string
-    messages?: messagesCreateNestedManyWithoutConversationInput
-  }
-
-  export type formula_conversationsUncheckedCreateWithoutFormulaInput = {
-    conversation_id?: string
-    started_at?: Date | string
-    updated_at?: Date | string
-    messages?: messagesUncheckedCreateNestedManyWithoutConversationInput
-  }
-
-  export type formula_conversationsCreateOrConnectWithoutFormulaInput = {
-    where: formula_conversationsWhereUniqueInput
-    create: XOR<formula_conversationsCreateWithoutFormulaInput, formula_conversationsUncheckedCreateWithoutFormulaInput>
-  }
-
-  export type formula_conversationsCreateManyFormulaInputEnvelope = {
-    data: formula_conversationsCreateManyFormulaInput | formula_conversationsCreateManyFormulaInput[]
   }
 
   export type formula_tagsCreateWithoutFormulaInput = {
@@ -12573,31 +10888,6 @@ export namespace Prisma {
     data: favouritesCreateManyFormulaInput | favouritesCreateManyFormulaInput[]
   }
 
-  export type formula_sessionsUpsertWithoutFormulasInput = {
-    update: XOR<formula_sessionsUpdateWithoutFormulasInput, formula_sessionsUncheckedUpdateWithoutFormulasInput>
-    create: XOR<formula_sessionsCreateWithoutFormulasInput, formula_sessionsUncheckedCreateWithoutFormulasInput>
-    where?: formula_sessionsWhereInput
-  }
-
-  export type formula_sessionsUpdateToOneWithWhereWithoutFormulasInput = {
-    where?: formula_sessionsWhereInput
-    data: XOR<formula_sessionsUpdateWithoutFormulasInput, formula_sessionsUncheckedUpdateWithoutFormulasInput>
-  }
-
-  export type formula_sessionsUpdateWithoutFormulasInput = {
-    session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: NullableStringFieldUpdateOperationsInput | string | null
-    source_content?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type formula_sessionsUncheckedUpdateWithoutFormulasInput = {
-    session_id?: StringFieldUpdateOperationsInput | string
-    input_type?: NullableStringFieldUpdateOperationsInput | string | null
-    source_content?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type formula_interpretationsUpsertWithWhereUniqueWithoutFormulaInput = {
     where: formula_interpretationsWhereUniqueInput
     update: XOR<formula_interpretationsUpdateWithoutFormulaInput, formula_interpretationsUncheckedUpdateWithoutFormulaInput>
@@ -12623,32 +10913,6 @@ export namespace Prisma {
     explanation?: StringFilter<"formula_interpretations"> | string
     engine_used?: StringFilter<"formula_interpretations"> | string
     generated_at?: DateTimeFilter<"formula_interpretations"> | Date | string
-  }
-
-  export type formula_conversationsUpsertWithWhereUniqueWithoutFormulaInput = {
-    where: formula_conversationsWhereUniqueInput
-    update: XOR<formula_conversationsUpdateWithoutFormulaInput, formula_conversationsUncheckedUpdateWithoutFormulaInput>
-    create: XOR<formula_conversationsCreateWithoutFormulaInput, formula_conversationsUncheckedCreateWithoutFormulaInput>
-  }
-
-  export type formula_conversationsUpdateWithWhereUniqueWithoutFormulaInput = {
-    where: formula_conversationsWhereUniqueInput
-    data: XOR<formula_conversationsUpdateWithoutFormulaInput, formula_conversationsUncheckedUpdateWithoutFormulaInput>
-  }
-
-  export type formula_conversationsUpdateManyWithWhereWithoutFormulaInput = {
-    where: formula_conversationsScalarWhereInput
-    data: XOR<formula_conversationsUpdateManyMutationInput, formula_conversationsUncheckedUpdateManyWithoutFormulaInput>
-  }
-
-  export type formula_conversationsScalarWhereInput = {
-    AND?: formula_conversationsScalarWhereInput | formula_conversationsScalarWhereInput[]
-    OR?: formula_conversationsScalarWhereInput[]
-    NOT?: formula_conversationsScalarWhereInput | formula_conversationsScalarWhereInput[]
-    conversation_id?: StringFilter<"formula_conversations"> | string
-    formula_id?: StringFilter<"formula_conversations"> | string
-    started_at?: DateTimeFilter<"formula_conversations"> | Date | string
-    updated_at?: DateTimeFilter<"formula_conversations"> | Date | string
   }
 
   export type formula_tagsUpsertWithWhereUniqueWithoutFormulaInput = {
@@ -12709,22 +10973,18 @@ export namespace Prisma {
     name?: string | null
     description?: string | null
     created_at?: Date | string
-    session: formula_sessionsCreateNestedOneWithoutFormulasInput
-    conversations?: formula_conversationsCreateNestedManyWithoutFormulaInput
     tags?: formula_tagsCreateNestedManyWithoutFormulaInput
     favourties?: favouritesCreateNestedManyWithoutFormulaInput
   }
 
   export type formulasUncheckedCreateWithoutInterpretationsInput = {
     formula_id?: string
-    session_id: string
     latex_code: string
     recognized_by: string
     confidence?: number | null
     name?: string | null
     description?: string | null
     created_at?: Date | string
-    conversations?: formula_conversationsUncheckedCreateNestedManyWithoutFormulaInput
     tags?: formula_tagsUncheckedCreateNestedManyWithoutFormulaInput
     favourties?: favouritesUncheckedCreateNestedManyWithoutFormulaInput
   }
@@ -12753,22 +11013,18 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    session?: formula_sessionsUpdateOneRequiredWithoutFormulasNestedInput
-    conversations?: formula_conversationsUpdateManyWithoutFormulaNestedInput
     tags?: formula_tagsUpdateManyWithoutFormulaNestedInput
     favourties?: favouritesUpdateManyWithoutFormulaNestedInput
   }
 
   export type formulasUncheckedUpdateWithoutInterpretationsInput = {
     formula_id?: StringFieldUpdateOperationsInput | string
-    session_id?: StringFieldUpdateOperationsInput | string
     latex_code?: StringFieldUpdateOperationsInput | string
     recognized_by?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    conversations?: formula_conversationsUncheckedUpdateManyWithoutFormulaNestedInput
     tags?: formula_tagsUncheckedUpdateManyWithoutFormulaNestedInput
     favourties?: favouritesUncheckedUpdateManyWithoutFormulaNestedInput
   }
@@ -12816,15 +11072,12 @@ export namespace Prisma {
     name?: string | null
     description?: string | null
     created_at?: Date | string
-    session: formula_sessionsCreateNestedOneWithoutFormulasInput
     interpretations?: formula_interpretationsCreateNestedManyWithoutFormulaInput
-    conversations?: formula_conversationsCreateNestedManyWithoutFormulaInput
     favourties?: favouritesCreateNestedManyWithoutFormulaInput
   }
 
   export type formulasUncheckedCreateWithoutTagsInput = {
     formula_id?: string
-    session_id: string
     latex_code: string
     recognized_by: string
     confidence?: number | null
@@ -12832,7 +11085,6 @@ export namespace Prisma {
     description?: string | null
     created_at?: Date | string
     interpretations?: formula_interpretationsUncheckedCreateNestedManyWithoutFormulaInput
-    conversations?: formula_conversationsUncheckedCreateNestedManyWithoutFormulaInput
     favourties?: favouritesUncheckedCreateNestedManyWithoutFormulaInput
   }
 
@@ -12883,15 +11135,12 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    session?: formula_sessionsUpdateOneRequiredWithoutFormulasNestedInput
     interpretations?: formula_interpretationsUpdateManyWithoutFormulaNestedInput
-    conversations?: formula_conversationsUpdateManyWithoutFormulaNestedInput
     favourties?: favouritesUpdateManyWithoutFormulaNestedInput
   }
 
   export type formulasUncheckedUpdateWithoutTagsInput = {
     formula_id?: StringFieldUpdateOperationsInput | string
-    session_id?: StringFieldUpdateOperationsInput | string
     latex_code?: StringFieldUpdateOperationsInput | string
     recognized_by?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -12899,7 +11148,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     interpretations?: formula_interpretationsUncheckedUpdateManyWithoutFormulaNestedInput
-    conversations?: formula_conversationsUncheckedUpdateManyWithoutFormulaNestedInput
     favourties?: favouritesUncheckedUpdateManyWithoutFormulaNestedInput
   }
 
@@ -12940,15 +11188,12 @@ export namespace Prisma {
     name?: string | null
     description?: string | null
     created_at?: Date | string
-    session: formula_sessionsCreateNestedOneWithoutFormulasInput
     interpretations?: formula_interpretationsCreateNestedManyWithoutFormulaInput
-    conversations?: formula_conversationsCreateNestedManyWithoutFormulaInput
     tags?: formula_tagsCreateNestedManyWithoutFormulaInput
   }
 
   export type formulasUncheckedCreateWithoutFavourtiesInput = {
     formula_id?: string
-    session_id: string
     latex_code: string
     recognized_by: string
     confidence?: number | null
@@ -12956,7 +11201,6 @@ export namespace Prisma {
     description?: string | null
     created_at?: Date | string
     interpretations?: formula_interpretationsUncheckedCreateNestedManyWithoutFormulaInput
-    conversations?: formula_conversationsUncheckedCreateNestedManyWithoutFormulaInput
     tags?: formula_tagsUncheckedCreateNestedManyWithoutFormulaInput
   }
 
@@ -12984,15 +11228,12 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    session?: formula_sessionsUpdateOneRequiredWithoutFormulasNestedInput
     interpretations?: formula_interpretationsUpdateManyWithoutFormulaNestedInput
-    conversations?: formula_conversationsUpdateManyWithoutFormulaNestedInput
     tags?: formula_tagsUpdateManyWithoutFormulaNestedInput
   }
 
   export type formulasUncheckedUpdateWithoutFavourtiesInput = {
     formula_id?: StringFieldUpdateOperationsInput | string
-    session_id?: StringFieldUpdateOperationsInput | string
     latex_code?: StringFieldUpdateOperationsInput | string
     recognized_by?: StringFieldUpdateOperationsInput | string
     confidence?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -13000,41 +11241,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     interpretations?: formula_interpretationsUncheckedUpdateManyWithoutFormulaNestedInput
-    conversations?: formula_conversationsUncheckedUpdateManyWithoutFormulaNestedInput
     tags?: formula_tagsUncheckedUpdateManyWithoutFormulaNestedInput
-  }
-
-  export type formulasCreateWithoutConversationsInput = {
-    formula_id?: string
-    latex_code: string
-    recognized_by: string
-    confidence?: number | null
-    name?: string | null
-    description?: string | null
-    created_at?: Date | string
-    session: formula_sessionsCreateNestedOneWithoutFormulasInput
-    interpretations?: formula_interpretationsCreateNestedManyWithoutFormulaInput
-    tags?: formula_tagsCreateNestedManyWithoutFormulaInput
-    favourties?: favouritesCreateNestedManyWithoutFormulaInput
-  }
-
-  export type formulasUncheckedCreateWithoutConversationsInput = {
-    formula_id?: string
-    session_id: string
-    latex_code: string
-    recognized_by: string
-    confidence?: number | null
-    name?: string | null
-    description?: string | null
-    created_at?: Date | string
-    interpretations?: formula_interpretationsUncheckedCreateNestedManyWithoutFormulaInput
-    tags?: formula_tagsUncheckedCreateNestedManyWithoutFormulaInput
-    favourties?: favouritesUncheckedCreateNestedManyWithoutFormulaInput
-  }
-
-  export type formulasCreateOrConnectWithoutConversationsInput = {
-    where: formulasWhereUniqueInput
-    create: XOR<formulasCreateWithoutConversationsInput, formulasUncheckedCreateWithoutConversationsInput>
   }
 
   export type messagesCreateWithoutConversationInput = {
@@ -13058,45 +11265,6 @@ export namespace Prisma {
 
   export type messagesCreateManyConversationInputEnvelope = {
     data: messagesCreateManyConversationInput | messagesCreateManyConversationInput[]
-  }
-
-  export type formulasUpsertWithoutConversationsInput = {
-    update: XOR<formulasUpdateWithoutConversationsInput, formulasUncheckedUpdateWithoutConversationsInput>
-    create: XOR<formulasCreateWithoutConversationsInput, formulasUncheckedCreateWithoutConversationsInput>
-    where?: formulasWhereInput
-  }
-
-  export type formulasUpdateToOneWithWhereWithoutConversationsInput = {
-    where?: formulasWhereInput
-    data: XOR<formulasUpdateWithoutConversationsInput, formulasUncheckedUpdateWithoutConversationsInput>
-  }
-
-  export type formulasUpdateWithoutConversationsInput = {
-    formula_id?: StringFieldUpdateOperationsInput | string
-    latex_code?: StringFieldUpdateOperationsInput | string
-    recognized_by?: StringFieldUpdateOperationsInput | string
-    confidence?: NullableFloatFieldUpdateOperationsInput | number | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    session?: formula_sessionsUpdateOneRequiredWithoutFormulasNestedInput
-    interpretations?: formula_interpretationsUpdateManyWithoutFormulaNestedInput
-    tags?: formula_tagsUpdateManyWithoutFormulaNestedInput
-    favourties?: favouritesUpdateManyWithoutFormulaNestedInput
-  }
-
-  export type formulasUncheckedUpdateWithoutConversationsInput = {
-    formula_id?: StringFieldUpdateOperationsInput | string
-    session_id?: StringFieldUpdateOperationsInput | string
-    latex_code?: StringFieldUpdateOperationsInput | string
-    recognized_by?: StringFieldUpdateOperationsInput | string
-    confidence?: NullableFloatFieldUpdateOperationsInput | number | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    interpretations?: formula_interpretationsUncheckedUpdateManyWithoutFormulaNestedInput
-    tags?: formula_tagsUncheckedUpdateManyWithoutFormulaNestedInput
-    favourties?: favouritesUncheckedUpdateManyWithoutFormulaNestedInput
   }
 
   export type messagesUpsertWithWhereUniqueWithoutConversationInput = {
@@ -13128,14 +11296,14 @@ export namespace Prisma {
 
   export type formula_conversationsCreateWithoutMessagesInput = {
     conversation_id?: string
+    title?: string | null
     started_at?: Date | string
     updated_at?: Date | string
-    formula: formulasCreateNestedOneWithoutConversationsInput
   }
 
   export type formula_conversationsUncheckedCreateWithoutMessagesInput = {
     conversation_id?: string
-    formula_id: string
+    title?: string | null
     started_at?: Date | string
     updated_at?: Date | string
   }
@@ -13158,64 +11326,16 @@ export namespace Prisma {
 
   export type formula_conversationsUpdateWithoutMessagesInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    formula?: formulasUpdateOneRequiredWithoutConversationsNestedInput
   }
 
   export type formula_conversationsUncheckedUpdateWithoutMessagesInput = {
     conversation_id?: StringFieldUpdateOperationsInput | string
-    formula_id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
     started_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type formulasCreateManySessionInput = {
-    formula_id?: string
-    latex_code: string
-    recognized_by: string
-    confidence?: number | null
-    name?: string | null
-    description?: string | null
-    created_at?: Date | string
-  }
-
-  export type formulasUpdateWithoutSessionInput = {
-    formula_id?: StringFieldUpdateOperationsInput | string
-    latex_code?: StringFieldUpdateOperationsInput | string
-    recognized_by?: StringFieldUpdateOperationsInput | string
-    confidence?: NullableFloatFieldUpdateOperationsInput | number | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    interpretations?: formula_interpretationsUpdateManyWithoutFormulaNestedInput
-    conversations?: formula_conversationsUpdateManyWithoutFormulaNestedInput
-    tags?: formula_tagsUpdateManyWithoutFormulaNestedInput
-    favourties?: favouritesUpdateManyWithoutFormulaNestedInput
-  }
-
-  export type formulasUncheckedUpdateWithoutSessionInput = {
-    formula_id?: StringFieldUpdateOperationsInput | string
-    latex_code?: StringFieldUpdateOperationsInput | string
-    recognized_by?: StringFieldUpdateOperationsInput | string
-    confidence?: NullableFloatFieldUpdateOperationsInput | number | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    interpretations?: formula_interpretationsUncheckedUpdateManyWithoutFormulaNestedInput
-    conversations?: formula_conversationsUncheckedUpdateManyWithoutFormulaNestedInput
-    tags?: formula_tagsUncheckedUpdateManyWithoutFormulaNestedInput
-    favourties?: favouritesUncheckedUpdateManyWithoutFormulaNestedInput
-  }
-
-  export type formulasUncheckedUpdateManyWithoutSessionInput = {
-    formula_id?: StringFieldUpdateOperationsInput | string
-    latex_code?: StringFieldUpdateOperationsInput | string
-    recognized_by?: StringFieldUpdateOperationsInput | string
-    confidence?: NullableFloatFieldUpdateOperationsInput | number | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type formula_interpretationsCreateManyFormulaInput = {
@@ -13223,12 +11343,6 @@ export namespace Prisma {
     explanation: string
     engine_used: string
     generated_at?: Date | string
-  }
-
-  export type formula_conversationsCreateManyFormulaInput = {
-    conversation_id?: string
-    started_at?: Date | string
-    updated_at?: Date | string
   }
 
   export type formula_tagsCreateManyFormulaInput = {
@@ -13260,26 +11374,6 @@ export namespace Prisma {
     explanation?: StringFieldUpdateOperationsInput | string
     engine_used?: StringFieldUpdateOperationsInput | string
     generated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type formula_conversationsUpdateWithoutFormulaInput = {
-    conversation_id?: StringFieldUpdateOperationsInput | string
-    started_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    messages?: messagesUpdateManyWithoutConversationNestedInput
-  }
-
-  export type formula_conversationsUncheckedUpdateWithoutFormulaInput = {
-    conversation_id?: StringFieldUpdateOperationsInput | string
-    started_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    messages?: messagesUncheckedUpdateManyWithoutConversationNestedInput
-  }
-
-  export type formula_conversationsUncheckedUpdateManyWithoutFormulaInput = {
-    conversation_id?: StringFieldUpdateOperationsInput | string
-    started_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type formula_tagsUpdateWithoutFormulaInput = {

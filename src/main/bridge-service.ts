@@ -4,7 +4,6 @@ import {
   FavouritesTable,
   FormulaConversationsTable,
   FormulaInterpretationsTable,
-  FormulaSessionsTable,
   FormulasTable,
   FormulaTagsTable,
   getEncryptedJsonConfig,
@@ -135,40 +134,6 @@ ipcMain.handle(
   'database:formula_interpretations:deleteOne',
   async (event, uuid: string) => {
     return await FormulaInterpretationsTable.deleteOne(uuid);
-  }
-);
-
-// formula_sessions table
-
-ipcMain.handle('database:formula_sessions:getAll', async () => {
-  return await FormulaSessionsTable.getAll();
-});
-
-ipcMain.handle(
-  'database:formula_sessions:getUniqueByUuid',
-  async (event, uuid: string) => {
-    return await FormulaSessionsTable.getUniqueByUuid(uuid);
-  }
-);
-
-ipcMain.handle(
-  'database:formula_sessions:insertOne',
-  async (event, formulaSession: Prisma.formula_sessionsCreateManyInput) => {
-    return await FormulaSessionsTable.insertOne(formulaSession);
-  }
-);
-
-ipcMain.handle(
-  'database:formula_sessions:insertMany',
-  async (event, formulaSessions: Prisma.formula_sessionsCreateManyInput[]) => {
-    return await FormulaSessionsTable.insertMany(formulaSessions);
-  }
-);
-
-ipcMain.handle(
-  'database:formula_sessions:deleteOne',
-  async (event, uuid: string) => {
-    return await FormulaSessionsTable.deleteOne(uuid);
   }
 );
 
