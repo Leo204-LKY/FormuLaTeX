@@ -258,7 +258,6 @@ declare global {
        * @returns List of all formulas in formulas table
        */
       getAll: () => Promise<formulas[]>;
-      3;
 
       /**
        * Get one formula by UUID
