@@ -43,6 +43,33 @@ contextBridge.exposeInMainWorld('chatClientApi', {
   },
 });
 
+contextBridge.exposeInMainWorld('simpleTexApi', {
+  convert: (
+    input: string | Buffer,
+    appId?: string,
+    appSecret?: string,
+    timeout?: number
+  ): Promise<string> => {
+    if (typeof input === 'string') {
+      return ipcRenderer.invoke(
+        'simpletex:convert:path',
+        input,
+        appId,
+        appSecret,
+        timeout
+      );
+    } else {
+      return ipcRenderer.invoke(
+        'simpletex:convert:imageBuffer',
+        input,
+        appId,
+        appSecret,
+        timeout
+      );
+    }
+  },
+});
+
 contextBridge.exposeInMainWorld('favouritesTableApi', {
   getAll: (): Promise<favourites[]> => {
     return ipcRenderer.invoke('database:favourites:getAll');

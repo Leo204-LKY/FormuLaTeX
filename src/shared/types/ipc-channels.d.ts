@@ -111,6 +111,39 @@ declare global {
     };
 
     /**
+     * SimpleTex API
+     */
+    simpleTexApi: {
+      /**
+       * Recognize formula using SimpleTex API
+       * @param filePath Image file path
+       * @param appId SimpleTex APP ID
+       * @param appSecret SimpleTex App Secret
+       * @param timeout Request timeout (ms)
+       */
+      convertImageToLatex(
+        filePath: string,
+        appId?: string,
+        appSecret?: string,
+        timeout?: number
+      ): Promise<SimpleTexResponse>;
+
+      /**
+       * Recognize formula using SimpleTex API
+       * @param imageBuffer Image buffer
+       * @param appId SimpleTex APP ID
+       * @param appSecret SimpleTex App Secret
+       * @param timeout Request timeout (ms)
+       */
+      convertImageToLatex(
+        imageBuffer: Buffer,
+        appId?: string,
+        appSecret?: string,
+        timeout?: number
+      ): Promise<SimpleTexResponse>;
+    };
+
+    /**
      * Favourites table API
      */
     favouritesTableApi: {

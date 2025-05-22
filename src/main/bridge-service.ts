@@ -1,6 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import {
   ChatMessage,
+  convertImageToLatex,
   FavouritesTable,
   FormulaConversationsTable,
   FormulaInterpretationsTable,
@@ -46,6 +47,36 @@ ipcMain.handle(
 ipcMain.handle('deepseek:updateApiKey', (event, apiKey: string) => {
   deepseekClient.updateApiKey(apiKey);
 });
+
+// *******************************************
+// SimpleTex APIs
+// *******************************************
+
+ipcMain.handle(
+  'simpletex:convert:path',
+  async (
+    event,
+    filePath: string,
+    appId?: string,
+    appSecret?: string,
+    timeout?: number
+  ) => {
+    return await convertImageToLatex(filePath, appId, appSecret, timeout);
+  }
+);
+
+ipcMain.handle(
+  'simpletex:convert:imageBuffer',
+  async (
+    event,
+    imageBuffer: Buffer,
+    appId?: string,
+    appSecret?: string,
+    timeout?: number
+  ) => {
+    return await convertImageToLatex(imageBuffer, appId, appSecret, timeout);
+  }
+);
 
 // *******************************************
 // Database APIs
