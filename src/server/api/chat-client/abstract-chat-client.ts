@@ -1,5 +1,6 @@
-import { OpenAI, ClientOptions } from 'openai';
-import { ChatMessage } from '../../interfaces';
+import { OpenAI } from 'openai';
+import type { ClientOptions } from 'openai';
+import type { ChatMessage } from '../../interfaces';
 
 /**
  * Abstract AI chat client that supports stream output
