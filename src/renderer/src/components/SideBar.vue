@@ -36,12 +36,12 @@
     <div class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
       <ul class="space-y-2">
         <li
-          v-for="(topic, index) in historyTopics"
-          :key="index"
+          v-for="topic in historyTopics"
+          :key="topic.id"
           class="p-2 bg-gray-100 rounded-md hover:bg-gray-200 cursor-pointer"
-          @click="selectHistoryTopic(topic.name)"
+          @click="selectHistoryTopic(topic)"
         >
-          {{ topic.name }}
+          {{ topic.title }}
         </li>
       </ul>
     </div>
@@ -74,7 +74,7 @@
           class="text-xl font-bold cursor-pointer"
           @click="startEditingTitle"
         >
-          {{ currentTopic }}
+          {{ currentTopic.title }}
         </h2>
         <input
           v-else
@@ -116,18 +116,24 @@
       </div>
     </div>
     <!-- 聊天记录 -->
-    <div class="flex-1 p-4 h-3/4 overflow-y-auto space-y-4">
+    <div ref="chatContainer" class="flex-1 p-4 h-3/4 overflow-y-auto space-y-4">
       <div
-        v-for="(message, index) in messages"
+        v-for="(message, index) in messagesData"
         :key="index"
-        :class="message.isUser ? 'text-right' : 'text-left'"
+        :class="message.role == 'user' ? 'text-right' : 'text-left'"
         class="p-2 h-auto"
       >
         <span
+          v-if="message.role === 'user'"
           class="bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
         >
-          {{ message.text }}
+          {{ message.content }}
         </span>
+        <div
+          v-else
+          class="bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words whitespace-pre-wrap text-left"
+          v-html="renderMarkdown(message.content)"
+        ></div>
       </div>
     </div>
 
@@ -137,7 +143,7 @@
     >
       <textarea
         v-model="inputText"
-        placeholder="输入消息..."
+        placeholder="Ask me anything about formula..."
         class="flex-1 p-2 border rounded-md mr-2 min-h-32 focus:outline-none shadow-md focus:ring-2 focus:ring-gray-500 w-full"
       ></textarea>
       <button @click="sendMessage" class="btn-style3 btn-status2">Send</button>
@@ -146,19 +152,46 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, nextTick, onMounted, onUnmounted } from 'vue';
+  import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
   import { isDrawerOpenEventBus } from '../eventBus';
-  import { createNewChatDB } from '../utils/chatDB';
+  import {
+    createConservation,
+    getConservations,
+    getMessages,
+    createMessage,
+  } from '../utils/chatDB';
+  import DOMPurify from 'dompurify';
+  import { marked } from 'marked';
+  import type { messages } from '../../../server/database/generated';
+  import { turnChatMessage } from '../utils/turnChatMessage';
 
-  interface Message {
-    text: string;
-    isUser: boolean;
+  interface Topics {
+    title: string;
+    id: string;
   }
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+    async: false,
+  });
+
+  const renderMarkdown = (content: string) => {
+    const html = marked(content) as string;
+
+    return DOMPurify.sanitize(html);
+  };
+
+  const chatContainer = ref<HTMLDivElement | null>(null);
+  const shouldAutoScroll = ref(true); // 是否自动滚动
+  // const mathRegex = /(?:\$.*?\$)|(?:`{3}math\n?.*?\n?`{3})/g;
 
   const isDrawerOpen = ref(false);
-  const messages = ref<Message[]>([]);
+  const messagesData = ref<messages[]>([]);
   const inputText = ref('');
-  const currentTopic = ref('Chat Title');
+  const currentTopic = ref<Topics>({
+    title: 'Chat Title',
+    id: 'default',
+  });
 
   const isHistoryDrawerOpen = ref(false);
   const showSetting = ref(false);
@@ -169,28 +202,47 @@
   const titleInput = ref<HTMLInputElement | null>(null);
 
   // TODO: 历史 Topic
-  const historyTopics = ref([
-    { name: 'Record1', id: 1 },
-    { name: 'Record2', id: 2 },
-    { name: 'Record3', id: 3 },
-    // TODO: 可以根据实际接口拉取
-  ]);
+  const historyTopics = ref<Topics[]>([]);
 
-  // TODO: Topic - 历史对话数据
-  const historyConversations = ref<Record<string, Message[]>>({
-    Record1: [
-      { text: '你好，这是第一条消息', isUser: true },
-      { text: '你好，请问需要什么帮助？', isUser: false },
-    ],
-    Record2: [
-      { text: '第二个话题的内容', isUser: true },
-      { text: '这是相关的回答', isUser: false },
-    ],
-    Record3: [
-      { text: '测试第三个话题', isUser: true },
-      { text: '好的，我明白了', isUser: false },
-    ],
+  onMounted(async () => {
+    const conservations = await getConservations();
+    historyTopics.value = conservations.map((conv) => ({
+      title: conv.title as string,
+      id: conv.conversation_id,
+    }));
   });
+
+  onMounted(() => {
+    if (chatContainer.value) {
+      chatContainer.value.addEventListener('scroll', (e) => {
+        const { scrollTop, scrollHeight, clientHeight } =
+          e.target as HTMLDivElement;
+        // 当滚动距离小于总高度 - 容器高度 - 100 时，认为用户手动滚动
+        shouldAutoScroll.value = scrollTop + clientHeight >= scrollHeight - 100;
+      });
+    }
+  });
+
+  const scrollToBottom = () => {
+    chatContainer.value?.scrollIntoView({
+      behavior: 'smooth', // 平滑滚动
+      block: 'end',
+    });
+  };
+
+  // 监听消息变化，触发滚动
+  watch(
+    messagesData,
+    () => {
+      if (shouldAutoScroll.value && chatContainer.value) {
+        // 延迟执行确保DOM更新完成
+        nextTick(() => {
+          chatContainer.value!.scrollTop = chatContainer.value!.scrollHeight;
+        });
+      }
+    },
+    { deep: true }
+  );
 
   function toggleDrawer() {
     isDrawerOpen.value = !isDrawerOpen.value;
@@ -200,16 +252,12 @@
     showSetting.value = !showSetting.value;
   }
 
-  function selectHistoryTopic(topic: string) {
-    console.log('选择了话题:', topic);
+  async function selectHistoryTopic(topic: Topics) {
+    console.log('Choose Topic:', topic.title);
     isHistoryDrawerOpen.value = false;
-    currentTopic.value = topic;
+    currentTopic.value = { ...topic };
     // TODO: 加载对应的聊天内容逻辑在这里处理
-    if (historyConversations.value[topic]) {
-      messages.value = [...historyConversations.value[topic]];
-    } else {
-      messages.value = [{ text: '暂无历史记录', isUser: false }];
-    }
+    messagesData.value = await getChatMessage(topic.id);
   }
 
   const insertFormula = (formula: string) => {
@@ -217,23 +265,87 @@
   };
   defineExpose({ isDrawerOpen, insertFormula });
 
-  function sendMessage() {
+  async function sendMessage() {
     const text = inputText.value.trim();
     if (text === '') return;
-
-    messages.value.push({ text, isUser: true });
+    const m_id1 = await createMessage(currentTopic.value.id, 'user', text);
+    // TODO: 实际回复转写逻辑
+    messagesData.value.push({
+      conversation_id: currentTopic.value.id,
+      message_id: m_id1,
+      content: text,
+      role: 'user',
+      created_at: new Date(),
+    });
     inputText.value = '';
 
-    // TODO: 实际回复转写逻辑
-    setTimeout(() => {
-      messages.value.push({ text: `机器人回复：「${text}」`, isUser: false });
-    }, 500);
+    try {
+      const answer = await new Promise<string>((resolve, reject) => {
+        let partialAnswer = '';
+        window.chatClientApi.onDeepseekChunk((chunk) => {
+          console.log(chunk);
+          partialAnswer += chunk;
+
+          const botMessage = messagesData.value.find(
+            (msg) => msg.role === 'assistant' && msg.message_id === 'temp-ai'
+          );
+          if (botMessage) {
+            botMessage.content = partialAnswer;
+          } else {
+            messagesData.value.push({
+              conversation_id: currentTopic.value.id,
+              message_id: 'temp-ai', // 临时 ID
+              content: partialAnswer,
+              role: 'assistant',
+              created_at: new Date(),
+            });
+          }
+          scrollToBottom();
+        });
+
+        window.chatClientApi.onDeepseekEnd(() => {
+          resolve(partialAnswer);
+        });
+
+        window.chatClientApi.onDeepseekError((error) => {
+          reject(error);
+        });
+
+        window.chatClientApi.deepseekAsk(
+          text,
+          turnChatMessage(messagesData.value)
+        );
+      });
+
+      const m_id2 = await createMessage(
+        currentTopic.value.id,
+        'assistant',
+        answer
+      );
+      messagesData.value = messagesData.value.map((msg) =>
+        msg.message_id === 'temp-ai'
+          ? { ...msg, message_id: m_id2, content: answer }
+          : msg
+      );
+    } catch (error) {
+      console.error('AI response error:', error);
+      messagesData.value.push({
+        conversation_id: currentTopic.value.id,
+        message_id: crypto.randomUUID(),
+        content: '**Error!!!**',
+        role: 'assistant',
+        created_at: new Date(),
+      });
+    }
+    shouldAutoScroll.value = true;
+    scrollToBottom();
   }
 
   function saveKey() {
     console.log('保存的API Key:', apiKey.value);
     showSetting.value = false;
     // TODO: 处理保存key逻辑
+    window.chatClientApi.deepseekUpdateApiKey(apiKey.value);
   }
 
   onMounted(() => {
@@ -250,7 +362,7 @@
   });
 
   function startEditingTitle() {
-    editableTitle.value = currentTopic.value;
+    editableTitle.value = currentTopic.value.title;
     editingTitle.value = true;
 
     nextTick(() => {
@@ -259,29 +371,32 @@
   }
 
   function finishEditingTitle() {
-    currentTopic.value = editableTitle.value.trim() || currentTopic.value;
+    currentTopic.value.title =
+      editableTitle.value.trim() || currentTopic.value.title;
     editingTitle.value = false;
   }
 
   // TODO:创建新聊天
-  const createNewChat = () => {
-    // 调用工具函数创建初始数据
-    const newChatData = createNewChatDB(''); // 空标题会自动转为默认值
-
-    // 处理标题自动编号（如果需要）
+  const createNewChat = async () => {
     const baseTitle = 'New Chat';
-    const existingTitles = historyTopics.value.map((chat) => chat.name);
+    const existingTitles = historyTopics.value.map((chat) => chat.title);
     let uniqueTitle = baseTitle;
     let counter = 1;
     while (existingTitles.includes(uniqueTitle)) {
       uniqueTitle = `${baseTitle} ${counter++}`;
     }
-    newChatData.title = uniqueTitle;
-    currentTopic.value = uniqueTitle;
+    const newData = await createConservation(uniqueTitle); // 空标题会自动转为默认值
+
+    currentTopic.value.title = uniqueTitle;
     historyTopics.value.unshift({
-      name: uniqueTitle,
-      id: 222,
+      title: uniqueTitle,
+      id: newData.id,
     });
-    messages.value = [];
+    messagesData.value = [];
+  };
+
+  const getChatMessage = async (c_id: string) => {
+    const topic_message = await getMessages(c_id);
+    return topic_message;
   };
 </script>

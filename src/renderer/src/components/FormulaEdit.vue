@@ -98,7 +98,7 @@
         spellcheck="false"
         class="w-full border border-gray-200 p-2 rounded-md h-3/4"
         @input="onInputChange"
-        placeholder="请输入LaTeX公式，如：\\frac{a}{b} = c"
+        placeholder="Please enter latex code, like: \\frac{a}{b} = c"
       ></textarea>
 
       <!-- 上传图像 -->

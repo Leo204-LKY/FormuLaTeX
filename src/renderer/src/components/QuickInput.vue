@@ -38,16 +38,15 @@
       class="flex-1 overflow-y-auto scroll-hidden pr-3"
     >
       <ExpressionItem
-        v-for="(expr, index) in displayItems"
-        :key="index"
-        :id="`expr-${index}`"
+        v-for="expr in displayItems"
+        :key="expr.formula_id"
+        :id="`expr-${expr.formula_id}`"
         :ref="
           (el) => {
-            if (el) {
-              expressionItemRefs[index] = el as InstanceType<
+            if (el)
+              expressionItemRefs[expr.formula_id] = el as InstanceType<
                 typeof ExpressionItem
               >;
-            }
           }
         "
         :expression="expr"
@@ -122,58 +121,32 @@
   import ExpressionItem from '../sub-components/ExpressionItem.vue';
   import { ref, onMounted, onUnmounted, reactive } from 'vue';
   import { inputEventBus } from '../eventBus';
-  import { createFormula } from '../utils/formulaDB';
+  import { createFormula, getFormulas } from '../utils/formulaDB';
+  import type { formulas } from '../../../server/database/generated';
 
   type ExpressionItemInstance = InstanceType<typeof ExpressionItem>;
   const tagSelectorRef = ref(null);
   const expressionListRef = ref(null);
-  const expressionItemRefs: Record<number, ExpressionItemInstance> = reactive(
-    {}
-  );
+  const expressionItemRefs: Record<number | string, ExpressionItemInstance> =
+    reactive({});
 
   const isModalOpen = ref(false);
   const newFormulaName = ref('');
   const newFormulaContent = ref('');
   const tags = ['History', 'Common', 'Math', 'Physics']; // 举例
   const selectedTag = ref(tags[0]);
-  const displayItems = ref<string[]>([]); // 或你具体的数据类型
+  const displayItems = ref<formulas[]>([]); // 或你具体的数据类型
 
   const fetchItemsByTag = async (tag: string) => {
     selectedTag.value = tag;
-
     const result = await fetchFromDB(tag);
     displayItems.value = result;
   };
 
   // TODO: 替换为实际的数据库查询逻辑
   const fetchFromDB = async (tag: string) => {
-    const mockData: Record<string, string[]> = {
-      History: [
-        `c = \\sqrt{a^2 + b^2}`,
-        `c = \\sqrt{a^2 + b^2}`,
-        `c = \\sqrt{a^2 + b^2}`,
-        `c = \\sqrt{a^2 + b^2}`,
-      ],
-      Common: [
-        `a = \\sqrt{a^2 + b^2}`,
-        `a = \\sqrt{a^2 + b^2}`,
-        `a = \\sqrt{a^2 + b^2}`,
-        `a = \\sqrt{a^2 + b^2}`,
-      ],
-      Math: [
-        `b = \\sqrt{a^2 + b^2}`,
-        `b = \\sqrt{a^2 + b^2}`,
-        `b = \\sqrt{a^2 + b^2}`,
-        `b = \\sqrt{a^2 + b^2}`,
-      ],
-      Physics: [
-        `c = \\sqrt{a^2 + b^2}`,
-        `c = \\sqrt{a^2 + b^2}`,
-        `c = \\sqrt{a^2 + b^2}`,
-        `c = \\sqrt{a^2 + b^2}`,
-      ],
-    };
-    return mockData[tag] || [];
+    const formulasData: formulas[] = await getFormulas(tag);
+    return formulasData;
   };
 
   onMounted(() => {
@@ -181,8 +154,8 @@
   });
 
   const latexInput = ref('');
-  const handleSelectExpression = (expr: string) => {
-    latexInput.value = expr;
+  const handleSelectExpression = (expr: formulas) => {
+    latexInput.value = expr.latex_code;
   };
 
   // 打开模态框并复制当前输入内容
@@ -207,9 +180,8 @@
   });
 
   // TODO：保存公式
-  const saveFormula = () => {
+  const saveFormula = async () => {
     if (!newFormulaName.value.trim() || !newFormulaContent.value.trim()) {
-      alert('Formula name and content are required');
       return;
     }
     console.log('Saving formula:', {
@@ -217,11 +189,28 @@
       content: newFormulaContent.value,
       created_at: new Date().toISOString(),
     });
+    try {
+      const f_id = await createFormula(
+        selectedTag.value,
+        newFormulaName.value,
+        newFormulaContent.value
+      );
+      const newFormula: formulas = {
+        formula_id: f_id,
+        name: newFormulaName.value,
+        latex_code: newFormulaContent.value,
+        description: '',
+        recognized_by: '',
+        confidence: 1,
+        created_at: new Date(),
+      };
+      displayItems.value.unshift(newFormula);
+    } catch (error) {
+      console.error('Request error', error);
+    }
 
     isModalOpen.value = false;
-
-    createFormula();
-
-    alert('Formula saved successfully!');
+    newFormulaName.value = '';
+    newFormulaContent.value = '';
   };
 </script>
