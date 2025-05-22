@@ -77,6 +77,18 @@ export async function getPrismaClient(): Promise<PrismaClient> {
 }
 
 /**
+ * Close the Prisma client connection
+ */
+export async function closePrismaClient(): Promise<void> {
+  if (prisma) {
+    await prisma.$disconnect();
+    saveData();
+    console.log('Prisma client disconnected.');
+    prisma = undefined;
+  }
+}
+
+/**
  * Save encrypted database file from temp dir
  * @param tempPath Decrypted database file path
  * @param savePath Encrypt database file path

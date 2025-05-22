@@ -4,7 +4,9 @@
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-import { getPrismaClient, saveData } from '../../database';
+import { closePrismaClient, getPrismaClient, saveData } from '../../database';
+
+declare let prisma: any;
 
 const TEMP_FILES: string[] = [
   path.resolve(getSafeTempDir(), 'formulatex'), // Default temp dir
@@ -77,14 +79,10 @@ export function cleanUpTempFiles(filePaths: string[] = TEMP_FILES): void {
  * Close Prisma client (if exist) and clean up temp files
  */
 async function gracefulShutdown() {
-  const prisma = await getPrismaClient();
-  if (prisma) {
-    await prisma.$disconnect();
-    saveData();
-    console.log('Prisma client disconnected.');
-  }
-  cleanUpTempFiles();
-  process.exit(0);
+  closePrismaClient().then(() => {
+    cleanUpTempFiles();
+    process.exit(0);
+  });
 }
 
 // Auto cleanup when program closes
