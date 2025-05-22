@@ -15,6 +15,10 @@ const generatedPath = path.join(projectRoot, 'scripts', 'dev.db');
 console.log('Generating database...');
 try {
   execSync(`npx prisma db push --force-reset --schema=${schemaPath}`, {
+    env: {
+      ...process.env,
+      DATABASE_URL: `file:${generatedPath}`,
+    },
     stdio: 'inherit',
   });
   console.log('Database generated successfully at ', generatedPath);
