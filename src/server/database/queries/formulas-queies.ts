@@ -6,14 +6,22 @@ import type { formulas, Prisma } from '../generated';
  * `formulas` table queries, only contains static methods
  */
 export class FormulasTable {
-  private static readonly PRISMA_CLIENT: PrismaClient = getPrismaClient();
+  private static prisma: PrismaClient | null = null;
+
+  private static async getPrismaClient(): Promise<PrismaClient> {
+    if (!FormulasTable.prisma) {
+      FormulasTable.prisma = await getPrismaClient();
+    }
+    return FormulasTable.prisma;
+  }
 
   /**
    * Get all formulas in formulas table
    * @returns List of all formulas in formulas table
    */
   static async getAll(): Promise<formulas[]> {
-    return FormulasTable.PRISMA_CLIENT.formulas.findMany();
+    const prisma = await FormulasTable.getPrismaClient();
+    return prisma.formulas.findMany();
   }
 
   /**
@@ -22,7 +30,8 @@ export class FormulasTable {
    * @returns Formula with given UUID
    */
   static async getUniqueByUuid(uuid: string): Promise<formulas | null> {
-    return FormulasTable.PRISMA_CLIENT.formulas.findUnique({
+    const prisma = await FormulasTable.getPrismaClient();
+    return prisma.formulas.findUnique({
       where: { formula_id: uuid },
     });
   }
@@ -33,7 +42,8 @@ export class FormulasTable {
    * @returns Formulas with given name
    */
   static async getManyByName(name: string): Promise<formulas[]> {
-    return FormulasTable.PRISMA_CLIENT.formulas.findMany({
+    const prisma = await FormulasTable.getPrismaClient();
+    return prisma.formulas.findMany({
       where: { name },
     });
   }
@@ -46,7 +56,9 @@ export class FormulasTable {
   static async insertOne(
     formula: Prisma.formulasCreateManyInput
   ): Promise<string> {
-    const result = await FormulasTable.PRISMA_CLIENT.formulas.create({
+    const prisma = await FormulasTable.getPrismaClient();
+
+    const result = await prisma.formulas.create({
       data: formula,
     });
 
@@ -62,7 +74,9 @@ export class FormulasTable {
   static async insertMany(
     formulas: Prisma.formulasCreateManyInput[]
   ): Promise<void> {
-    await FormulasTable.PRISMA_CLIENT.$transaction(async (tx) => {
+    const prisma = await FormulasTable.getPrismaClient();
+
+    await prisma.$transaction(async (tx) => {
       await tx.formulas.createMany({
         data: formulas,
       });
@@ -76,7 +90,9 @@ export class FormulasTable {
    * @param uuid Formula UUID
    */
   static async deleteUniqueByUuid(uuid: string): Promise<void> {
-    await FormulasTable.PRISMA_CLIENT.formulas.delete({
+    const prisma = await FormulasTable.getPrismaClient();
+
+    await prisma.formulas.delete({
       where: { formula_id: uuid },
     });
 

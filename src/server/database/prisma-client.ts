@@ -1,9 +1,11 @@
 import path from 'path';
 import fs from 'fs';
 import { PrismaClient } from './generated';
-import { getAppDataDirectory, getSafeTempDir } from '../services';
+import { getSafeTempDir } from '../services';
+import { getAppDataDirectory } from '../services/file-service';
 import { createTempDecryptedDB, saveEncryptedDB } from './temp-db-manager';
 import { getRandomStr } from '../utils';
+import { execSync } from 'child_process';
 
 const encryptedDbPath = path.join(getAppDataDirectory(), 'encrypted-data.db');
 let tempDbPath: string | undefined;
@@ -14,9 +16,11 @@ let prisma: PrismaClient | undefined;
  * Get prisma client instance, if not created yet, create a new one
  * @returns Prisma client instance
  */
-export function getPrismaClient(): PrismaClient {
+export async function getPrismaClient(): Promise<PrismaClient> {
+  console.log('Getting Prisma client...');
+
   if (!prisma) {
-    const tempDir = getSafeTempDir();
+    const tempDir = path.resolve(getSafeTempDir(), 'formulatex');
     const tempDbName = `decrypted-${getRandomStr(12)}.sqlite`;
     tempDbPath = path.join(tempDir, tempDbName);
 
@@ -26,16 +30,41 @@ export function getPrismaClient(): PrismaClient {
 
     // Check if the encrypted database file exists
     if (!fs.existsSync(encryptedDbPath)) {
-      // If the encrypted database file does not exist, create a new one
+      console.log('Encrypted database file not found. Creating a new one...');
 
+      // Ensure the temp directory exists
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir, { recursive: true });
+      }
+
+      const schemaPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        'src',
+        'server',
+        'database',
+        'schema',
+        'schema.prisma'
+      );
+
+      execSync(`npx prisma db push --skip-generate --schema="${schemaPath}"`, {
+        env: {
+          ...process.env,
+          DATABASE_URL: `file:${tempDbPath}`,
+        },
+      });
+
+      console.log('Database initialized successfully at: ', tempDbPath);
+
+      // Instantiate PrismaClient
       prisma = new PrismaClient({
         datasources: { db: { url: `file:${tempDbPath}` } },
       });
+      await prisma.$connect();
 
-      // Trigger a connection to ensure that the database file is created
-      prisma.$connect().then(() => {
-        saveData();
-      });
+      saveData();
     } else {
       createTempDecryptedDB(encryptedDbPath, tempDbPath);
       prisma = new PrismaClient({

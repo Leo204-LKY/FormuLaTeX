@@ -6,14 +6,22 @@ import type { favourites } from '../generated';
  * `favourites` table queries, only contains static methods
  */
 export class FavouritesTable {
-  private static readonly PRISMA_CLIENT: PrismaClient = getPrismaClient();
+  private static prisma: PrismaClient | null = null;
+
+  private static async getPrismaClient(): Promise<PrismaClient> {
+    if (!FavouritesTable.prisma) {
+      FavouritesTable.prisma = await getPrismaClient();
+    }
+    return FavouritesTable.prisma;
+  }
 
   /**
    * Get all favourites in favourites table
    * @returns List of all favourites in favourites table
    */
   static async getAll(): Promise<favourites[]> {
-    return FavouritesTable.PRISMA_CLIENT.favourites.findMany();
+    const prisma = await FavouritesTable.getPrismaClient();
+    return prisma.favourites.findMany();
   }
 
   /**
@@ -22,16 +30,17 @@ export class FavouritesTable {
    * @returns Favourite UUID
    */
   static async insertOneByFormulaUuid(formulaUuid: string): Promise<string> {
+    const prisma = await FavouritesTable.getPrismaClient();
+
     // Check if formula favourite already exist
-    const existingFavourite =
-      await FavouritesTable.PRISMA_CLIENT.favourites.findUnique({
-        where: {
-          formula_id: formulaUuid,
-        },
-        select: {
-          favourite_id: true,
-        },
-      });
+    const existingFavourite = await prisma.favourites.findUnique({
+      where: {
+        formula_id: formulaUuid,
+      },
+      select: {
+        favourite_id: true,
+      },
+    });
 
     // If exist, directly return favourite UUID
     if (existingFavourite) {
@@ -39,7 +48,7 @@ export class FavouritesTable {
     }
 
     // If not exist, create favourite and return favourite UUID
-    const newFavourite = await FavouritesTable.PRISMA_CLIENT.favourites.create({
+    const newFavourite = await prisma.favourites.create({
       data: { formula_id: formulaUuid },
       select: { favourite_id: true },
     });
@@ -57,13 +66,14 @@ export class FavouritesTable {
   static async deleteUniqueByFormulaUuid(
     formulaUuid: string
   ): Promise<string | null> {
+    const prisma = await FavouritesTable.getPrismaClient();
+
     // Check if favourite exists
-    const existingFavourite =
-      await FavouritesTable.PRISMA_CLIENT.favourites.findUnique({
-        where: {
-          formula_id: formulaUuid,
-        },
-      });
+    const existingFavourite = await prisma.favourites.findUnique({
+      where: {
+        formula_id: formulaUuid,
+      },
+    });
 
     // If not exist, return null
     if (!existingFavourite) {
@@ -71,7 +81,7 @@ export class FavouritesTable {
     }
 
     // If exist, delete and return favourite UUID
-    await FavouritesTable.PRISMA_CLIENT.favourites.delete({
+    await prisma.favourites.delete({
       where: { formula_id: formulaUuid },
     });
 
@@ -88,13 +98,14 @@ export class FavouritesTable {
   static async deleteUniqueByFavouriteUuid(
     favouriteUuid: string
   ): Promise<string | null> {
+    const prisma = await FavouritesTable.getPrismaClient();
+
     // Check if favourite exists
-    const existingFavourite =
-      await FavouritesTable.PRISMA_CLIENT.favourites.findUnique({
-        where: {
-          favourite_id: favouriteUuid,
-        },
-      });
+    const existingFavourite = await prisma.favourites.findUnique({
+      where: {
+        favourite_id: favouriteUuid,
+      },
+    });
 
     // If not exist, return null
     if (!existingFavourite) {
@@ -102,7 +113,7 @@ export class FavouritesTable {
     }
 
     // If exist, delete and return favourite UUID
-    await FavouritesTable.PRISMA_CLIENT.favourites.delete({
+    await prisma.favourites.delete({
       where: { favourite_id: favouriteUuid },
     });
 
