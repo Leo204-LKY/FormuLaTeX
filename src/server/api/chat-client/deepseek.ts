@@ -9,7 +9,7 @@ export class DeepSeekChatClient extends AbstractChatClient {
 
   constructor(
     apiKey: string = (getEncryptedJsonConfig('deepseek') as DeepSeekConfig)
-      .apiKey
+      .apiKey || ''
   ) {
     super(apiKey, 'https://api.deepseek.com/v1');
   }
