@@ -64,6 +64,8 @@ declare global {
       getAll: () => Promise<formula_tags[]>;
       getFormulaIdsByTagId: (tagId: string) => Promise<string[]>;
       getTagIdsByFormulaId: (formulaId: string) => Promise<string[]>;
+      addTagToFormula: (formulaId: string, tagId: string) => Promise<void>;
+      deleteTagFromFormula: (formulaId: string, tagId: string) => Promise<void>;
     };
 
     formulasTableApi: {

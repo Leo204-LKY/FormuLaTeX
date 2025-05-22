@@ -157,6 +157,20 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle(
+  'database:formula_tags:addTagToFormula',
+  async (event, formulaId: string, tagId: string) => {
+    return await FormulaTagsTable.addTagToFormula(formulaId, tagId);
+  }
+);
+
+ipcMain.handle(
+  'database:formula_tags:deleteTagFromFormula',
+  async (event, formulaId: string, tagId: string) => {
+    return await FormulaTagsTable.deleteTagFromFormula(formulaId, tagId);
+  }
+);
+
 // formulas table
 
 ipcMain.handle('database:formulas:getAll', async () => {

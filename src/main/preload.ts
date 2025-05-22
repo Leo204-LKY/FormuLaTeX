@@ -146,6 +146,22 @@ contextBridge.exposeInMainWorld('formulaTagsTableApi', {
       formulaId
     );
   },
+
+  addTagToFormula: (formulaId: string, tagId: string): Promise<void> => {
+    return ipcRenderer.invoke(
+      'database:formula_tags:addTagToFormula',
+      formulaId,
+      tagId
+    );
+  },
+
+  deleteTagFromFormula: (formulaId: string, tagId: string): Promise<void> => {
+    return ipcRenderer.invoke(
+      'database:formula_tags:deleteTagFromFormula',
+      formulaId,
+      tagId
+    );
+  },
 });
 
 contextBridge.exposeInMainWorld('formulasTableApi', {

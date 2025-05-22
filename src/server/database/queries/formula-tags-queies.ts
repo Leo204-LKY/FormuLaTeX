@@ -53,4 +53,38 @@ export class FormulaTagsTable {
 
     return formulaTags.map((item) => item.tag_id);
   }
+
+  /**
+   * Add tag to a formula
+   * @param formulaId Formula UUID
+   * @param tagId Tag UUID
+   */
+  static async addTagToFormula(
+    formulaId: string,
+    tagId: string
+  ): Promise<void> {
+    await FormulaTagsTable.PRISMA_CLIENT.formula_tags.create({
+      data: {
+        formula_id: formulaId,
+        tag_id: tagId,
+      },
+    });
+  }
+
+  /**
+   * Remove tag from a formula
+   * @param formulaId Formula UUID
+   * @param tagId Tag UUID
+   */
+  static async deleteTagFromFormula(
+    formulaId: string,
+    tagId: string
+  ): Promise<void> {
+    await FormulaTagsTable.PRISMA_CLIENT.formula_tags.deleteMany({
+      where: {
+        formula_id: formulaId,
+        tag_id: tagId,
+      },
+    });
+  }
 }
