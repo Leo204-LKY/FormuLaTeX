@@ -8,12 +8,12 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../../../../node_modules/.prisma/client"
+  output   = "../generated"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:../../../../scripts/dev.db"  // For debug only, real database path will be provided at runtime
+  url      = env("DATABASE_URL")  // For debug only, real database path will be provided at runtime
 }
 
 /// formula - Recognised or generated LaTeX formulas
