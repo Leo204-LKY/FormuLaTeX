@@ -21,6 +21,7 @@
     "schema": "src/server/database/schema/schema.prisma"
   },
   "scripts": {
+    "postinstall": "npx prisma generate",
     "dev": "concurrently \"yarn dev:main\" \"yarn dev:renderer\"",
     "dev:main": "tsc --watch",
     "dev:renderer": "cd src/renderer && yarn dev",

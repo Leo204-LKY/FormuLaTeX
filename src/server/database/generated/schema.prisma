@@ -13,7 +13,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db" // Use only as a placeholder, real database path will be provided at runtime
+  url      = "file:../../../../scripts/dev.db" // For debug only, real database path will be provided at runtime
 }
 
 /// formula_sessions - Session log for each formula operation
