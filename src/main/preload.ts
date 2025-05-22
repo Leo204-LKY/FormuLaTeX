@@ -37,6 +37,10 @@ contextBridge.exposeInMainWorld('chatClientApi', {
   onDeepseekError: (callback: (error: string) => void) => {
     ipcRenderer.on('deepseek:ask:error', (_event, error) => callback(error));
   },
+
+  deepseekUpdateApiKey: (apiKey: string): Promise<void> => {
+    return ipcRenderer.invoke('deepseek:updateApiKey', apiKey);
+  },
 });
 
 contextBridge.exposeInMainWorld('favouritesTableApi', {

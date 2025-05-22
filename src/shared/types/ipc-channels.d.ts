@@ -102,6 +102,12 @@ declare global {
        * ```
        */
       onDeepseekError: (callback: (error: string) => void) => void;
+
+      /**
+       * Update API key
+       * @param apiKey API key
+       */
+      deepseekUpdateApiKey: (apiKey: string) => Promise<void>;
     };
 
     /**

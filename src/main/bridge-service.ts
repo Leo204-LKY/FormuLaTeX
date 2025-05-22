@@ -43,6 +43,10 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle('deepseek:updateApiKey', (event, apiKey: string) => {
+  deepseekClient.updateApiKey(apiKey);
+});
+
 // *******************************************
 // Database APIs
 // *******************************************

@@ -7,11 +7,23 @@ import type { ChatMessage } from '../../interfaces';
  */
 export abstract class AbstractChatClient {
   protected client: OpenAI;
+  protected baseUrl: string | undefined;
   protected abstract validateModel(model: string): void;
 
   constructor(apiKey: string, baseUrl?: string) {
+    this.baseUrl = baseUrl;
     const options: ClientOptions = { apiKey };
     if (baseUrl) options.baseURL = baseUrl;
+    this.client = new OpenAI(options);
+  }
+
+  /**
+   * Update API key
+   * @param apiKey API key
+   */
+  updateApiKey(apiKey: string): void {
+    const options: ClientOptions = { apiKey };
+    if (this.baseUrl) options.baseURL = this.baseUrl;
     this.client = new OpenAI(options);
   }
 
