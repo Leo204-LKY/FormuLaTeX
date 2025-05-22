@@ -1,12 +1,5 @@
 // utils/chatDB.ts
 import { nanoid } from 'nanoid';
-import { FormulaConversationsTable, MessagesTable } from '../../../server';
-
-import type {
-  Prisma,
-  messages,
-  formula_conversations,
-} from '../../../server/database/generated';
 
 export interface ChatData {
   id: string;
@@ -15,11 +8,11 @@ export interface ChatData {
 }
 
 // 获取 Conservation 下的对话消息
-export const getMessages = async (id: string) => {
-  const messages = await MessagesTable.getManyByConversationId(id);
+// export const getMessages = async (id: string) => {
+//   const messages = await MessagesTable.getManyByConversationId(id);
 
-  return messages;
-};
+//   return messages;
+// };
 
 // 创建 Conservation
 export const createNewChatDB = (title: string): ChatData => {
@@ -37,11 +30,11 @@ export const createNewChatDB = (title: string): ChatData => {
 };
 
 // 修改 Conservation 相关信息
-export const updateConservation = (id: string, new_name: string) => {};
+// export const updateConservation = (id: string, new_name: string) => {};
 
-// 获取全部 Conservation
-export const getConservations = async () => {
-  const conversations = await FormulaConversationsTable.getAll();
+// // 获取全部 Conservation
+// export const getConservations = async () => {
+//   const conversations = await FormulaConversationsTable.getAll();
 
-  return conversations;
-};
+//   return conversations;
+// };

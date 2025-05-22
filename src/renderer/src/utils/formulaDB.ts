@@ -1,11 +1,9 @@
-import { FormulasTable } from '../../../server';
-// import { FormulaTagsTable } from '../../../server';
-import { FormulaSessionsTable } from '../../../server';
 import type { Prisma } from '../../../server/database/generated';
 
 export const createSession = async () => {
   const new_session: Prisma.formula_sessionsCreateManyInput = {};
-  const session_id = await FormulaSessionsTable.insertOne(new_session);
+  const session_id =
+    await window.formulaSessionsTableApi.insertOne(new_session);
   return session_id;
 };
 
@@ -16,7 +14,7 @@ export const createFormula = async () => {
     recognized_by: 'SimpleTex',
     created_at: new Date(),
   };
-  const formula_id = await FormulasTable.insertOne(new_formula);
+  const formula_id = await window.formulasTableApi.insertOne(new_formula);
   return formula_id;
 };
 
