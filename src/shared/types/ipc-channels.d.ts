@@ -4,7 +4,6 @@ import {
   favourites,
   formula_conversations,
   formula_interpretations,
-  formula_sessions,
   formula_tags,
   formulas,
   messages,
