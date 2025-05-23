@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import { PrismaClient } from './generated';
+import { PrismaClient } from '@prisma/client';
 import { getSafeTempDir } from '../services';
 import { getAppDataDirectory } from '../services/file-service';
 import { createTempDecryptedDB, saveEncryptedDB } from './temp-db-manager';

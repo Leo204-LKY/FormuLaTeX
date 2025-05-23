@@ -27,7 +27,7 @@
     "dev:renderer": "cd src/renderer && yarn dev",
     "start": "yarn build && electron .",
     "build": "yarn build:main && yarn build:renderer",
-    "build:main": "tsc && copyfiles -u 3 src/server/database/generated/**/* dist/server/database/",
+    "build:main": "tsc",
     "build:renderer": "cd src/renderer && yarn build",
     "package": "yarn build && electron-builder",
     "lint": "eslint",

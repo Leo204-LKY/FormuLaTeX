@@ -162,7 +162,7 @@
   } from '../utils/chatDB';
   import DOMPurify from 'dompurify';
   import { marked } from 'marked';
-  import type { messages } from '../../../server/database/generated';
+  import type { messages } from '@prisma/client';
   import { turnChatMessage } from '../utils/turnChatMessage';
   // import MarkdownRenderer from '../sub-components/MarkdownRenderer.vue';
   // import MarkdownIt from 'markdown-it';

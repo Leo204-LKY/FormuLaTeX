@@ -10,7 +10,7 @@ import {
   messages,
   Prisma,
   tags,
-} from '../server/database/generated';
+} from '@prisma/client';
 
 document.addEventListener('DOMContentLoaded', () => {
   document.body.style.overflow = 'hidden';

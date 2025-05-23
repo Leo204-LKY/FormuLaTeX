@@ -122,7 +122,7 @@
   import { ref, onMounted, onUnmounted, reactive } from 'vue';
   import { inputEventBus } from '../eventBus';
   import { createFormula, getFormulas } from '../utils/formulaDB';
-  import type { formulas } from '../../../server/database/generated';
+  import type { formulas } from '@prisma/client';
 
   type ExpressionItemInstance = InstanceType<typeof ExpressionItem>;
   const tagSelectorRef = ref(null);

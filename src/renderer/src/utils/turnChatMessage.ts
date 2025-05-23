@@ -1,5 +1,5 @@
 import type { ChatMessage } from '../../../server';
-import type { messages } from '../../../server/database/generated';
+import type { messages } from '@prisma/client';
 
 export function turnChatMessage(messageData: messages[]): ChatMessage[] {
   return messageData.map((msg) => {

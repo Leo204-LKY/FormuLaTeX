@@ -13,7 +13,7 @@ import {
   TagsTable,
 } from '../server';
 import { DeepSeekChatClient, DeepSeekModel } from '../server/api/chat-client';
-import { Prisma } from '../server/database/generated';
+import { Prisma } from '@prisma/client';
 
 // *******************************************
 // DeepSeek Chat Client APIs
