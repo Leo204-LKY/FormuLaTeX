@@ -1,6 +1,6 @@
-import { ChatMessage } from '../../server';
-import { DeepSeekModel } from '../../server/api/chat-client';
-import {
+import type { ChatMessage, SimpleTexResponse } from '../../server';
+import type { DeepSeekModel } from '../../server/api/chat-client';
+import type {
   favourites,
   formula_conversations,
   formula_interpretations,
