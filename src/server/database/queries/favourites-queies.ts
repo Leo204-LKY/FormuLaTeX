@@ -1,6 +1,6 @@
-import { PrismaClient } from '../generated';
-import { getPrismaClient, saveData } from '../prisma-client';
-import type { favourites } from '../generated';
+import { PrismaClient } from '@prisma/client';
+import { getPrismaClient, saveData } from '../prisma-manager';
+import type { favourites } from '@prisma/client';
 
 /**
  * `favourites` table queries, only contains static methods

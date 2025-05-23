@@ -1,4 +1,4 @@
-import type { formulas, Prisma } from '../../../server/database/generated';
+import type { formulas, Prisma } from '@prisma/client';
 
 export const createFormula = async (
   tag_id: string,

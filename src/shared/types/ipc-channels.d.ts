@@ -9,7 +9,7 @@ import {
   messages,
   tags,
   Prisma,
-} from '../../server/database/generated';
+} from '@prisma/client';
 
 export {};
 

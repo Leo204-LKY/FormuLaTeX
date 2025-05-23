@@ -1,4 +1,4 @@
-import type { Prisma } from '../../../server/database/generated';
+import type { Prisma } from '@prisma/client';
 
 // 创建 Conservation
 export const createConservation = async (title: string) => {

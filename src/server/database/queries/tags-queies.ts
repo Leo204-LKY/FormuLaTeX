@@ -1,6 +1,6 @@
-import { PrismaClient } from '../generated';
-import { getPrismaClient, saveData } from '../prisma-client';
-import type { Prisma, tags } from '../generated';
+import { PrismaClient } from '@prisma/client';
+import { getPrismaClient, saveData } from '../prisma-manager';
+import type { Prisma, tags } from '@prisma/client';
 
 /**
  * `tags` table queries, only contains static methods

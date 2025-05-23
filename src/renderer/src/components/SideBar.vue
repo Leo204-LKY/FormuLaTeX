@@ -162,7 +162,7 @@
   } from '../utils/chatDB';
   import DOMPurify from 'dompurify';
   import { marked } from 'marked';
-  import type { messages } from '../../../server/database/generated';
+  import type { messages } from '@prisma/client';
   import { turnChatMessage } from '../utils/turnChatMessage';
 
   interface Topics {
