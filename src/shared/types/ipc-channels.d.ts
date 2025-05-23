@@ -121,7 +121,7 @@ declare global {
        * @param appSecret SimpleTex App Secret
        * @param timeout Request timeout (ms)
        */
-      convertImageToLatex(
+      convert(
         filePath: string,
         appId?: string,
         appSecret?: string,
@@ -135,7 +135,7 @@ declare global {
        * @param appSecret SimpleTex App Secret
        * @param timeout Request timeout (ms)
        */
-      convertImageToLatex(
+      convert(
         imageBuffer: Buffer,
         appId?: string,
         appSecret?: string,
