@@ -80,6 +80,7 @@
           </label>
           <input
             v-model="newFormulaName"
+            spellcheck="false"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
             placeholder="Enter formula name"
@@ -92,6 +93,7 @@
           </label>
           <textarea
             v-model="newFormulaContent"
+            spellcheck="false"
             rows="5"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
             placeholder="Enter LaTeX formula"

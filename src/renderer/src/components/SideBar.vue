@@ -79,6 +79,7 @@
         <input
           v-else
           v-model="editableTitle"
+          spellcheck="false"
           @blur="finishEditingTitle"
           @keydown.enter="finishEditingTitle"
           class="text-xl font-bold border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -102,6 +103,7 @@
             <label class="block text-sm font-medium mb-2">Enter API Key:</label>
             <input
               type="text"
+              spellcheck="false"
               v-model="apiKey"
               placeholder=" Your API Key"
               class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -128,6 +130,7 @@
           class="bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
         >
           {{ message.content }}
+          <!-- <MarkdownRenderer :content="message.content" /> -->
         </span>
         <div
           v-else
@@ -161,38 +164,80 @@
     createMessage,
   } from '../utils/chatDB';
   import DOMPurify from 'dompurify';
-  import { marked } from 'marked';
+  // import { marked } from 'marked';
   import type { messages } from '@prisma/client';
   import { turnChatMessage } from '../utils/turnChatMessage';
   // import MarkdownRenderer from '../sub-components/MarkdownRenderer.vue';
-  // import MarkdownIt from 'markdown-it';
-  // import katex from 'katex';
+  import MarkdownIt from 'markdown-it';
+  import katex from 'katex';
   // import markdownItKatex from 'markdown-it-katex';
-  // import 'katex/dist/katex.min.css';
+  // import mathjax3 from 'markdown-it-mathjax3';
+  import 'katex/dist/katex.min.css';
 
   interface Topics {
     title: string;
     id: string;
   }
-  marked.setOptions({
-    breaks: true,
-    gfm: true,
-    async: false,
-  });
 
   const renderMarkdown = (content: string) => {
-    // const md = MarkdownIt({
-    //   breaks: true,
-    //   html: true, // 允许HTML标签
-    // }).use(markdownItKatex, {
-    //   katex,
-    //   // 可选配置（如公式样式）
-    //   throwOnError: false,
-    //   errorColor: '#f00',
-    // });
-    const html = marked(content) as string;
+    content = content
+      .replace(/\\\[\s*\n+/g, '\\[')
+      .replace(/\n+\s*\\\]/g, '\\]');
+    content = content
+      // 处理行内公式 $...$ 和 \(...\)
+      .replace(
+        /(?:\\?[$])([^$]*)(?:\\?[$])|\\\((.*?)\\\)/g,
+        (match, p1, p2) => {
+          const tex = p1 || p2;
+          try {
+            return katex.renderToString(tex, {
+              throwOnError: false,
+              displayMode: false,
+            });
+          } catch (e) {
+            console.error('KaTeX render error:', e);
+            return match;
+          }
+        }
+      )
+      // 处理块级公式 $$...$$ 和 \[...\]
+      .replace(
+        /(?:\\?[$][$])([^$]*)(?:\\?[$][$])|\\\[(.*?)\\\]|^\s*\[(.*?)\]\s*$/gm,
+        (match, p1, p2, p3) => {
+          const tex = p1 || p2 || p3;
+          try {
+            return katex.renderToString(tex.trim(), {
+              throwOnError: false,
+              displayMode: true,
+            });
+          } catch (e) {
+            console.error('KaTeX render error:', e);
+            return match;
+          }
+        }
+      );
 
-    return DOMPurify.sanitize(html);
+    const md = new MarkdownIt({
+      html: true,
+      breaks: false,
+      linkify: true,
+    });
+
+    const html = md.render(content);
+    return DOMPurify.sanitize(html, {
+      ADD_TAGS: [
+        'math',
+        'mrow',
+        'annotation',
+        'semantics',
+        'mi',
+        'mo',
+        'mn',
+        'msqrt',
+        'mfrac',
+      ],
+      ADD_ATTR: ['class', 'style', 'aria-hidden'],
+    });
   };
 
   const chatContainer = ref<HTMLDivElement | null>(null);
@@ -264,13 +309,13 @@
   }
   function toggleSetting() {
     showSetting.value = !showSetting.value;
+    apiKey.value = '';
   }
 
   async function selectHistoryTopic(topic: Topics) {
     console.log('Choose Topic:', topic.title);
     isHistoryDrawerOpen.value = false;
     currentTopic.value = { ...topic };
-    // TODO: 加载对应的聊天内容逻辑在这里处理
     messagesData.value = await getChatMessage(topic.id);
   }
 
@@ -297,7 +342,6 @@
       const answer = await new Promise<string>((resolve, reject) => {
         let partialAnswer = '';
         window.chatClientApi.onDeepseekChunk((chunk) => {
-          console.log(chunk);
           partialAnswer += chunk;
 
           const botMessage = messagesData.value.find(
@@ -360,6 +404,7 @@
     showSetting.value = false;
     // TODO: 处理保存key逻辑
     window.chatClientApi.deepseekUpdateApiKey(apiKey.value);
+    apiKey.value = '';
   }
 
   onMounted(() => {
