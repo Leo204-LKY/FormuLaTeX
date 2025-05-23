@@ -74,7 +74,11 @@ ipcMain.handle(
     appSecret?: string,
     timeout?: number
   ) => {
-    return await convertImageToLatex(imageBuffer, appId, appSecret, timeout);
+    // Ensure imageBuffer is a Node.js Buffer
+    const buf = Buffer.isBuffer(imageBuffer)
+      ? imageBuffer
+      : Buffer.from(imageBuffer);
+    return await convertImageToLatex(buf, appId, appSecret, timeout);
   }
 );
 
