@@ -164,6 +164,11 @@
   import { marked } from 'marked';
   import type { messages } from '@prisma/client';
   import { turnChatMessage } from '../utils/turnChatMessage';
+  // import MarkdownRenderer from '../sub-components/MarkdownRenderer.vue';
+  // import MarkdownIt from 'markdown-it';
+  // import katex from 'katex';
+  // import markdownItKatex from 'markdown-it-katex';
+  // import 'katex/dist/katex.min.css';
 
   interface Topics {
     title: string;
@@ -176,6 +181,15 @@
   });
 
   const renderMarkdown = (content: string) => {
+    // const md = MarkdownIt({
+    //   breaks: true,
+    //   html: true, // 允许HTML标签
+    // }).use(markdownItKatex, {
+    //   katex,
+    //   // 可选配置（如公式样式）
+    //   throwOnError: false,
+    //   errorColor: '#f00',
+    // });
     const html = marked(content) as string;
 
     return DOMPurify.sanitize(html);
