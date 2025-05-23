@@ -116,5 +116,6 @@
     "src/renderer",
     "jest.config.ts",
     "eslint.config.ts",
+    "scripts",
   ],
 }

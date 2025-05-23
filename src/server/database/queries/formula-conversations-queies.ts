@@ -1,19 +1,27 @@
-import { PrismaClient } from '../generated';
-import { getPrismaClient } from '../prisma-client';
-import type { formula_conversations } from '../generated';
+import { PrismaClient } from '@prisma/client';
+import { getPrismaClient, saveData } from '../prisma-manager';
+import type { Prisma, formula_conversations } from '@prisma/client';
 
 /**
  * `formula_conversations` table queries, only contains static methods
  */
 export class FormulaConversationsTable {
-  private static readonly PRISMA_CLIENT: PrismaClient = getPrismaClient();
+  private static prisma: PrismaClient | null = null;
+
+  private static async getPrismaClient(): Promise<PrismaClient> {
+    if (!FormulaConversationsTable.prisma) {
+      FormulaConversationsTable.prisma = await getPrismaClient();
+    }
+    return FormulaConversationsTable.prisma;
+  }
 
   /**
    * Get all conversations in formula_conversations table
    * @returns List of all formula conversations in formula_conversations table
    */
   static async getAll(): Promise<formula_conversations[]> {
-    return FormulaConversationsTable.PRISMA_CLIENT.formula_conversations.findMany();
+    const prisma = await FormulaConversationsTable.getPrismaClient();
+    return prisma.formula_conversations.findMany();
   }
 
   /**
@@ -22,12 +30,14 @@ export class FormulaConversationsTable {
    * @returns Conversation UUID
    */
   static async insertOne(
-    formulaConversation: formula_conversations
+    formulaConversation: Prisma.formula_conversationsCreateManyInput
   ): Promise<string> {
-    const result =
-      await FormulaConversationsTable.PRISMA_CLIENT.formula_conversations.create(
-        { data: formulaConversation }
-      );
+    const prisma = await FormulaConversationsTable.getPrismaClient();
+    const result = await prisma.formula_conversations.create({
+      data: formulaConversation,
+    });
+
+    saveData();
 
     return result.conversation_id;
   }
@@ -37,8 +47,11 @@ export class FormulaConversationsTable {
    * @param uuid Formula conversation UUID
    */
   static async deleteUniqueByUuid(uuid: string): Promise<void> {
-    await FormulaConversationsTable.PRISMA_CLIENT.formula_conversations.delete({
+    const prisma = await FormulaConversationsTable.getPrismaClient();
+    await prisma.formula_conversations.delete({
       where: { conversation_id: uuid },
     });
+
+    saveData();
   }
 }

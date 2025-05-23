@@ -89,6 +89,45 @@
         <button class="btn-icon" @click="toggleClear">
           <img src="../assets/icons/clear.svg" />
         </button>
+        <div class="flex items-center space-x-2" style="margin-left: auto">
+          <!-- 设置 -->
+          <div class="relative">
+            <button
+              class="btn-icon w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
+              @click="toggleSetting"
+            >
+              <img src="../assets/icons/setting.svg" />
+            </button>
+            <!-- 展开设置输入框 -->
+            <div
+              v-if="showSetting"
+              class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg p-4 z-30"
+            >
+              <label class="block text-sm font-medium mb-2">
+                Enter API config:
+              </label>
+              <input
+                type="text"
+                spellcheck="false"
+                v-model="appId"
+                placeholder=" Your APP id"
+                class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
+              />
+              <input
+                type="text"
+                spellcheck="false"
+                v-model="appSecret"
+                placeholder=" Your APP secret"
+                class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 mt-2"
+              />
+              <div class="flex justify-center mt-1">
+                <button class="btn-style3 btn-status2" @click="saveConfig">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 输入框 -->
@@ -98,7 +137,7 @@
         spellcheck="false"
         class="w-full border border-gray-200 p-2 rounded-md h-3/4"
         @input="onInputChange"
-        placeholder="请输入LaTeX公式，如：\\frac{a}{b} = c"
+        placeholder="Please enter latex code, like: \\frac{a}{b} = c"
       ></textarea>
 
       <!-- 上传图像 -->
@@ -113,8 +152,8 @@
         >
           <div
             class="bg-white rounded-lg p-6 w-96 shadow-lg relative"
-            @dragover.prevent
-            @drop.prevent="handleDrop"
+            @dragover.prevent="handleDragOver"
+            @drop.prevent="handleDropUpload"
           >
             <button
               class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
@@ -125,17 +164,38 @@
             <h3 class="text-lg font-semibold mb-4 text-center">Upload Image</h3>
 
             <div
-              class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 cursor-pointer hover:border-blue-400"
+              class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 cursor-pointer hover:border-blue-400 relative"
               @click="triggerFileInput"
             >
-              Drag the file to here, or click to select
-              <input
-                type="file"
-                ref="fileInputRef"
-                class="hidden"
-                accept="image/*"
-                @change="handleFileSelect"
-              />
+              <div v-if="previewImage" class="mb-4 relative">
+                <!-- 图片容器，用于定位删除按钮 -->
+                <div class="relative mx-auto max-w-full">
+                  <img
+                    :src="previewImage"
+                    alt="Preview"
+                    class="max-h-32 w-full object-contain"
+                  />
+                  <button
+                    @click="handleDeletePreview"
+                    class="absolute top-1 right-1 bg-red-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm cursor-pointer shadow-md hover:bg-red-600 transition-all duration-200"
+                    :style="{ transform: 'translate(50%, -50%)' }"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              <!-- 上传提示 -->
+              <div v-else>
+                Drag the file to here, or click to select
+                <input
+                  type="file"
+                  ref="fileInputRef"
+                  class="hidden"
+                  accept="image/*"
+                  @change="handleFileSelect"
+                />
+              </div>
             </div>
 
             <p class="mt-4 text-xs text-gray-400 text-center">
@@ -143,8 +203,6 @@
             </p>
           </div>
         </div>
-
-        <button class="btn-style3 btn-status2">Generate</button>
 
         <!-- TODO: 点击 AI按钮 后，
          将现在输入的公式传入到SideBar输入框中并发送，开始询问 -->
@@ -174,7 +232,9 @@
   import { ref, watch, computed, onMounted, defineEmits, nextTick } from 'vue';
   import { useClickOutside } from '../utils/useClickOutside';
   import { HistoryManager } from '../utils/historyStack';
-  import { isDrawerOpenEventBus } from '../eventBus';
+  import { isDrawerOpenEventBus, inputEventBus } from '../eventBus';
+  import { Buffer } from 'buffer';
+  import type { SimpleTexConfig } from '../../../server';
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
 
@@ -189,6 +249,9 @@
   const colorPickerRef = ref<HTMLElement | null>(null);
   const colorPickerVisible = ref(false);
   const sizePickerVisible = ref(false);
+  const showSetting = ref(false);
+  const appId = ref('');
+  const appSecret = ref('');
   const selectedFont = ref('mathit');
   const colors = ['red', 'green', 'blue', 'orange', 'purple'];
   const latexSizes = [
@@ -219,7 +282,9 @@
     () => historyManager.getRedoStack().value.length > 0
   );
 
-  const onInputChange = () => historyManager.saveState(latexInput.value);
+  const onInputChange = () => {
+    historyManager.saveState(latexInput.value);
+  };
 
   const undo = () => {
     const state = historyManager.undo();
@@ -241,10 +306,11 @@
         throwOnError: false,
         displayMode: true,
       });
+      inputEventBus.emit('input', latexInput.value);
     } catch (err) {
-      console.error('KaTeX 渲染错误:', err);
+      console.error('KaTeX render error:', err);
       previewRef.value.innerHTML =
-        '<span class="text-red-500">解析错误：无法渲染</span>';
+        '<span class="text-red-500">Error: render problem!</span>';
     }
   };
 
@@ -313,35 +379,113 @@
   const showUploadModal = ref(false);
   const fileInputRef = ref<HTMLInputElement | null>(null);
 
-  const triggerFileInput = () => {
-    fileInputRef.value?.click();
-  };
-
-  const handleFileSelect = (e: Event) => {
-    const files = (e.target as HTMLInputElement).files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      processUpload(file);
-    }
-  };
-
-  const handleDrop = (e: DragEvent) => {
-    if (e.dataTransfer?.files.length) {
-      const file = e.dataTransfer.files[0];
-      processUpload(file);
-    }
-  };
-
-  const processUpload = (file: File) => {
-    console.log('上传文件:', file);
-    // TODO: 在这里处理文件上传逻辑，如上传到服务器或显示预览等
-    showUploadModal.value = false;
-  };
+  function toggleSetting() {
+    showSetting.value = !showSetting.value;
+    appId.value = '';
+    appSecret.value = '';
+  }
 
   const handleAIAnalysis = () => {
     // 将当前输入框内容，携带跳转到sideBar输入框并对话分析
+    // const new_formula_id = createFormula();
     console.log('AI Analysis triggered');
     isDrawerOpenEventBus.emit('update', true); // 通知打开 Drawer
     isDrawerOpenEventBus.emit('expression', latexInput.value); // 传递当前输入的公式
   };
+
+  const previewImage = ref<string | null>(null);
+  // const uploadedImageBuffer = ref<Buffer | null>(null); // 用于存储二进制数据
+
+  const dragStartPosition = ref<{ x: number; y: number } | null>(null);
+  const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer!.effectAllowed = 'copy';
+    e.dataTransfer!.dropEffect = 'link';
+    dragStartPosition.value = {
+      x: e.clientX,
+      y: e.clientY,
+    };
+  };
+
+  // 处理拖拽放下（触发上传）
+  const handleDropUpload = (e: DragEvent) => {
+    e.preventDefault();
+    showUploadModal.value = true;
+    const file = e.dataTransfer!.files[0];
+    handleFileSelectWithPosition(file);
+  };
+
+  // 处理文件选择
+  const handleFileSelect = (e: Event) => {
+    const inputElement = e.target as HTMLInputElement; // 类型断言为 HTMLInputElement
+    const file = inputElement.files?.[0]; // 从 files 中获取 File 对象
+
+    if (!file) return;
+
+    // 处理文件逻辑...
+    const reader = new FileReader();
+    reader.onload = () => {
+      previewImage.value = reader.result as string;
+      uploadImage(file);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFileSelectWithPosition = (file: File) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      previewImage.value = reader.result as string;
+      uploadImage(file);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 上传图片到API
+  const uploadImage = async (file: File) => {
+    try {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+
+      await new Promise((resolve, reject) => {
+        reader.onload = resolve;
+        reader.onerror = reject;
+      });
+
+      const arrayBuffer = reader.result as ArrayBuffer;
+      const buffer = Buffer.from(arrayBuffer);
+
+      console.log('Buffer:', buffer);
+
+      const ocr_result = await window.simpleTexApi.convert(buffer);
+      const latex_code = ocr_result.latex;
+
+      console.log('OCR Result:', latex_code);
+      latexInput.value += latex_code;
+
+      alert('OCR completed!');
+    } catch (error) {
+      console.error('Upload error:', error);
+    }
+  };
+
+  // 触发文件选择（点击上传）
+  const triggerFileInput = () => {
+    fileInputRef.value?.click();
+  };
+
+  const handleDeletePreview = () => {
+    previewImage.value = null;
+  };
+
+  function saveConfig() {
+    window.servicesApi.saveJsonConfig('simpletex', {
+      appId: appId.value,
+      appSecret: appSecret.value,
+    } as SimpleTexConfig);
+    appId.value = '';
+    appSecret.value = '';
+    alert('Config saved!');
+  }
 </script>

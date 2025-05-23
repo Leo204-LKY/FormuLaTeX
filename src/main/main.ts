@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import './bridge-service'; // Import bridge service to register IPC handlers
 
 let mainWindow: BrowserWindow | null;
 

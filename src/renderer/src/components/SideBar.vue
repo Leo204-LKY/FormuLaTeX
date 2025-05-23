@@ -36,12 +36,12 @@
     <div class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
       <ul class="space-y-2">
         <li
-          v-for="(topic, index) in historyTopics"
-          :key="index"
+          v-for="topic in historyTopics"
+          :key="topic.id"
           class="p-2 bg-gray-100 rounded-md hover:bg-gray-200 cursor-pointer"
-          @click="selectHistoryTopic(topic.name)"
+          @click="selectHistoryTopic(topic)"
         >
-          {{ topic.name }}
+          {{ topic.title }}
         </li>
       </ul>
     </div>
@@ -54,13 +54,38 @@
     <div
       class="flex items-center justify-between p-2 pb-2 border-b border-gray-300"
     >
-      <button
-        class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
-        @click="isHistoryDrawerOpen = !isHistoryDrawerOpen"
-      >
-        <img src="../assets/icons/showMore.svg" />
-      </button>
-      <h2 class="text-xl font-bold">Chat Title</h2>
+      <div class="flex items-center space-x-2">
+        <button
+          class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
+          @click="isHistoryDrawerOpen = !isHistoryDrawerOpen"
+        >
+          <img src="../assets/icons/showMore.svg" alt="History" />
+        </button>
+        <button
+          class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
+          @click="createNewChat"
+        >
+          + New
+        </button>
+      </div>
+      <div class="relative">
+        <h2
+          v-if="!editingTitle"
+          class="text-xl font-bold cursor-pointer"
+          @click="startEditingTitle"
+        >
+          {{ currentTopic.title }}
+        </h2>
+        <input
+          v-else
+          v-model="editableTitle"
+          spellcheck="false"
+          @blur="finishEditingTitle"
+          @keydown.enter="finishEditingTitle"
+          class="text-xl font-bold border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ref="titleInput"
+        />
+      </div>
       <div class="flex items-center space-x-2">
         <!-- 设置 -->
         <div class="relative">
@@ -78,6 +103,7 @@
             <label class="block text-sm font-medium mb-2">Enter API Key:</label>
             <input
               type="text"
+              spellcheck="false"
               v-model="apiKey"
               placeholder=" Your API Key"
               class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -92,18 +118,25 @@
       </div>
     </div>
     <!-- 聊天记录 -->
-    <div class="flex-1 p-4 h-3/4 overflow-y-auto space-y-4">
+    <div ref="chatContainer" class="flex-1 p-4 h-3/4 overflow-y-auto space-y-4">
       <div
-        v-for="(message, index) in messages"
+        v-for="(message, index) in messagesData"
         :key="index"
-        :class="message.isUser ? 'text-right' : 'text-left'"
+        :class="message.role == 'user' ? 'text-right' : 'text-left'"
         class="p-2 h-auto"
       >
         <span
+          v-if="message.role === 'user'"
           class="bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
         >
-          {{ message.text }}
+          {{ message.content }}
+          <!-- <MarkdownRenderer :content="message.content" /> -->
         </span>
+        <div
+          v-else
+          class="bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words whitespace-pre-wrap text-left"
+          v-html="renderMarkdown(message.content)"
+        ></div>
       </div>
     </div>
 
@@ -113,7 +146,7 @@
     >
       <textarea
         v-model="inputText"
-        placeholder="输入消息..."
+        placeholder="Ask me anything about formula..."
         class="flex-1 p-2 border rounded-md mr-2 min-h-32 focus:outline-none shadow-md focus:ring-2 focus:ring-gray-500 w-full"
       ></textarea>
       <button @click="sendMessage" class="btn-style3 btn-status2">Send</button>
@@ -122,27 +155,153 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted } from 'vue';
+  import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
   import { isDrawerOpenEventBus } from '../eventBus';
-  interface Message {
-    text: string;
-    isUser: boolean;
+  import {
+    createConservation,
+    getConservations,
+    getMessages,
+    createMessage,
+  } from '../utils/chatDB';
+  import DOMPurify from 'dompurify';
+  // import { marked } from 'marked';
+  import type { messages } from '@prisma/client';
+  import { turnChatMessage } from '../utils/turnChatMessage';
+  // import MarkdownRenderer from '../sub-components/MarkdownRenderer.vue';
+  import MarkdownIt from 'markdown-it';
+  import katex from 'katex';
+  // import markdownItKatex from 'markdown-it-katex';
+  // import mathjax3 from 'markdown-it-mathjax3';
+  import 'katex/dist/katex.min.css';
+
+  interface Topics {
+    title: string;
+    id: string;
   }
 
+  const renderMarkdown = (content: string) => {
+    content = content
+      .replace(/\\\[\s*\n+/g, '\\[')
+      .replace(/\n+\s*\\\]/g, '\\]');
+    content = content
+      // 处理行内公式 $...$ 和 \(...\)
+      .replace(
+        /(?:\\?[$])([^$]*)(?:\\?[$])|\\\((.*?)\\\)/g,
+        (match, p1, p2) => {
+          const tex = p1 || p2;
+          try {
+            return katex.renderToString(tex, {
+              throwOnError: false,
+              displayMode: false,
+            });
+          } catch (e) {
+            console.error('KaTeX render error:', e);
+            return match;
+          }
+        }
+      )
+      // 处理块级公式 $$...$$ 和 \[...\]
+      .replace(
+        /(?:\\?[$][$])([^$]*)(?:\\?[$][$])|\\\[(.*?)\\\]|^\s*\[(.*?)\]\s*$/gm,
+        (match, p1, p2, p3) => {
+          const tex = p1 || p2 || p3;
+          try {
+            return katex.renderToString(tex.trim(), {
+              throwOnError: false,
+              displayMode: true,
+            });
+          } catch (e) {
+            console.error('KaTeX render error:', e);
+            return match;
+          }
+        }
+      );
+
+    const md = new MarkdownIt({
+      html: true,
+      breaks: false,
+      linkify: true,
+    });
+
+    const html = md.render(content);
+    return DOMPurify.sanitize(html, {
+      ADD_TAGS: [
+        'math',
+        'mrow',
+        'annotation',
+        'semantics',
+        'mi',
+        'mo',
+        'mn',
+        'msqrt',
+        'mfrac',
+      ],
+      ADD_ATTR: ['class', 'style', 'aria-hidden'],
+    });
+  };
+
+  const chatContainer = ref<HTMLDivElement | null>(null);
+  const shouldAutoScroll = ref(true); // 是否自动滚动
+  // const mathRegex = /(?:\$.*?\$)|(?:`{3}math\n?.*?\n?`{3})/g;
+
   const isDrawerOpen = ref(false);
-  const messages = ref<Message[]>([]);
+  const messagesData = ref<messages[]>([]);
   const inputText = ref('');
+  const currentTopic = ref<Topics>({
+    title: 'Chat Title',
+    id: 'default',
+  });
 
   const isHistoryDrawerOpen = ref(false);
   const showSetting = ref(false);
   const apiKey = ref('');
 
-  const historyTopics = ref([
-    { name: 'Record1', id: 1 },
-    { name: 'Record2', id: 2 },
-    { name: 'Record3', id: 3 },
-    // TODO: 可以根据实际接口拉取
-  ]);
+  const editableTitle = ref('');
+  const editingTitle = ref(false);
+  const titleInput = ref<HTMLInputElement | null>(null);
+
+  // TODO: 历史 Topic
+  const historyTopics = ref<Topics[]>([]);
+
+  onMounted(async () => {
+    const conservations = await getConservations();
+    historyTopics.value = conservations.map((conv) => ({
+      title: conv.title as string,
+      id: conv.conversation_id,
+    }));
+  });
+
+  onMounted(() => {
+    if (chatContainer.value) {
+      chatContainer.value.addEventListener('scroll', (e) => {
+        const { scrollTop, scrollHeight, clientHeight } =
+          e.target as HTMLDivElement;
+        // 当滚动距离小于总高度 - 容器高度 - 100 时，认为用户手动滚动
+        shouldAutoScroll.value = scrollTop + clientHeight >= scrollHeight - 100;
+      });
+    }
+  });
+
+  const scrollToBottom = () => {
+    chatContainer.value?.scrollIntoView({
+      behavior: 'smooth', // 平滑滚动
+      block: 'end',
+    });
+  };
+
+  // 监听消息变化，触发滚动
+  watch(
+    messagesData,
+    () => {
+      if (shouldAutoScroll.value && chatContainer.value) {
+        // 延迟执行确保DOM更新完成
+        nextTick(() => {
+          chatContainer.value!.scrollTop = chatContainer.value!.scrollHeight;
+        });
+      }
+    },
+    { deep: true }
+  );
 
   function toggleDrawer() {
     isDrawerOpen.value = !isDrawerOpen.value;
@@ -150,12 +309,14 @@
   }
   function toggleSetting() {
     showSetting.value = !showSetting.value;
+    apiKey.value = '';
   }
 
-  function selectHistoryTopic(topic: string) {
-    console.log('选择了话题:', topic);
+  async function selectHistoryTopic(topic: Topics) {
+    console.log('Choose Topic:', topic.title);
     isHistoryDrawerOpen.value = false;
-    // TODO: 加载对应的聊天内容逻辑在这里处理
+    currentTopic.value = { ...topic };
+    messagesData.value = await getChatMessage(topic.id);
   }
 
   const insertFormula = (formula: string) => {
@@ -163,24 +324,89 @@
   };
   defineExpose({ isDrawerOpen, insertFormula });
 
-  function sendMessage() {
+  async function sendMessage() {
     const text = inputText.value.trim();
     if (text === '') return;
-
-    messages.value.push({ text, isUser: true });
+    const m_id1 = await createMessage(currentTopic.value.id, 'user', text);
+    // TODO: 实际回复转写逻辑
+    messagesData.value.push({
+      conversation_id: currentTopic.value.id,
+      message_id: m_id1,
+      content: text,
+      role: 'user',
+      created_at: new Date(),
+    });
     inputText.value = '';
 
-    // TODO: 实际回复转写逻辑
-    setTimeout(() => {
-      messages.value.push({ text: `机器人回复：「${text}」`, isUser: false });
-    }, 500);
+    try {
+      const answer = await new Promise<string>((resolve, reject) => {
+        let partialAnswer = '';
+        window.chatClientApi.onDeepseekChunk((chunk) => {
+          partialAnswer += chunk;
+
+          const botMessage = messagesData.value.find(
+            (msg) => msg.role === 'assistant' && msg.message_id === 'temp-ai'
+          );
+          if (botMessage) {
+            botMessage.content = partialAnswer;
+          } else {
+            messagesData.value.push({
+              conversation_id: currentTopic.value.id,
+              message_id: 'temp-ai', // 临时 ID
+              content: partialAnswer,
+              role: 'assistant',
+              created_at: new Date(),
+            });
+          }
+          scrollToBottom();
+        });
+
+        window.chatClientApi.onDeepseekEnd(() => {
+          resolve(partialAnswer);
+        });
+
+        window.chatClientApi.onDeepseekError((error) => {
+          reject(error);
+        });
+
+        window.chatClientApi.deepseekAsk(
+          text,
+          turnChatMessage(messagesData.value)
+        );
+      });
+
+      const m_id2 = await createMessage(
+        currentTopic.value.id,
+        'assistant',
+        answer
+      );
+      messagesData.value = messagesData.value.map((msg) =>
+        msg.message_id === 'temp-ai'
+          ? { ...msg, message_id: m_id2, content: answer }
+          : msg
+      );
+    } catch (error) {
+      console.error('AI response error:', error);
+      messagesData.value.push({
+        conversation_id: currentTopic.value.id,
+        message_id: crypto.randomUUID(),
+        content: '**Error!!!**',
+        role: 'assistant',
+        created_at: new Date(),
+      });
+    }
+    shouldAutoScroll.value = true;
+    scrollToBottom();
   }
 
   function saveKey() {
     console.log('保存的API Key:', apiKey.value);
     showSetting.value = false;
     // TODO: 处理保存key逻辑
+    window.chatClientApi.deepseekUpdateApiKey(apiKey.value);
+    apiKey.value = '';
   }
+
   onMounted(() => {
     isDrawerOpenEventBus.on('update', (value: boolean) => {
       isDrawerOpen.value = value;
@@ -193,4 +419,43 @@
     isDrawerOpenEventBus.off('update');
     isDrawerOpenEventBus.off('expression');
   });
+
+  function startEditingTitle() {
+    editableTitle.value = currentTopic.value.title;
+    editingTitle.value = true;
+
+    nextTick(() => {
+      titleInput.value?.focus();
+    });
+  }
+
+  function finishEditingTitle() {
+    currentTopic.value.title =
+      editableTitle.value.trim() || currentTopic.value.title;
+    editingTitle.value = false;
+  }
+
+  // TODO:创建新聊天
+  const createNewChat = async () => {
+    const baseTitle = 'New Chat';
+    const existingTitles = historyTopics.value.map((chat) => chat.title);
+    let uniqueTitle = baseTitle;
+    let counter = 1;
+    while (existingTitles.includes(uniqueTitle)) {
+      uniqueTitle = `${baseTitle} ${counter++}`;
+    }
+    const newData = await createConservation(uniqueTitle); // 空标题会自动转为默认值
+
+    currentTopic.value.title = uniqueTitle;
+    historyTopics.value.unshift({
+      title: uniqueTitle,
+      id: newData.id,
+    });
+    messagesData.value = [];
+  };
+
+  const getChatMessage = async (c_id: string) => {
+    const topic_message = await getMessages(c_id);
+    return topic_message;
+  };
 </script>

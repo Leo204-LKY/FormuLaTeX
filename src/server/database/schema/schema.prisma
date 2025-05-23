@@ -8,34 +8,18 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/"
+  output   = "../../../../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"  // Use only as a placeholder, real database path will be provided at runtime
-}
-
-/// formula_sessions - Session log for each formula operation
-model formula_sessions {
-  /// Unique identifier
-  session_id      String      @id @default(uuid())
-  /// Input type (image/handwritting/text)
-  input_type      String
-  /// Original input content (file path, text, etc.)
-  source_content  String
-  /// Create time
-  created_at      DateTime    @default(now())
-
-  formulas        formulas[]
+  url      = env("DATABASE_URL")  // For debug only, real database path will be provided at runtime
 }
 
 /// formula - Recognised or generated LaTeX formulas
 model formulas {
   /// Unique identifier
   formula_id    String    @id @default(uuid())
-  /// Source session UUID
-  session_id    String
   /// Standard LaTeX code
   latex_code    String
   /// Used recognition API name (e.g., SimpleTex)
@@ -49,9 +33,7 @@ model formulas {
   /// Create time
   created_at    DateTime  @default(now())
 
-  session         formula_sessions          @relation(fields: [session_id], references: [session_id])
   interpretations formula_interpretations[]
-  conversations   formula_conversations[]
   tags            formula_tags[]
   favourties      favourites[]
 }
@@ -120,15 +102,14 @@ model favourites {
 /// formula_conversations - Conversation record for each conversation
 model formula_conversations {
   /// Conversation unique identifier
-  conversation_id String   @id
-  /// Related formula UUID
-  formula_id      String
+  conversation_id String   @id @default(uuid())
+  /// Conversation title
+  title           String?
   /// Conversation start time
   started_at      DateTime  @default(now())
   /// Conversation last update time
   updated_at      DateTime  @updatedAt
 
-  formula   formulas    @relation(fields: [formula_id], references: [formula_id])
   messages  messages[]
 }
 
