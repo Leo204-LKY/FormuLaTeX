@@ -1,19 +1,27 @@
-import { PrismaClient } from '../generated';
-import { getPrismaClient } from '../prisma-client';
-import type { messages } from '../generated';
+import { PrismaClient } from '@prisma/client';
+import { getPrismaClient, saveData } from '../prisma-manager';
+import type { messages, Prisma } from '@prisma/client';
 
 /**
  * `messages` table queries, only contains static methods
  */
 export class MessagesTable {
-  private static readonly PRISMA_CLIENT: PrismaClient = getPrismaClient();
+  private static prisma: PrismaClient | null = null;
+
+  private static async getPrismaClient(): Promise<PrismaClient> {
+    if (!MessagesTable.prisma) {
+      MessagesTable.prisma = await getPrismaClient();
+    }
+    return MessagesTable.prisma;
+  }
 
   /**
    * Get all conversation messages in messages table
    * @returns List of all conversation messages in messages table
    */
   static async getAll(): Promise<messages[]> {
-    return MessagesTable.PRISMA_CLIENT.messages.findMany();
+    const prisma = await MessagesTable.getPrismaClient();
+    return prisma.messages.findMany();
   }
 
   /**
@@ -24,7 +32,9 @@ export class MessagesTable {
   static async getManyByConversationId(
     conversationUuid: string
   ): Promise<messages[]> {
-    return MessagesTable.PRISMA_CLIENT.messages.findMany({
+    const prisma = await MessagesTable.getPrismaClient();
+
+    return prisma.messages.findMany({
       where: { conversation_id: conversationUuid },
       orderBy: { created_at: 'asc' }, // Order by send time
     });
@@ -35,10 +45,16 @@ export class MessagesTable {
    * @param message Message to insert
    * @returns The UUID of the inserted message
    */
-  static async insertOne(message: messages): Promise<string> {
-    const result = await MessagesTable.PRISMA_CLIENT.messages.create({
+  static async insertOne(
+    message: Prisma.messagesCreateManyInput
+  ): Promise<string> {
+    const prisma = await MessagesTable.getPrismaClient();
+
+    const result = await prisma.messages.create({
       data: message,
     });
+
+    saveData();
 
     return result.message_id;
   }
@@ -50,8 +66,12 @@ export class MessagesTable {
   static async deleteManyByConversationId(
     conversationUuid: string
   ): Promise<void> {
-    await MessagesTable.PRISMA_CLIENT.messages.deleteMany({
+    const prisma = await MessagesTable.getPrismaClient();
+
+    await prisma.messages.deleteMany({
       where: { conversation_id: conversationUuid },
     });
+
+    saveData();
   }
 }

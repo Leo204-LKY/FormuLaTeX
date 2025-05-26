@@ -1,4 +1,4 @@
-import { ChatMessage, DeepSeekConfig } from '../../interfaces';
+import type { ChatMessage, DeepSeekConfig } from '../../interfaces';
 import { getEncryptedJsonConfig } from '../../services';
 import { AbstractChatClient } from './abstract-chat-client';
 
@@ -9,7 +9,7 @@ export class DeepSeekChatClient extends AbstractChatClient {
 
   constructor(
     apiKey: string = (getEncryptedJsonConfig('deepseek') as DeepSeekConfig)
-      .apiKey
+      .apiKey || ''
   ) {
     super(apiKey, 'https://api.deepseek.com/v1');
   }

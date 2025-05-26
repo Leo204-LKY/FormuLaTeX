@@ -3,8 +3,12 @@
  */
 import os from 'os';
 import fs from 'fs';
+import path from 'path';
+import { closePrismaClient } from '../../database';
 
-const TEMP_FILES: string[] = [];
+const TEMP_FILES: string[] = [
+  path.resolve(getSafeTempDir(), 'formulatex'), // Default temp dir
+];
 
 /**
  * @description Get system temp dir path
@@ -48,7 +52,15 @@ export function cleanUpTempFiles(filePaths: string[] = TEMP_FILES): void {
   for (const filePath of filePaths) {
     try {
       if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+        const stat = fs.statSync(filePath);
+
+        if (stat.isDirectory()) {
+          console.log('Deleting directory: ', filePath);
+          fs.rmSync(filePath, { recursive: true, force: true });
+        } else {
+          console.log('Deleting file: ', filePath);
+          fs.unlinkSync(filePath);
+        }
       }
 
       const index = TEMP_FILES.indexOf(filePath);
@@ -56,9 +68,19 @@ export function cleanUpTempFiles(filePaths: string[] = TEMP_FILES): void {
         TEMP_FILES.splice(index, 1);
       }
     } catch (e) {
-      console.error('Failed to delete temp file: ', filePath, e);
+      console.error('Failed to delete temp file: ', filePath, '\n', e);
     }
   }
+}
+
+/**
+ * Close Prisma client (if exist) and clean up temp files
+ */
+async function gracefulShutdown() {
+  closePrismaClient().then(() => {
+    cleanUpTempFiles();
+    process.exit(0);
+  });
 }
 
 // Auto cleanup when program closes
@@ -70,8 +92,5 @@ export function cleanUpTempFiles(filePaths: string[] = TEMP_FILES): void {
   'SIGUSR2',
   'uncaughtException',
 ].forEach((eventType) => {
-  process.on(eventType, () => {
-    cleanUpTempFiles();
-    process.exit();
-  });
+  process.on(eventType, gracefulShutdown);
 });

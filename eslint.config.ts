@@ -22,7 +22,6 @@ export default defineConfig([
       'electron-builder.json',
       '**/tsconfig*.json',
       '.vscode/**',
-      '**/database/generated/**',
     ],
   },
 

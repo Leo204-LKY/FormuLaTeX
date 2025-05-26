@@ -1,19 +1,27 @@
-import { PrismaClient } from '../generated';
-import { getPrismaClient } from '../prisma-client';
-import type { tags } from '../generated';
+import { PrismaClient } from '@prisma/client';
+import { getPrismaClient, saveData } from '../prisma-manager';
+import type { Prisma, tags } from '@prisma/client';
 
 /**
  * `tags` table queries, only contains static methods
  */
 export class TagsTable {
-  private static readonly PRISMA_CLIENT: PrismaClient = getPrismaClient();
+  private static prisma: PrismaClient | null = null;
+
+  private static async getPrismaClient(): Promise<PrismaClient> {
+    if (!TagsTable.prisma) {
+      TagsTable.prisma = await getPrismaClient();
+    }
+    return TagsTable.prisma;
+  }
 
   /**
    * Get all tags in tags table
    * @returns List of all tags in tags table
    */
   static async getAll(): Promise<tags[]> {
-    return TagsTable.PRISMA_CLIENT.tags.findMany();
+    const prisma = await TagsTable.getPrismaClient();
+    return prisma.tags.findMany();
   }
 
   /**
@@ -22,7 +30,9 @@ export class TagsTable {
    * @returns Tag with given UUID
    */
   static async getUniqueByUuid(uuid: string): Promise<tags | null> {
-    return TagsTable.PRISMA_CLIENT.tags.findUnique({
+    const prisma = await TagsTable.getPrismaClient();
+
+    return prisma.tags.findUnique({
       where: { tag_id: uuid },
     });
   }
@@ -33,7 +43,9 @@ export class TagsTable {
    * @returns Tags with given name
    */
   static async getManyByName(name: string): Promise<tags[]> {
-    return TagsTable.PRISMA_CLIENT.tags.findMany({
+    const prisma = await TagsTable.getPrismaClient();
+
+    return prisma.tags.findMany({
       where: { name },
     });
   }
@@ -43,10 +55,14 @@ export class TagsTable {
    * @param tag Tag to insert
    * @returns The UUID of the inserted tag
    */
-  static async insertOne(tag: tags): Promise<string> {
-    const result = await TagsTable.PRISMA_CLIENT.tags.create({
+  static async insertOne(tag: Prisma.tagsCreateManyInput): Promise<string> {
+    const prisma = await TagsTable.getPrismaClient();
+
+    const result = await prisma.tags.create({
       data: tag,
     });
+
+    saveData();
 
     return result.tag_id;
   }
@@ -55,12 +71,16 @@ export class TagsTable {
    * Insert many tags into tags table
    * @param tags Tags to insert
    */
-  static async insertMany(tags: tags[]): Promise<void> {
-    await TagsTable.PRISMA_CLIENT.$transaction(async (tx) => {
+  static async insertMany(tags: Prisma.tagsCreateManyInput[]): Promise<void> {
+    const prisma = await TagsTable.getPrismaClient();
+
+    await prisma.$transaction(async (tx) => {
       await tx.tags.createMany({
         data: tags,
       });
     });
+
+    saveData();
   }
 
   /**
@@ -68,9 +88,13 @@ export class TagsTable {
    * @param uuid Tag UUID
    */
   static async deleteOne(uuid: string): Promise<void> {
-    await TagsTable.PRISMA_CLIENT.tags.delete({
+    const prisma = await TagsTable.getPrismaClient();
+
+    await prisma.tags.delete({
       where: { tag_id: uuid },
     });
+
+    saveData();
   }
 
   /**
@@ -78,9 +102,13 @@ export class TagsTable {
    * @param uuid Tag UUID
    */
   static async setColorByUuid(uuid: string, color: string): Promise<void> {
-    await TagsTable.PRISMA_CLIENT.tags.update({
+    const prisma = await TagsTable.getPrismaClient();
+
+    await prisma.tags.update({
       where: { tag_id: uuid },
       data: { color },
     });
+
+    saveData();
   }
 }
