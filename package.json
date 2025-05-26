@@ -1,6 +1,6 @@
 {
   "name": "formulatex",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AI based tool that can automatically convert formula into LaTeX code & other features.",
   "keywords": [
     "math",
@@ -83,7 +83,6 @@
   "build": {
     "appId": "com.groupkappa.formulatex",
     "productName": "FormuLaTeX",
-    "asar": false,
     "files": [
       "dist/**/*",
       "package.json"
@@ -112,7 +111,7 @@
     "extraResources": [
       {
         "from": "node_modules/.prisma",
-        "to": "app/node_modules/.prisma"
+        "to": "node_modules/.prisma"
       }
     ]
   }
