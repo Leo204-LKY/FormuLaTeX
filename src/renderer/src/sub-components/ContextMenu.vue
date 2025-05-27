@@ -28,10 +28,20 @@
   import { ref, onMounted, onUnmounted } from 'vue';
   import { contextMenuEventBus } from '../eventBus';
 
+  interface Expression {
+    name: string | null;
+    latex_code: string;
+  }
+
+  interface Topics {
+    title: string;
+    id: string;
+  }
+
   const visible = ref(false);
   const position = ref({ x: 0, y: 0 });
   const currentType = ref<'expression' | 'historyTopic' | null>(null);
-  let currentExpression: any = null;
+  let currentExpression: Expression | Topics;
 
   const emitEdit = () => {
     contextMenuEventBus.emit('editExpression', currentExpression);
@@ -42,7 +52,10 @@
     if (currentType.value === 'expression') {
       contextMenuEventBus.emit('deleteExpression', currentExpression);
     } else if (currentType.value === 'historyTopic') {
-      contextMenuEventBus.emit('deleteHistoryTopic', currentExpression);
+      contextMenuEventBus.emit(
+        'deleteHistoryTopic',
+        currentExpression as Topics
+      );
     }
     closeMenu();
   };

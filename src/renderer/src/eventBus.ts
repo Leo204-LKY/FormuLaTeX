@@ -1,6 +1,16 @@
 // src/eventBus.ts
 import mitt from 'mitt';
 
+interface Expression {
+  name: string | null;
+  latex_code: string;
+}
+
+interface Topics {
+  title: string;
+  id: string;
+}
+
 type expressionEvents = {
   selectExpression: string;
 };
@@ -23,11 +33,11 @@ export const contextMenuEventBus = mitt<{
   openContextMenu: {
     x: number;
     y: number;
-    expression: any;
+    expression: Expression | Topics;
     type: 'expression' | 'historyTopic';
   };
   closeContextMenu: void;
-  editExpression: any;
-  deleteExpression: any;
-  deleteHistoryTopic: any;
+  editExpression: Expression | Topics;
+  deleteExpression: Expression | Topics;
+  deleteHistoryTopic: Topics;
 }>();
