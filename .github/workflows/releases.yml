@@ -21,6 +21,8 @@ jobs:
       - name: Get tag and branch
         id: info
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           TAG_NAME=${GITHUB_REF#refs/tags/}
           BRANCH=$(git branch -r --contains "$TAG_NAME" | grep -v '\->' | grep -v 'origin/HEAD' | sed 's|origin/||' | head -n 1)
           echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
@@ -42,46 +44,27 @@ jobs:
         with:
           node-version: '22.14.0'
 
-      - name: Update package.json version
+      - name: Update package.json version if different
+        id: version_check
         run: |
-          yarn version --new-version ${{ steps.info.outputs.tag }}
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -am "chore: update version to ${{ steps.info.outputs.tag }}"
-          git push origin ${{ steps.info.outputs.branch }}
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+          echo "Tag version: ${{ steps.info.outputs.tag }}"
 
-  build-and-release:
-    needs: release
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+          if [ "$CURRENT_VERSION" = "${{ steps.info.outputs.tag }}" ]; then
+            echo "Version matches tag. Skipping version bump."
+            echo "skip_bump=true" >> $GITHUB_OUTPUT
+          else
+            yarn version --new-version ${{ steps.info.outputs.tag }} --no-git-tag-version
+            git commit -am "chore: update version to ${{ steps.info.outputs.tag }}"
+            git push origin ${{ steps.info.outputs.branch }}
+            echo "skip_bump=false" >> $GITHUB_OUTPUT
+          fi
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.14.0'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build package
-        run: yarn build
-
-      - name: Archive build output
+      - name: Move tag to latest commit if version bumped
+        if: steps.version_check.outputs.skip_bump == 'false'
         run: |
-          zip -r ${{ runner.os }}-build.zip ./dist
-        shell: bash
-
-      - name: Upload to GitHub Release (draft)
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          draft: true
-          files: ${{ runner.os }}-build.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git tag -d ${{ steps.info.outputs.tag }}
+          git push origin :refs/tags/${{ steps.info.outputs.tag }}
+          git tag ${{ steps.info.outputs.tag }}
+          git push origin ${{ steps.info.outputs.tag }}
