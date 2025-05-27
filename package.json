@@ -79,43 +79,5 @@
     "vite": "^6.3.2",
     "vue-eslint-parser": "^10.1.3",
     "vue-tsc": "^2.2.10"
-  },
-  "build": {
-    "appId": "com.groupkappa.formulatex",
-    "productName": "FormuLaTeX",
-    "files": [
-      "dist/main/**/*",
-      "dist/renderer/**/*",
-      "dist/server/**/**",
-      "package.json",
-      "!**/*.test.*"
-    ],
-    "directories": {
-      "output": "dist"
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "zip"
-      ]
-    },
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
-    },
-    "extraResources": [
-      {
-        "from": "node_modules/.prisma",
-        "to": "node_modules/.prisma"
-      }
-    ]
   }
 }

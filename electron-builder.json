@@ -1,23 +1,32 @@
 {
-    "build": {
-      "appId": "com.kappa.formulatex",
-      "productName": "FormuLaTeX",
-      "directories": {
-        "output": "release"
-      },
-      "files": [
-        "dist/**/*",
-        "renderer/dist/**/*",
-        "node_modules/**/*",
-        "package.json"
-      ],
-      "extraResources": [],
-      "mac": {
-        "target": "dmg"
-      },
-      "win": {
-        "target": "nsis"
-      }
+  "appId": "com.groupkappa.formulatex",
+  "productName": "FormuLaTeX",
+  "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+  "files": [
+    "dist/main/**/*",
+    "dist/renderer/**/*",
+    "dist/server/**/**",
+    "package.json",
+    "!**/*.test.*"
+  ],
+  "directories": {
+    "output": "dist/package"
+  },
+  "win": {
+    "target": ["nsis", "zip"],
+    "sign": false
+  },
+  "mac": {
+    "target": ["dmg", "zip"],
+    "sign": false
+  },
+  "linux": {
+    "target": ["AppImage", "deb"]
+  },
+  "extraResources": [
+    {
+      "from": "node_modules/.prisma",
+      "to": "node_modules/.prisma"
     }
-  }
-  
+  ]
+}
