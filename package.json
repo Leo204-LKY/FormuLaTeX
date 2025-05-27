@@ -26,7 +26,7 @@
     "dev:main": "tsc --watch",
     "dev:renderer": "cd src/renderer && yarn dev",
     "start": "yarn build && electron .",
-    "build": "yarn build:main && yarn build:renderer",
+    "build": "yarn build:main && yarn build:renderer && yarn build:prisma",
     "build:main": "tsc",
     "build:renderer": "cd src/renderer && yarn build",
     "build:prisma": "cross-env DATABASE_URL=file:../../../../dist/template.db prisma db push --schema src/server/database/schema/schema.prisma",
