@@ -28,6 +28,10 @@
     {
       "from": "node_modules/.prisma",
       "to": "node_modules/.prisma"
+    },
+    {
+      "from": "dist/template.db",
+      "to": "template.db"
     }
   ]
 }
