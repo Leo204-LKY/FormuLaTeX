@@ -64,6 +64,15 @@ export async function getPrismaClient(): Promise<PrismaClient> {
       });
       await prisma.$connect();
 
+      await prisma.tags.createMany({
+        data: [
+          { tag_id: 'History', name: 'History' },
+          { tag_id: 'Common', name: 'Common' },
+          { tag_id: 'Math', name: 'Math' },
+          { tag_id: 'Physics', name: 'Physics' },
+        ],
+      });
+
       saveData();
     } else {
       createTempDecryptedDB(encryptedDbPath, tempDbPath);
