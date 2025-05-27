@@ -3,6 +3,7 @@
     class="bg-white border border-gray-200 rounded-md p-4 flex flex-col h-screen"
     style="height: 100%"
   >
+    <!-- Header section with title and create button -->
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold">{{ 'Quick Input' }}</h2>
       <button
@@ -13,7 +14,7 @@
       </button>
     </div>
 
-    <!-- Tags选择栏 -->
+    <!-- Tags selector -->
     <div
       id="tag-selector"
       ref="tagSelectorRef"
@@ -31,7 +32,7 @@
       </button>
     </div>
 
-    <!-- 展示对应Tags下的公式 -->
+    <!-- Formula list for the selected tag -->
     <div
       id="expression-list"
       ref="expressionListRef"
@@ -55,6 +56,7 @@
     </div>
   </div>
 
+  <!-- Success alert after creating formula -->
   <AlterItem
     v-model:visible="alertVisible"
     title="Create Formula"
@@ -62,6 +64,7 @@
     :buttons="[{ text: 'OK', type: 'primary' }]"
   />
 
+  <!-- Create formula modal -->
   <div
     v-if="isModalOpen"
     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
@@ -80,6 +83,7 @@
         Create New Formula
       </h3>
 
+      <!-- Form fields -->
       <div class="space-y-5">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -108,6 +112,7 @@
         </div>
       </div>
 
+      <!-- Action buttons -->
       <div class="mt-7 flex justify-center space-x-4">
         <button
           class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]"
@@ -127,49 +132,63 @@
 </template>
 
 <script setup lang="ts">
+  import { ref, onMounted, onUnmounted, reactive } from 'vue';
   import ExpressionItem from '../sub-components/ExpressionItem.vue';
   import AlterItem from '../sub-components/AlterItem.vue';
-  import { ref, onMounted, onUnmounted, reactive } from 'vue';
   import { inputEventBus } from '../eventBus';
   import { createFormula, getFormulas } from '../utils/formulaDB';
   import type { formulas } from '@prisma/client';
 
-  type ExpressionItemInstance = InstanceType<typeof ExpressionItem>;
-  const tagSelectorRef = ref(null);
-  const expressionListRef = ref(null);
-  const expressionItemRefs: Record<number | string, ExpressionItemInstance> =
-    reactive({});
+  // Component references
+  const tagSelectorRef = ref<HTMLElement | null>(null);
+  const expressionListRef = ref<HTMLElement | null>(null);
 
+  // Reference map for ExpressionItem instances
+  const expressionItemRefs = reactive<
+    Record<string, InstanceType<typeof ExpressionItem>>
+  >({});
+
+  // UI state management
   const alertVisible = ref(false);
   const isModalOpen = ref(false);
   const newFormulaName = ref('');
   const newFormulaContent = ref('');
-  const tags = ['History', 'Common', 'Math', 'Physics']; // 举例
-  const selectedTag = ref(tags[0]);
-  const displayItems = ref<formulas[]>([]); // 或你具体的数据类型
+  const latexInput = ref('');
 
+  // Tag and formula management
+  const tags = ['History', 'Common', 'Math', 'Physics'];
+  const selectedTag = ref(tags[0]);
+  const displayItems = ref<formulas[]>([]);
+
+  /**
+   * Fetch formula items from database by tag
+   * @param tag - Tag to filter formulas
+   */
   const fetchItemsByTag = async (tag: string) => {
     selectedTag.value = tag;
-    const result = await fetchFromDB(tag);
-    displayItems.value = result;
+    displayItems.value = await fetchFromDB(tag);
   };
 
-  // TODO: 替换为实际的数据库查询逻辑
-  const fetchFromDB = async (tag: string) => {
-    const formulasData: formulas[] = await getFormulas(tag);
-    return formulasData;
+  /**
+   * Database query wrapper to fetch formulas by tag
+   * @param tag - Tag to filter formulas
+   * @returns Array of formula items
+   */
+  const fetchFromDB = async (tag: string): Promise<formulas[]> => {
+    return await getFormulas(tag);
   };
 
-  onMounted(() => {
-    fetchItemsByTag(tags[0]); // 默认加载第一个 tag 对应内容
-  });
-
-  const latexInput = ref('');
+  /**
+   * Handle expression selection and update input value
+   * @param expr - Selected formula item
+   */
   const handleSelectExpression = (expr: formulas) => {
     latexInput.value = expr.latex_code;
   };
 
-  // 打开模态框并复制当前输入内容
+  /**
+   * Open formula creation modal with default name
+   */
   const openFormulaModal = () => {
     isModalOpen.value = true;
     newFormulaName.value = new Date()
@@ -178,36 +197,23 @@
       .slice(0, 19);
   };
 
-  onMounted(() => {
-    inputEventBus.on('input', (value) => {
-      if (value.trim() !== '') {
-        newFormulaContent.value = value;
-      }
-    });
-  });
-
-  onUnmounted(() => {
-    inputEventBus.off('input');
-  });
-
-  // TODO：保存公式
+  /**
+   * Save new formula to database and update display list
+   */
   const saveFormula = async () => {
-    if (!newFormulaName.value.trim() || !newFormulaContent.value.trim()) {
-      return;
-    }
-    console.log('Saving formula:', {
-      name: newFormulaName.value,
-      content: newFormulaContent.value,
-      created_at: new Date().toISOString(),
-    });
+    if (!newFormulaName.value.trim() || !newFormulaContent.value.trim()) return;
+
     try {
-      const f_id = await createFormula(
+      // Create formula in database
+      const formulaId = await createFormula(
         selectedTag.value,
         newFormulaName.value,
         newFormulaContent.value
       );
+
+      // Add new formula to display list
       const newFormula: formulas = {
-        formula_id: f_id,
+        formula_id: formulaId,
         name: newFormulaName.value,
         latex_code: newFormulaContent.value,
         description: '',
@@ -215,14 +221,34 @@
         confidence: 1,
         created_at: new Date(),
       };
+
       displayItems.value.unshift(newFormula);
     } catch (error) {
-      console.error('Request error', error);
+      console.error('Failed to save formula:', error);
+    } finally {
+      // Reset form and show success alert
+      isModalOpen.value = false;
+      newFormulaName.value = '';
+      newFormulaContent.value = '';
+      alertVisible.value = true;
     }
-
-    isModalOpen.value = false;
-    newFormulaName.value = '';
-    newFormulaContent.value = '';
-    alertVisible.value = true;
   };
+
+  // Lifecycle hooks
+  onMounted(() => {
+    // Fetch initial formulas
+    fetchItemsByTag(tags[0]);
+
+    // Subscribe to input events
+    inputEventBus.on('input', (value) => {
+      if (value.trim()) {
+        newFormulaContent.value = value;
+      }
+    });
+  });
+
+  onUnmounted(() => {
+    // Unsubscribe from input events
+    inputEventBus.off('input');
+  });
 </script>

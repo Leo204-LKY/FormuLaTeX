@@ -1,12 +1,13 @@
+<!-- AlterItem.vue -->
 <template>
-  <!-- 遮罩层 -->
+  <!-- Modal Overlay -->
   <div
     v-show="visible"
     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300"
     :class="{ 'opacity-0 pointer-events-none': !visible }"
     @click.self="closeOnOverlay && close()"
   >
-    <!-- 提示框主体 -->
+    <!-- Modal Content -->
     <div
       class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden transform transition-all duration-300"
       :class="{
@@ -14,7 +15,7 @@
         'scale-100 opacity-100': visible,
       }"
     >
-      <!-- 标题区域 -->
+      <!-- Title Section -->
       <div
         class="px-6 py-4 border-b border-gray-200 justify-center flex items-center"
       >
@@ -23,12 +24,12 @@
         </h3>
       </div>
 
-      <!-- 内容区域 -->
+      <!-- Content Section -->
       <div class="px-6 py-4">
         <slot>{{ message }}</slot>
       </div>
 
-      <!-- 按钮区域 -->
+      <!-- Buttons Section -->
       <div class="px-6 py-3 bg-gray-50 flex justify-center space-x-3">
         <button
           v-for="(btn, index) in buttons"
@@ -54,7 +55,7 @@
     },
     title: {
       type: String,
-      default: '提示',
+      default: 'Notice',
     },
     message: {
       type: String,
@@ -66,7 +67,7 @@
     },
     buttons: {
       type: Array,
-      default: () => [{ text: '确定', callback: () => {} }],
+      default: () => [{ text: 'OK', callback: () => {} }],
     },
     closeOnEsc: {
       type: Boolean,
@@ -78,10 +79,10 @@
     },
   });
 
-  // 组件事件
+  // Component Events
   const emits = defineEmits(['update:visible', 'closed']);
 
-  // 处理按钮点击
+  // Button click handler
   const handleButtonClick = (btn) => {
     if (typeof btn.callback === 'function') {
       btn.callback();
@@ -89,20 +90,20 @@
     emits('update:visible', false);
   };
 
-  // 关闭提示框
+  // Close modal handler
   const close = () => {
     emits('update:visible', false);
     emits('closed');
   };
 
-  // ESC 键监听
+  // ESC key handler
   const handleKeydown = (e) => {
     if (e.key === 'Escape' && props.closeOnEsc) {
       close();
     }
   };
 
-  // 获取按钮样式
+  // Get button class based on type
   const getButtonClass = (type) => {
     switch (type) {
       case 'primary':

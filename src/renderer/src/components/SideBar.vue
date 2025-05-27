@@ -1,4 +1,5 @@
 <template>
+  <!-- Sidebar Toggle Button -->
   <button
     ref="drawerButton"
     @click="toggleDrawer"
@@ -24,6 +25,7 @@
     </svg>
   </button>
 
+  <!-- History Sidebar -->
   <div
     class="fixed top-0 left-0 h-full w-1/4 bg-white border-r shadow-lg transition-transform duration-300 z-10"
     :class="isHistoryDrawerOpen ? 'translate-x-0' : '-translate-x-full'"
@@ -45,13 +47,16 @@
     </div>
   </div>
 
+  <!-- Main Chat Sidebar -->
   <div
     class="fixed top-0 right-0 h-full w-3/4 bg-white border-l shadow-lg transition-transform duration-300 z-20"
     :class="isDrawerOpen ? 'translate-x-0' : 'translate-x-full'"
   >
+    <!-- Top Toolbar -->
     <div
       class="flex items-center justify-between p-2 pb-2 border-b border-gray-300"
     >
+      <!-- Sidebar Toggle & New Chat Button -->
       <div class="flex items-center space-x-2">
         <button
           class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
@@ -66,6 +71,8 @@
           + New
         </button>
       </div>
+
+      <!-- Chat Title Editing Area -->
       <div class="relative">
         <h2
           v-if="!editingTitle"
@@ -85,6 +92,7 @@
         />
       </div>
 
+      <!-- Alert Components -->
       <AlterItem
         v-model:visible="alertVisible_initial"
         title="Chat API Key"
@@ -117,8 +125,8 @@
         :buttons="[{ text: 'OK', type: 'primary' }]"
       />
 
+      <!-- Settings Button & Panel -->
       <div class="flex items-center space-x-2">
-        <!-- 设置 -->
         <div class="relative">
           <button
             class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
@@ -126,7 +134,8 @@
           >
             <img src="../assets/icons/setting.svg" />
           </button>
-          <!-- 展开设置输入框 -->
+
+          <!-- Settings Panel -->
           <div
             v-if="showSetting"
             class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg p-4 z-30"
@@ -148,7 +157,8 @@
         </div>
       </div>
     </div>
-    <!-- 聊天记录 -->
+
+    <!-- Chat Content Area -->
     <div ref="chatContainer" class="flex-1 p-4 h-3/4 overflow-y-auto space-y-4">
       <div
         v-for="(message, index) in messagesData"
@@ -156,6 +166,7 @@
         :class="message.role == 'user' ? 'text-right' : 'text-left'"
         class="p-2 h-auto"
       >
+        <!-- User Messages -->
         <span
           v-if="message.role === 'user'"
           class="bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
@@ -163,6 +174,8 @@
           {{ message.content }}
           <!-- <MarkdownRenderer :content="message.content" /> -->
         </span>
+
+        <!-- AI Response Messages (with Markdown rendering) -->
         <div
           v-else
           class="bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words whitespace-pre-wrap text-left"
@@ -171,7 +184,7 @@
       </div>
     </div>
 
-    <!-- 输入框和发送按钮 -->
+    <!-- Bottom Input Area -->
     <div
       class="flex items-center p-4 bg-white fixed bottom-0 left-0 right-0 max-h-64"
     >
@@ -195,67 +208,69 @@
     createMessage,
   } from '../utils/chatDB';
   import DOMPurify from 'dompurify';
-  // import { marked } from 'marked';
   import type { messages } from '@prisma/client';
   import { turnChatMessage } from '../utils/turnChatMessage';
-  // import MarkdownRenderer from '../sub-components/MarkdownRenderer.vue';
   import AlterItem from '../sub-components/AlterItem.vue';
   import MarkdownIt from 'markdown-it';
   import katex from 'katex';
-  // import markdownItKatex from 'markdown-it-katex';
-  // import mathjax3 from 'markdown-it-mathjax3';
   import 'katex/dist/katex.min.css';
   import type { DeepSeekConfig } from '../../../server';
 
+  // Interface for chat topics
   interface Topics {
     title: string;
     id: string;
   }
 
-  const renderMarkdown = (content: string) => {
+  // Markdown rendering with KaTeX support
+  const renderMarkdown = (content: string): string => {
+    // Preprocess content to handle line breaks in LaTeX blocks
     content = content
       .replace(/\\\[\s*\n+/g, '\\[')
       .replace(/\n+\s*\\\]/g, '\\]');
-    content = content
-      // 处理行内公式 $...$ 和 \(...\)
-      .replace(
-        /(?:\\?[$])([^$]*)(?:\\?[$])|\\\((.*?)\\\)/g,
-        (match, p1, p2) => {
-          const tex = p1 || p2;
-          try {
-            return katex.renderToString(tex, {
-              throwOnError: false,
-              displayMode: false,
-            });
-          } catch (e) {
-            console.error('KaTeX render error:', e);
-            return match;
-          }
-        }
-      )
-      // 处理块级公式 $$...$$ 和 \[...\]
-      .replace(
-        /(?:\\?[$][$])([^$]*)(?:\\?[$][$])|\\\[(.*?)\\\]|^\s*\[(.*?)\]\s*$/gm,
-        (match, p1, p2, p3) => {
-          const tex = p1 || p2 || p3;
-          try {
-            return katex.renderToString(tex.trim(), {
-              throwOnError: false,
-              displayMode: true,
-            });
-          } catch (e) {
-            console.error('KaTeX render error:', e);
-            return match;
-          }
-        }
-      );
 
+    // Inline formula handling ($...$ and \(...\))
+    content = content.replace(
+      /(?:\\?[$])([^$]*)(?:\\?[$])|\\\((.*?)\\\)/g,
+      (match, inline, inlineBlock) => {
+        const tex = inline || inlineBlock;
+        try {
+          return katex.renderToString(tex, {
+            throwOnError: false,
+            displayMode: false,
+          });
+        } catch (e) {
+          console.error('KaTeX inline render error:', e);
+          return match;
+        }
+      }
+    );
+
+    // Block formula handling ($$...$$, \[...\], and [text])
+    content = content.replace(
+      /(?:\\?[$][$])([^$]*)(?:\\?[$][$])|\\\[(.*?)\\\]|^\s*\[(.*?)\]\s*$/gm,
+      (match, block, blockBracket, blockSquare) => {
+        const tex = block || blockBracket || blockSquare;
+        try {
+          return katex.renderToString(tex.trim(), {
+            throwOnError: false,
+            displayMode: true,
+          });
+        } catch (e) {
+          console.error('KaTeX block render error:', e);
+          return match;
+        }
+      }
+    );
+
+    // Initialize Markdown parser
     const md = new MarkdownIt({
       html: true,
       breaks: false,
       linkify: true,
     });
 
+    // Render and sanitize HTML output
     const html = md.render(content);
     return DOMPurify.sanitize(html, {
       ADD_TAGS: [
@@ -273,32 +288,35 @@
     });
   };
 
+  // Chat container reference and scroll management
   const chatContainer = ref<HTMLDivElement | null>(null);
-  const shouldAutoScroll = ref(true); // 是否自动滚动
-  // const mathRegex = /(?:\$.*?\$)|(?:`{3}math\n?.*?\n?`{3})/g;
+  const shouldAutoScroll = ref(true); // Auto-scroll state
 
-  const alertVisible_initial = ref(false);
-  const alertVisible_existed = ref(false);
-  const alertVisible_error = ref(false);
-  const isDrawerOpen = ref(false);
-  const messagesData = ref<messages[]>([]);
-  const inputText = ref('');
-  const currentTopic = ref<Topics>({
-    title: 'Chat Title',
-    id: 'default',
-  });
+  // Alert states
+  const alertVisible_initial = ref(false); // API key saved
+  const alertVisible_existed = ref(false); // API key exists
+  const alertVisible_error = ref(false); // API key missing
 
-  const isHistoryDrawerOpen = ref(false);
-  const showSetting = ref(false);
-  const apiKey = ref('');
+  // Sidebar states
+  const isDrawerOpen = ref(false); // Main sidebar open state
+  const messagesData = ref<messages[]>([]); // Chat messages
+  const inputText = ref(''); // Input text
+  const currentTopic = ref<Topics>({ title: 'Chat Title', id: 'default' }); // Current chat topic
 
-  const editableTitle = ref('');
-  const editingTitle = ref(false);
-  const titleInput = ref<HTMLInputElement | null>(null);
+  // History sidebar states
+  const isHistoryDrawerOpen = ref(false); // History sidebar open state
+  const showSetting = ref(false); // Settings panel state
+  const apiKey = ref(''); // API key input
 
-  // TODO: 历史 Topic
-  const historyTopics = ref<Topics[]>([]);
+  // Title editing states
+  const editableTitle = ref(''); // Editable title value
+  const editingTitle = ref(false); // Title edit mode
+  const titleInput = ref<HTMLInputElement | null>(null); // Title input reference
 
+  // History topics storage
+  const historyTopics = ref<Topics[]>([]); // List of saved conversations
+
+  // Lifecycle hook: Fetch initial conversations
   onMounted(async () => {
     const conservations = await getConservations();
     historyTopics.value = conservations.map((conv) => ({
@@ -307,31 +325,29 @@
     }));
   });
 
+  // Lifecycle hook: Scroll event listener
   onMounted(() => {
     if (chatContainer.value) {
       chatContainer.value.addEventListener('scroll', (e) => {
         const { scrollTop, scrollHeight, clientHeight } =
           e.target as HTMLDivElement;
-        // 当滚动距离小于总高度 - 容器高度 - 100 时，认为用户手动滚动
-        shouldAutoScroll.value = scrollTop + clientHeight >= scrollHeight - 100;
+        shouldAutoScroll.value = scrollTop + clientHeight >= scrollHeight - 100; // Detect manual scroll
       });
     }
   });
 
+  // Scroll to bottom function
   const scrollToBottom = () => {
-    chatContainer.value?.scrollIntoView({
-      behavior: 'smooth', // 平滑滚动
-      block: 'end',
-    });
+    chatContainer.value?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   };
 
-  // 监听消息变化，触发滚动
+  // Watcher: Auto-scroll on message updates
   watch(
     messagesData,
     () => {
       if (shouldAutoScroll.value && chatContainer.value) {
-        // 延迟执行确保DOM更新完成
         nextTick(() => {
+          // Ensure DOM update
           chatContainer.value!.scrollTop = chatContainer.value!.scrollHeight;
         });
       }
@@ -339,60 +355,76 @@
     { deep: true }
   );
 
+  // Sidebar toggle handler
   function toggleDrawer() {
     isDrawerOpen.value = !isDrawerOpen.value;
-    if (!isDrawerOpen.value) isHistoryDrawerOpen.value = false;
+    if (!isDrawerOpen.value) isHistoryDrawerOpen.value = false; // Close history sidebar when main closes
   }
+
+  // Settings toggle handler
   function toggleSetting() {
     showSetting.value = !showSetting.value;
-    apiKey.value = '';
+    apiKey.value = ''; // Clear input on toggle
   }
 
+  // Select history topic handler
   async function selectHistoryTopic(topic: Topics) {
-    console.log('Choose Topic:', topic.title);
+    console.log('Selected Topic:', topic.title);
     isHistoryDrawerOpen.value = false;
     currentTopic.value = { ...topic };
-    messagesData.value = await getChatMessage(topic.id);
+    messagesData.value = await getChatMessage(topic.id); // Load messages for selected topic
   }
 
+  // Formula insertion method
   const insertFormula = (formula: string) => {
-    inputText.value += formula;
+    inputText.value += formula; // Append formula to input
   };
+
+  // Exposed methods
   defineExpose({ isDrawerOpen, insertFormula });
 
+  // Message sending handler
   async function sendMessage() {
-    const current_key = (await window.servicesApi.getJsonConfig(
+    const currentKey = (await window.servicesApi.getJsonConfig(
       'deepseek'
     )) as DeepSeekConfig;
-    if (!current_key || !current_key.apiKey) {
+
+    // Validate API key
+    if (!currentKey || !currentKey.apiKey) {
       alertVisible_error.value = true;
       showSetting.value = true;
       return;
     }
 
+    // Create new conversation if default
     if (currentTopic.value.id === 'default') {
       await createNewChat(new Date().toISOString());
     }
 
     const text = inputText.value.trim();
-    if (text === '') return;
-    const m_id1 = await createMessage(currentTopic.value.id, 'user', text);
+    if (!text) return; // Prevent empty messages
 
+    // Save user message
+    const mId1 = await createMessage(currentTopic.value.id, 'user', text);
     messagesData.value.push({
       conversation_id: currentTopic.value.id,
-      message_id: m_id1,
+      message_id: mId1,
       content: text,
       role: 'user',
       created_at: new Date(),
     });
-    inputText.value = '';
+    inputText.value = ''; // Clear input
 
     try {
+      // Stream AI response
       const answer = await new Promise<string>((resolve, reject) => {
         let partialAnswer = '';
+
+        // Handle response chunks
         window.chatClientApi.onDeepseekChunk((chunk) => {
           partialAnswer += chunk;
 
+          // Update temporary AI message
           const botMessage = messagesData.value.find(
             (msg) => msg.role === 'assistant' && msg.message_id === 'temp-ai'
           );
@@ -401,41 +433,41 @@
           } else {
             messagesData.value.push({
               conversation_id: currentTopic.value.id,
-              message_id: 'temp-ai', // 临时 ID
+              message_id: 'temp-ai', // Temporary ID for streaming
               content: partialAnswer,
               role: 'assistant',
               created_at: new Date(),
             });
           }
-          scrollToBottom();
+          scrollToBottom(); // Scroll during streaming
         });
 
-        window.chatClientApi.onDeepseekEnd(() => {
-          resolve(partialAnswer);
-        });
+        // Handle response completion
+        window.chatClientApi.onDeepseekEnd(() => resolve(partialAnswer));
+        // Handle errors
+        window.chatClientApi.onDeepseekError((error) => reject(error));
 
-        window.chatClientApi.onDeepseekError((error) => {
-          reject(error);
-        });
-
+        // Send request to AI API
         window.chatClientApi.deepseekAsk(
           text,
-          turnChatMessage(messagesData.value)
+          turnChatMessage(messagesData.value) // Format chat history
         );
       });
 
-      const m_id2 = await createMessage(
+      // Save final AI message
+      const mId2 = await createMessage(
         currentTopic.value.id,
         'assistant',
         answer
       );
       messagesData.value = messagesData.value.map((msg) =>
         msg.message_id === 'temp-ai'
-          ? { ...msg, message_id: m_id2, content: answer }
+          ? { ...msg, message_id: mId2, content: answer }
           : msg
       );
     } catch (error) {
       console.error('AI response error:', error);
+      // Handle error message
       messagesData.value.push({
         conversation_id: currentTopic.value.id,
         message_id: crypto.randomUUID(),
@@ -444,88 +476,97 @@
         created_at: new Date(),
       });
     }
-    shouldAutoScroll.value = true;
-    scrollToBottom();
+    shouldAutoScroll.value = true; // Reset auto-scroll
+    scrollToBottom(); // Scroll to end after response
   }
 
+  // Save API key handler
   async function saveKey() {
-    const current_key = (await window.servicesApi.getJsonConfig(
+    const currentKey = (await window.servicesApi.getJsonConfig(
       'deepseek'
     )) as DeepSeekConfig;
-    if (Object.keys(current_key).length === 0) {
-      console.log('API key has saved: ', apiKey.value);
+    if (Object.keys(currentKey).length === 0) {
+      // Save new key
+      console.log('Saving new API key');
       showSetting.value = false;
       updateKey();
       alertVisible_initial.value = true;
       apiKey.value = '';
     } else {
-      console.log('API key existed:', current_key.apiKey);
+      // Key exists, prompt update
+      console.log('API key already exists');
       alertVisible_existed.value = true;
     }
   }
 
+  // Update API key handler
   async function updateKey() {
-    await window.chatClientApi.deepseekUpdateApiKey(apiKey.value);
+    await window.chatClientApi.deepseekUpdateApiKey(apiKey.value); // Update client
     await window.servicesApi.saveJsonConfig('deepseek', {
       apiKey: apiKey.value,
-    } as DeepSeekConfig);
+    } as DeepSeekConfig); // Save to config
   }
 
+  // Event bus subscriptions
   onMounted(() => {
     isDrawerOpenEventBus.on('update', (value: boolean) => {
-      isDrawerOpen.value = value;
+      isDrawerOpen.value = value; // Sync sidebar state with event bus
     });
     isDrawerOpenEventBus.on('expression', (expr: string) => {
-      inputText.value += expr;
+      inputText.value += expr; // Insert expressions into input
     });
   });
+
+  // Event bus unsubscriptions
   onUnmounted(() => {
     isDrawerOpenEventBus.off('update');
     isDrawerOpenEventBus.off('expression');
   });
 
+  // Start title editing
   function startEditingTitle() {
     editableTitle.value = currentTopic.value.title;
     editingTitle.value = true;
 
     nextTick(() => {
-      titleInput.value?.focus();
+      titleInput.value?.focus(); // Focus input after DOM update
     });
   }
 
+  // Finish title editing
   function finishEditingTitle() {
     currentTopic.value.title =
-      editableTitle.value.trim() || currentTopic.value.title;
+      editableTitle.value.trim() || currentTopic.value.title; // Use trimmed value or keep original
     editingTitle.value = false;
   }
 
-  // TODO:创建新聊天
-  const createNewChat = async (default_title: string) => {
-    const baseTitle = default_title;
+  // Create new chat handler
+  const createNewChat = async (defaultTitle: string) => {
+    const baseTitle = defaultTitle;
     const existingTitles = historyTopics.value.map((chat) => chat.title);
+
+    // Generate unique title
     let uniqueTitle = baseTitle;
-    if (default_title === 'New Chat') {
+    if (defaultTitle === 'New Chat') {
       let counter = 1;
       while (existingTitles.includes(uniqueTitle)) {
         uniqueTitle = `${baseTitle} ${counter++}`;
       }
     }
+
+    // Create new conversation
     const newData = await createConservation(uniqueTitle);
 
+    // Update state
     currentTopic.value.title = uniqueTitle;
-    historyTopics.value.unshift({
-      title: uniqueTitle,
-      id: newData.id,
-    });
-    selectHistoryTopic({
-      title: uniqueTitle,
-      id: newData.id,
-    });
-    messagesData.value = [];
+    historyTopics.value.unshift({ title: uniqueTitle, id: newData.id });
+    selectHistoryTopic({ title: uniqueTitle, id: newData.id });
+    messagesData.value = []; // Clear messages for new chat
   };
 
-  const getChatMessage = async (c_id: string) => {
-    const topic_message = await getMessages(c_id);
-    return topic_message;
+  // Fetch chat messages by conversation ID
+  const getChatMessage = async (cId: string) => {
+    const topicMessage = await getMessages(cId);
+    return topicMessage;
   };
 </script>
