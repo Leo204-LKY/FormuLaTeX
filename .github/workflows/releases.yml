@@ -44,7 +44,7 @@ jobs:
 
       - name: Update package.json version
         run: |
-          npm version --no-git-tag-version ${{ steps.info.outputs.tag }}
+          yarn version --new-version ${{ steps.info.outputs.tag }}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -am "chore: update version to ${{ steps.info.outputs.tag }}"
@@ -67,10 +67,10 @@ jobs:
           node-version: '22.14.0'
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Build package
-        run: npm run build
+        run: yarn build
 
       - name: Archive build output
         run: |
