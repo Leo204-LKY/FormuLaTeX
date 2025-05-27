@@ -55,6 +55,13 @@
     </div>
   </div>
 
+  <AlterItem
+    v-model:visible="alertVisible"
+    title="Create Formula"
+    message="Create Formula successfully!"
+    :buttons="[{ text: 'OK', type: 'primary' }]"
+  />
+
   <div
     v-if="isModalOpen"
     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
@@ -121,6 +128,7 @@
 
 <script setup lang="ts">
   import ExpressionItem from '../sub-components/ExpressionItem.vue';
+  import AlterItem from '../sub-components/AlterItem.vue';
   import { ref, onMounted, onUnmounted, reactive } from 'vue';
   import { inputEventBus } from '../eventBus';
   import { createFormula, getFormulas } from '../utils/formulaDB';
@@ -132,6 +140,7 @@
   const expressionItemRefs: Record<number | string, ExpressionItemInstance> =
     reactive({});
 
+  const alertVisible = ref(false);
   const isModalOpen = ref(false);
   const newFormulaName = ref('');
   const newFormulaContent = ref('');
@@ -214,5 +223,6 @@
     isModalOpen.value = false;
     newFormulaName.value = '';
     newFormulaContent.value = '';
+    alertVisible.value = true;
   };
 </script>

@@ -24,8 +24,6 @@
     </svg>
   </button>
 
-  <!-- TODO: 对历史话题的记录，可优化 -->
-  <!-- TODO: 实现点击对应记录后，对对话的伪加载(后续后端加载) -->
   <div
     class="fixed top-0 left-0 h-full w-1/4 bg-white border-r shadow-lg transition-transform duration-300 z-10"
     :class="isHistoryDrawerOpen ? 'translate-x-0' : '-translate-x-full'"
@@ -63,7 +61,7 @@
         </button>
         <button
           class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
-          @click="createNewChat"
+          @click="createNewChat('New Chat')"
         >
           + New
         </button>
@@ -86,6 +84,39 @@
           ref="titleInput"
         />
       </div>
+
+      <AlterItem
+        v-model:visible="alertVisible_initial"
+        title="Chat API Key"
+        message="Chat API Key has been saved successfully!"
+        :buttons="[{ text: 'OK', type: 'primary' }]"
+      />
+
+      <AlterItem
+        v-model:visible="alertVisible_existed"
+        title="Chat API Key"
+        message="Chat API Key has existed. Update it?"
+        :buttons="[
+          { text: 'Cancel', type: 'secondary' },
+          {
+            text: 'OK',
+            type: 'primary',
+            callback: () => {
+              updateKey();
+              showSetting = false;
+              alertVisible_existed = false;
+            },
+          },
+        ]"
+      />
+
+      <AlterItem
+        v-model:visible="alertVisible_error"
+        title="Chat Key Error"
+        message="Can't find your Chat API key, please set it in settings."
+        :buttons="[{ text: 'OK', type: 'primary' }]"
+      />
+
       <div class="flex items-center space-x-2">
         <!-- 设置 -->
         <div class="relative">
@@ -168,11 +199,13 @@
   import type { messages } from '@prisma/client';
   import { turnChatMessage } from '../utils/turnChatMessage';
   // import MarkdownRenderer from '../sub-components/MarkdownRenderer.vue';
+  import AlterItem from '../sub-components/AlterItem.vue';
   import MarkdownIt from 'markdown-it';
   import katex from 'katex';
   // import markdownItKatex from 'markdown-it-katex';
   // import mathjax3 from 'markdown-it-mathjax3';
   import 'katex/dist/katex.min.css';
+  import type { DeepSeekConfig } from '../../../server';
 
   interface Topics {
     title: string;
@@ -244,6 +277,9 @@
   const shouldAutoScroll = ref(true); // 是否自动滚动
   // const mathRegex = /(?:\$.*?\$)|(?:`{3}math\n?.*?\n?`{3})/g;
 
+  const alertVisible_initial = ref(false);
+  const alertVisible_existed = ref(false);
+  const alertVisible_error = ref(false);
   const isDrawerOpen = ref(false);
   const messagesData = ref<messages[]>([]);
   const inputText = ref('');
@@ -325,10 +361,23 @@
   defineExpose({ isDrawerOpen, insertFormula });
 
   async function sendMessage() {
+    const current_key = (await window.servicesApi.getJsonConfig(
+      'deepseek'
+    )) as DeepSeekConfig;
+    if (!current_key || !current_key.apiKey) {
+      alertVisible_error.value = true;
+      showSetting.value = true;
+      return;
+    }
+
+    if (currentTopic.value.id === 'default') {
+      await createNewChat(new Date().toISOString());
+    }
+
     const text = inputText.value.trim();
     if (text === '') return;
     const m_id1 = await createMessage(currentTopic.value.id, 'user', text);
-    // TODO: 实际回复转写逻辑
+
     messagesData.value.push({
       conversation_id: currentTopic.value.id,
       message_id: m_id1,
@@ -399,12 +448,27 @@
     scrollToBottom();
   }
 
-  function saveKey() {
-    console.log('保存的API Key:', apiKey.value);
-    showSetting.value = false;
-    // TODO: 处理保存key逻辑
-    window.chatClientApi.deepseekUpdateApiKey(apiKey.value);
-    apiKey.value = '';
+  async function saveKey() {
+    const current_key = (await window.servicesApi.getJsonConfig(
+      'deepseek'
+    )) as DeepSeekConfig;
+    if (Object.keys(current_key).length === 0) {
+      console.log('API key has saved: ', apiKey.value);
+      showSetting.value = false;
+      updateKey();
+      alertVisible_initial.value = true;
+      apiKey.value = '';
+    } else {
+      console.log('API key existed:', current_key.apiKey);
+      alertVisible_existed.value = true;
+    }
+  }
+
+  async function updateKey() {
+    await window.chatClientApi.deepseekUpdateApiKey(apiKey.value);
+    await window.servicesApi.saveJsonConfig('deepseek', {
+      apiKey: apiKey.value,
+    } as DeepSeekConfig);
   }
 
   onMounted(() => {
@@ -436,18 +500,24 @@
   }
 
   // TODO:创建新聊天
-  const createNewChat = async () => {
-    const baseTitle = 'New Chat';
+  const createNewChat = async (default_title: string) => {
+    const baseTitle = default_title;
     const existingTitles = historyTopics.value.map((chat) => chat.title);
     let uniqueTitle = baseTitle;
-    let counter = 1;
-    while (existingTitles.includes(uniqueTitle)) {
-      uniqueTitle = `${baseTitle} ${counter++}`;
+    if (default_title === 'New Chat') {
+      let counter = 1;
+      while (existingTitles.includes(uniqueTitle)) {
+        uniqueTitle = `${baseTitle} ${counter++}`;
+      }
     }
-    const newData = await createConservation(uniqueTitle); // 空标题会自动转为默认值
+    const newData = await createConservation(uniqueTitle);
 
     currentTopic.value.title = uniqueTitle;
     historyTopics.value.unshift({
+      title: uniqueTitle,
+      id: newData.id,
+    });
+    selectHistoryTopic({
       title: uniqueTitle,
       id: newData.id,
     });

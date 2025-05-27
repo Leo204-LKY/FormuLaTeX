@@ -89,6 +89,14 @@
         <button class="btn-icon" @click="toggleClear">
           <img src="../assets/icons/clear.svg" />
         </button>
+
+        <AlterItem
+          v-model:visible="alertVisible1"
+          title="Formula API Key"
+          message="Formul API Key has been saved successfully!"
+          :buttons="[{ text: 'OK', type: 'primary' }]"
+        />
+
         <div class="flex items-center space-x-2" style="margin-left: auto">
           <!-- 设置 -->
           <div class="relative">
@@ -139,6 +147,20 @@
         @input="onInputChange"
         placeholder="Please enter latex code, like: \\frac{a}{b} = c"
       ></textarea>
+
+      <AlterItem
+        v-model:visible="alertVisible2"
+        title="Formula Recognization"
+        message="Formul recognized successfully!"
+        :buttons="[{ text: 'OK', type: 'primary' }]"
+      />
+
+      <AlterItem
+        v-model:visible="alertVisible3"
+        title="Formula Key Error"
+        message="Can't find your SimpleTex API key, please set it in settings."
+        :buttons="[{ text: 'OK', type: 'primary' }]"
+      />
 
       <!-- 上传图像 -->
       <div class="flex justify-around items-center mt-4">
@@ -233,6 +255,7 @@
   import { useClickOutside } from '../utils/useClickOutside';
   import { HistoryManager } from '../utils/historyStack';
   import { isDrawerOpenEventBus, inputEventBus } from '../eventBus';
+  import AlterItem from '../sub-components/AlterItem.vue';
   import { Buffer } from 'buffer';
   import type { SimpleTexConfig } from '../../../server';
   import katex from 'katex';
@@ -247,6 +270,9 @@
   const textareaRef = ref<HTMLTextAreaElement | null>(null);
   const sizePickerRef = ref<HTMLElement | null>(null);
   const colorPickerRef = ref<HTMLElement | null>(null);
+  const alertVisible1 = ref(false);
+  const alertVisible2 = ref(false);
+  const alertVisible3 = ref(false);
   const colorPickerVisible = ref(false);
   const sizePickerVisible = ref(false);
   const showSetting = ref(false);
@@ -444,6 +470,16 @@
 
   // 上传图片到API
   const uploadImage = async (file: File) => {
+    const current_key = (await window.servicesApi.getJsonConfig(
+      'simpletex'
+    )) as SimpleTexConfig;
+
+    if (!current_key || !current_key.appId || !current_key.appSecret) {
+      alertVisible3.value = true;
+      showSetting.value = true;
+      return;
+    }
+
     try {
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
@@ -464,10 +500,12 @@
       console.log('OCR Result:', latex_code);
       latexInput.value += latex_code;
 
-      alert('OCR completed!');
+      showUploadModal.value = false;
+      previewImage.value = null;
     } catch (error) {
       console.error('Upload error:', error);
     }
+    alertVisible2.value = true;
   };
 
   // 触发文件选择（点击上传）
@@ -479,13 +517,14 @@
     previewImage.value = null;
   };
 
-  function saveConfig() {
-    window.servicesApi.saveJsonConfig('simpletex', {
+  async function saveConfig() {
+    await window.servicesApi.saveJsonConfig('simpletex', {
       appId: appId.value,
       appSecret: appSecret.value,
     } as SimpleTexConfig);
     appId.value = '';
     appSecret.value = '';
-    alert('Config saved!');
+    showSetting.value = false;
+    alertVisible1.value = true;
   }
 </script>
