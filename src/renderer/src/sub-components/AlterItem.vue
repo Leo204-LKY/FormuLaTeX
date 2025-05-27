@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-  import { ref, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
+  import { defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 
   // 组件属性
   const props = defineProps({
