@@ -1,3 +1,4 @@
+<!-- SymbolsItem.vue -->
 <template>
   <span ref="containerRef"></span>
 </template>

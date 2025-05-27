@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
-// 创建 Conservation
+// Create Conservation
 export const createConservation = async (title: string) => {
   const new_conservation: Prisma.formula_conversationsCreateManyInput = {
     title: title,
@@ -13,23 +13,23 @@ export const createConservation = async (title: string) => {
   };
 };
 
-// 修改 Conservation 相关信息
+// Modify the title of Conservation
 // export const updateConservation = (id: string, new_name: string) => {};
 
-// 获取全部 Conservation
+// Get all Conservation
 export const getConservations = async () => {
   const conversations = await window.formulaConversationsTableApi.getAll();
 
   return conversations;
 };
 
-// 获取当前 Conservation 下的 messages
+// Get the Messages of specific Conservation by c_id
 export const getMessages = async (c_id: string) => {
   const messages = await window.messagesTableApi.getManyByConversationId(c_id);
   return messages;
 };
 
-// 添加消息
+// Create a new Message in specific Conservation
 export const createMessage = async (
   c_id: string,
   role: string,

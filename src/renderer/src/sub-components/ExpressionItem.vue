@@ -1,3 +1,4 @@
+<!-- ExpressionItem.vue -->
 <template>
   <div class="mb-4">
     <div class="flex justify-between items-center mb-2">

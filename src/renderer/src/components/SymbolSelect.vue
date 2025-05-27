@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white border border-gray-200 rounded-md p-4 h-full">
-    <!-- 选择栏 -->
+    <!-- Category Selection Bar -->
     <div class="flex justify-start items-center mb-4 space-x-6">
       <button
         v-for="(category, index) in symbolCategories"
@@ -15,8 +15,7 @@
       </button>
     </div>
 
-    <!-- 符号显示区域 -->
-    <!-- TODO: 完善显示符号的布局，以及补全符号 -->
+    <!-- Symbol Display Area -->
     <div
       class="bg-blue-50 text-center p-4 border border-blue-200 rounded-md h-3/4"
     >
@@ -32,7 +31,7 @@
             :class="insideDisplayRule"
             @click="handleSymbolClick(symbol)"
           >
-            <!-- {{ symbol }} -->
+            <!-- Symbol rendering component -->
             <SymbolsItem :latex="symbol" />
           </div>
         </div>
@@ -45,7 +44,8 @@
   import { ref, computed } from 'vue';
   import { selectSymbolEventBus } from '../eventBus';
   import SymbolsItem from '../sub-components/SymbolsItem.vue';
-  // 定义每个标签对应的符号集合
+
+  // Symbol data grouped by category
   const symbolData: { [key: string]: string[][] } = {
     Common: [['+', '-', '*', '/']],
     Operations: [
@@ -311,11 +311,14 @@
     ],
   };
 
+  // CSS display rules for symbol groups
   const displayRules1: Record<string, string> = {
     default: 'grid grid-cols-4 gap-2 place-content-start',
     Greek: 'flex flex-wrap gap-2',
     Arrows: 'grid grid-cols-5 gap-2 place-content-start',
   };
+
+  // CSS display rules for individual symbols
   const displayRules2: Record<string, string> = {
     default:
       'w-8 h-8 bg-white flex items-center justify-center border border-gray-200 rounded-md p-2 cursor-pointer hover:bg-gray-100',
@@ -323,28 +326,32 @@
       'h-8 bg-white flex items-center justify-center border border-gray-200 rounded-md p-2 cursor-pointer hover:bg-gray-100',
   };
 
+  // Computed properties for dynamic CSS classes
   const outsideDisplayRule = computed(() => {
     return displayRules1[selectedCategory.value] || displayRules1.default;
   });
+
   const insideDisplayRule = computed(() => {
     return displayRules2[selectedCategory.value] || displayRules2.default;
   });
 
-  // 符号类别数组
+  // Available symbol categories
   const symbolCategories = Object.keys(symbolData);
-  // 响应式变量存储当前选中的类别
+
+  // Reactive state for selected category
   const selectedCategory = ref(symbolCategories[0]);
 
-  // 计算属性获取当前选中类别对应的符号
+  // Computed property to get symbols for selected category
   const getCurrentSymbolGroups = computed(
     () => symbolData[selectedCategory.value]
   );
 
-  // 选择类别的方法
+  // Category selection handler
   const selectCategory = (category: string) => {
     selectedCategory.value = category;
   };
 
+  // Symbol click handler - emits selection event
   function handleSymbolClick(symbol: string) {
     selectSymbolEventBus.emit('selectSymbol', symbol);
   }
