@@ -203,6 +203,17 @@ declare global {
        * @param uuid Formula conversation UUID
        */
       deleteUniqueByUuid: (uuid: string) => Promise<void>;
+
+      /**
+       * Update one formula_conversation by UUID
+       * @param uuid formula_conversation UUID to update
+       * @param data Data to update
+       * @return Updated formula_conversation
+       */
+      updateUniqueByUuid: (
+        uuid: string,
+        data: Prisma.formula_conversationsUpdateInput
+      ) => Promise<formula_conversations>;
     };
 
     /**
@@ -245,7 +256,7 @@ declare global {
        * Delete one formula interpretation by UUID
        * @param uuid Formula interpretation UUID
        */
-      deleteOne: (uuid: string) => Promise<void>;
+      deleteUniqueByUuid: (uuid: string) => Promise<void>;
     };
 
     /**
@@ -323,6 +334,23 @@ declare global {
        * @param formulas Formulas to insert
        */
       insertMany: (data: Prisma.formulasCreateManyInput[]) => Promise<void>;
+
+      /**
+       * Delete one formula by UUID
+       * @param uuid Formula UUID
+       */
+      deleteUniqueByUuid: (uuid: string) => Promise<void>;
+
+      /**
+       * Update one formula by UUID
+       * @param uuid Formula UUID to update
+       * @param data Data to update
+       * @return Updated formula
+       */
+      updateUniqueByUuid: (
+        uuid: string,
+        data: Prisma.formulasUpdateInput
+      ) => Promise<formulas>;
     };
 
     /**
@@ -397,7 +425,7 @@ declare global {
        * Delete one tag by UUID
        * @param uuid Tag UUID
        */
-      deleteOne: (uuid: string) => Promise<void>;
+      deleteUniqueByUuid: (uuid: string) => Promise<void>;
 
       /**
        * Set tag color by UUID
