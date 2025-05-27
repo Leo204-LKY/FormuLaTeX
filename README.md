@@ -20,7 +20,7 @@
 
 ### Project Structure
 
-**\*Note:** Contains only the main project files and directories\*
+_**Note:** Contains only the main project files and directories_
 
 - [`doc/`](/doc/) - Project documents
 - [`scripts/`](/scripts/) - Scripts for debug and test use, see readme in the directory for detail
