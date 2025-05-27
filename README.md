@@ -23,18 +23,24 @@
 **\*Note:** Contains only the main project files and directories\*
 
 - [`doc/`](/doc/) - Project documents
-- [`public/`](/public/) - Static resources like HTML and images
-- [`src/`](/src/) - TypeScript source code
+- [`scripts/`](/scripts/) - Scripts for debug and test use, see readme in the directory for detail
+- [`src/`](/src/) - App source code in TypeScript
   - [`main/`](/src/main/) - Main process code
     - [`main.ts`](/src/main/main.ts) - Main process entry
+    - [`bridge-service.ts`](/src/main/bridge-service.ts) - IPC bridge service handler for front- and back-end communication
     - [`preload.ts`](/src/main/preload.ts) - Preload script
-  - [`renderer/`](/src/renderer/) - Render process (Vue project)
-- [`package.json`](/package.json)
-- [`tsconfig.json`](/tsconfig.json) - TypeScript configuration file
+  - [`renderer/`](/src/renderer/) - Renderer process (Vue project)
+  - [`server/`](/src/server/) - Server packages
+  - [`shared/`](/src/shared/) - Shared files by main and renderer
+    - [`/types/`](/src/shared/types/) - TypeScript type declare files
+  - [`test/`](/src/test/) - Jest test cases
+- [`package.json`](/package.json) - Config for the whole project
 - [`.prettierignore`](/.prettierignore) - Files and directories ignored by prettier
 - [`.prettierrc`](/.prettierrc) - Config for Prettier
 - [`electron-builder.json`](/electron-builder.json) - Config for packaging and distributing Electron app
-- [`eslint.config.mjs`](/eslint.config.mjs) - Config for ESLint code checking tool
+- [`eslint.config.ts`](/eslint.config.ts) - Config for ESLint code checking tool
+- [`jest.config.ts`](/jest.config.ts) - Confige for Jest test tool
+- [`tsconfig.json`](/tsconfig.json) - Config for TypeScript
 - [`LICENSE`](/LICENSE) - GPL-3.0 License
 - `README.md` - This Markdown file
 
@@ -42,7 +48,7 @@
 
 - You will need Node.js and Yarn to run this program in source mode
   ```shell
-  yarn
+  yarn # this will install all dependencies and init prisma client
   yarn run start
   ```
 - The `main` branch is protected, so you must [Create a Pull Request](https://github.com/Leo204-LKY/FormuLaTeX/compare) before merging
