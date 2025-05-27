@@ -102,19 +102,19 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: ./src/renderer
 
-      - name: Build package
-        run: yarn build
+      - name: Build with electron-builder
+        run: yarn run electron-builder --publish never
 
-      - name: Archive build output
-        run: |
-          zip -r ${{ runner.os }}-build.zip ./dist
-        shell: bash
-
-      - name: Upload to GitHub Release (draft)
+      - name: Upload Artifacts to Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           draft: true
-          files: ${{ runner.os }}-build.zip
+          files: |
+            dist/package/*.exe
+            dist/package/*.dmg
+            dist/package/*.AppImage
+            dist/package/*.deb
+            dist/package/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
