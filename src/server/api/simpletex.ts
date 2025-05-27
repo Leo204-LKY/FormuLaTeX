@@ -64,10 +64,12 @@ export async function convertImageToLatex(
 // Main function to run the request
 export async function convertImageToLatex(
   input: string | Buffer,
-  appId: string = (getEncryptedJsonConfig('simpletex') as SimpleTexConfig)
-    ?.appId,
-  appSecret: string = (getEncryptedJsonConfig('simpletex') as SimpleTexConfig)
-    ?.appSecret,
+  appId: string | undefined = (
+    getEncryptedJsonConfig('simpletex') as SimpleTexConfig
+  )?.appId,
+  appSecret: string | undefined = (
+    getEncryptedJsonConfig('simpletex') as SimpleTexConfig
+  )?.appSecret,
   timeout: number = TIMEOUT
 ): Promise<SimpleTexResponse> {
   if (!appId || !appSecret) {
