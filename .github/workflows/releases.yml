@@ -95,8 +95,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Install dependencies
+      - name: Install dependencies in root
         run: yarn install --frozen-lockfile
+
+      - name: Install dependencies in renderer
+        run: yarn install --frozen-lockfile
+        working-directory: ./src/renderer
 
       - name: Build package
         run: yarn build
