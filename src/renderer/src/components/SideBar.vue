@@ -582,7 +582,7 @@
     editingTitle.value = false;
   }
 
-  const handleRightClick = async (topic: any, e: MouseEvent) => {
+  const handleRightClick = async (topic: Topics, e: MouseEvent) => {
     e.preventDefault();
 
     await nextTick();

@@ -26,11 +26,18 @@
   const itemRef = ref<HTMLElement | null>(null);
   const emit = defineEmits(['edit', 'delete']);
 
+  interface Expression {
+    name: string | null;
+    latex_code: string;
+  }
+
+  interface Topics {
+    title: string;
+    id: string;
+  }
+
   const props = defineProps<{
-    expression: {
-      name: string | null;
-      latex_code: string;
-    };
+    expression: Expression;
   }>();
 
   const handleClick = () => {
@@ -59,14 +66,20 @@
     }
   };
 
-  const onEditExpression = (target: typeof props.expression) => {
-    if (target.latex_code === props.expression.latex_code) {
+  const onEditExpression = (target: Expression | Topics) => {
+    if (
+      'latex_code' in target &&
+      target.latex_code === props.expression.latex_code
+    ) {
       emit('edit', props.expression);
     }
   };
 
-  const onDeleteExpression = (target: typeof props.expression) => {
-    if (target.latex_code === props.expression.latex_code) {
+  const onDeleteExpression = (target: Expression | Topics) => {
+    if (
+      'latex_code' in target &&
+      target.latex_code === props.expression.latex_code
+    ) {
       emit('delete', props.expression);
     }
   };
