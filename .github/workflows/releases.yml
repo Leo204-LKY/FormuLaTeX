@@ -1,0 +1,87 @@
+# Automatically update version in package.json and generate package for
+# Windows, Linux, and macOS, and upload to draft release on GitHub
+# when tagging a new release.
+
+name: Tag Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Only match semantic versioning tags like v1.0.0
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get tag and branch
+        id: info
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          BRANCH=$(git branch -r --contains "$TAG_NAME" | grep -v '\->' | grep -v 'origin/HEAD' | sed 's|origin/||' | head -n 1)
+          echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Exit if branch is main (protected)
+        if: steps.info.outputs.branch == 'main'
+        run: |
+          echo "Cannot automatically update version and package release on protected branch 'main'."
+          exit 1
+
+      - name: Checkout specific branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.info.outputs.branch }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+
+      - name: Update package.json version
+        run: |
+          npm version --no-git-tag-version ${{ steps.info.outputs.tag }}
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore: update version to ${{ steps.info.outputs.tag }}"
+          git push origin ${{ steps.info.outputs.branch }}
+
+  build-and-release:
+    needs: release
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Archive build output
+        run: |
+          zip -r ${{ runner.os }}-build.zip ./dist
+        shell: bash
+
+      - name: Upload to GitHub Release (draft)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          draft: true
+          files: ${{ runner.os }}-build.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
