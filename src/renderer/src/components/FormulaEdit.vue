@@ -1,5 +1,12 @@
 <template>
   <div class="bg-white border border-gray-200 rounded-md p-4 h-full flex">
+    <AlterItem
+      class="z-[9999]"
+      v-model:visible="alertVisible_empty"
+      title="Empty Input"
+      message="Can't be empty! Please check and fill the input."
+      :buttons="[{ text: 'OK', type: 'primary' }]"
+    />
     <!-- Formula Editing Area -->
     <div class="w-1/2 border-r border-dashed border-blue-500 p-4 h-full">
       <h2 class="text-lg font-bold mb-4">Formula Editing</h2>
@@ -281,6 +288,7 @@
   const alertVisible1 = ref(false); // API Key saved alert
   const alertVisible2 = ref(false); // OCR success alert
   const alertVisible3 = ref(false); // API Key missing alert
+  const alertVisible_empty = ref(false); // Empty input alert
   const colorPickerVisible = ref(false);
   const sizePickerVisible = ref(false);
   const showSetting = ref(false);
@@ -545,6 +553,10 @@
 
   // Save API Configuration
   async function saveConfig() {
+    if (!appId.value || !appSecret.value) {
+      alertVisible_empty.value = true; // Show error alert
+      return;
+    }
     await window.servicesApi.saveJsonConfig('simpletex', {
       appId: appId.value,
       appSecret: appSecret.value,

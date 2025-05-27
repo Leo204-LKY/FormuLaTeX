@@ -1,6 +1,9 @@
-<!-- ExpressionItem.vue -->
 <template>
-  <div class="mb-4">
+  <div
+    class="mb-4 relative"
+    ref="itemRef"
+    @contextmenu.prevent="handleRightClick"
+  >
     <div class="flex justify-between items-center mb-2">
       <span class="bg-green-100 text-xs px-1 py-0.5 rounded-md">
         {{ expression.name }}
@@ -16,8 +19,12 @@
 </template>
 
 <script setup lang="ts">
-  import { selectExpressionEventBus } from '../eventBus';
+  import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue';
+  import { selectExpressionEventBus, contextMenuEventBus } from '../eventBus';
   import KatexRenderer from '../sub-components/KatexRenderer.vue';
+
+  const itemRef = ref<HTMLElement | null>(null);
+  const emit = defineEmits(['edit', 'delete']);
 
   const props = defineProps<{
     expression: {
@@ -32,4 +39,45 @@
       props.expression.latex_code
     );
   };
+
+  const handleRightClick = async (e: MouseEvent) => {
+    e.preventDefault();
+
+    await nextTick();
+
+    if (itemRef.value) {
+      const rect = itemRef.value.getBoundingClientRect();
+      const menuX = rect.right + 2;
+      const menuY = rect.top + rect.height / 2 - 24;
+
+      contextMenuEventBus.emit('openContextMenu', {
+        x: menuX,
+        y: menuY,
+        expression: props.expression,
+        type: 'expression',
+      });
+    }
+  };
+
+  const onEditExpression = (target: typeof props.expression) => {
+    if (target.latex_code === props.expression.latex_code) {
+      emit('edit', props.expression);
+    }
+  };
+
+  const onDeleteExpression = (target: typeof props.expression) => {
+    if (target.latex_code === props.expression.latex_code) {
+      emit('delete', props.expression);
+    }
+  };
+
+  onMounted(() => {
+    contextMenuEventBus.on('editExpression', onEditExpression);
+    contextMenuEventBus.on('deleteExpression', onDeleteExpression);
+  });
+
+  onBeforeUnmount(() => {
+    contextMenuEventBus.off('editExpression', onEditExpression);
+    contextMenuEventBus.off('deleteExpression', onDeleteExpression);
+  });
 </script>

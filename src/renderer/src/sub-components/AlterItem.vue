@@ -25,7 +25,7 @@
       </div>
 
       <!-- Content Section -->
-      <div class="px-6 py-4">
+      <div class="px-6 py-4 justify-center text-center">
         <slot>{{ message }}</slot>
       </div>
 

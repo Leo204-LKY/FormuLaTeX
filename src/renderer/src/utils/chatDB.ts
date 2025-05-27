@@ -1,35 +1,60 @@
 import type { Prisma } from '@prisma/client';
 
-// Create Conservation
-export const createConservation = async (title: string) => {
-  const new_conservation: Prisma.formula_conversationsCreateManyInput = {
+// Create Conversation
+export const createConversation = async (title: string) => {
+  const new_conversation: Prisma.formula_conversationsCreateManyInput = {
     title: title,
   };
   const c_id =
-    await window.formulaConversationsTableApi.insertOne(new_conservation);
+    await window.formulaConversationsTableApi.insertOne(new_conversation);
   return {
     id: c_id,
-    conversation: new_conservation,
+    conversation: new_conversation,
   };
 };
 
-// Modify the title of Conservation
-// export const updateConservation = (id: string, new_name: string) => {};
+// Modify the title of Conversation
+export const updateConversation = async (c_id: string, new_title: string) => {
+  try {
+    const edit_conversation: Prisma.formula_conversationsUpdateInput = {
+      title: new_title,
+    };
+    await window.formulaConversationsTableApi.updateUniqueByUuid(
+      c_id,
+      edit_conversation
+    );
+  } catch (error) {
+    console.error('Error updating conversation:', error);
+    return 0;
+  }
+  return 1;
+};
 
-// Get all Conservation
-export const getConservations = async () => {
+// Delete a conversation by c_id
+export const deleteConversation = async (c_id: string) => {
+  try {
+    await window.formulaConversationsTableApi.deleteUniqueByUuid(c_id);
+  } catch (error) {
+    console.error('Error deleting conversation:', error);
+    return 0;
+  }
+  return 1;
+};
+
+// Get all Conversation
+export const getConversations = async () => {
   const conversations = await window.formulaConversationsTableApi.getAll();
 
   return conversations;
 };
 
-// Get the Messages of specific Conservation by c_id
+// Get the Messages of specific Conversation by c_id
 export const getMessages = async (c_id: string) => {
   const messages = await window.messagesTableApi.getManyByConversationId(c_id);
   return messages;
 };
 
-// Create a new Message in specific Conservation
+// Create a new Message in specific Conversation
 export const createMessage = async (
   c_id: string,
   role: string,

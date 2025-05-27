@@ -3,6 +3,14 @@
     class="bg-white border border-gray-200 rounded-md p-4 flex flex-col h-screen"
     style="height: 100%"
   >
+    <AlterItem
+      class="z-[9999]"
+      v-model:visible="alertVisible_empty"
+      title="Empty Input"
+      message="Can't be empty! Please check and fill the input."
+      :buttons="[{ text: 'OK', type: 'primary' }]"
+    />
+
     <!-- Header section with title and create button -->
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold">{{ 'Quick Input' }}</h2>
@@ -52,13 +60,20 @@
         "
         :expression="expr"
         @select-expression="handleSelectExpression"
+        @edit="
+          ((isModalOpen_edit = true),
+          (newFormulaName = expr.name!),
+          (newFormulaContent = expr.latex_code))
+        "
+        @delete="deleteFormulaItem(expr.formula_id)"
       />
+      <ContextMenu />
     </div>
   </div>
 
   <!-- Success alert after creating formula -->
   <AlterItem
-    v-model:visible="alertVisible"
+    v-model:visible="alertVisible_create"
     title="Create Formula"
     message="Create Formula successfully!"
     :buttons="[{ text: 'OK', type: 'primary' }]"
@@ -79,6 +94,7 @@
       >
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
+
       <h3 class="text-xl font-bold mb-5 text-center text-gray-800">
         Create New Formula
       </h3>
@@ -116,7 +132,11 @@
       <div class="mt-7 flex justify-center space-x-4">
         <button
           class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]"
-          @click="isModalOpen = false"
+          @click="
+            ((isModalOpen = false),
+            (newFormulaName = ''),
+            (newFormulaContent = ''))
+          "
         >
           Cancel
         </button>
@@ -129,14 +149,91 @@
       </div>
     </div>
   </div>
+
+  <!-- Edit formula modal -->
+  <div
+    v-if="isModalOpen_edit"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+  >
+    <div
+      class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl relative transform transition-all duration-300 scale-100 opacity-100"
+      :class="{ 'scale-95 opacity-0': !isModalOpen_edit }"
+    >
+      <button
+        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition-colors"
+        @click="isModalOpen_edit = false"
+      >
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <h3 class="text-xl font-bold mb-5 text-center text-gray-800">
+        Edit the Formula
+      </h3>
+
+      <!-- Form fields -->
+      <div class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            Formula Name
+          </label>
+          <input
+            v-model="newFormulaName"
+            spellcheck="false"
+            type="text"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            placeholder="Enter formula name"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            Formula Content
+          </label>
+          <textarea
+            v-model="newFormulaContent"
+            spellcheck="false"
+            rows="5"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
+            placeholder="Enter LaTeX formula"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="mt-7 flex justify-center space-x-4">
+        <button
+          class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]"
+          @click="
+            ((isModalOpen_edit = false),
+            (newFormulaName = ''),
+            (newFormulaContent = ''))
+          "
+        >
+          Cancel
+        </button>
+        <button
+          class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center min-w-[100px]"
+          @click="editFormula"
+        >
+          Save Formula
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted, reactive } from 'vue';
   import ExpressionItem from '../sub-components/ExpressionItem.vue';
+  import ContextMenu from '../sub-components/ContextMenu.vue';
   import AlterItem from '../sub-components/AlterItem.vue';
   import { inputEventBus } from '../eventBus';
-  import { createFormula, getFormulas } from '../utils/formulaDB';
+  import {
+    createFormula,
+    deleteFormula,
+    updateFormula,
+    getFormulas,
+  } from '../utils/formulaDB';
   import type { formulas } from '@prisma/client';
 
   // Component references
@@ -149,8 +246,10 @@
   >({});
 
   // UI state management
-  const alertVisible = ref(false);
+  const alertVisible_create = ref(false);
+  const alertVisible_empty = ref(false);
   const isModalOpen = ref(false);
+  const isModalOpen_edit = ref(false);
   const newFormulaName = ref('');
   const newFormulaContent = ref('');
   const latexInput = ref('');
@@ -201,7 +300,10 @@
    * Save new formula to database and update display list
    */
   const saveFormula = async () => {
-    if (!newFormulaName.value.trim() || !newFormulaContent.value.trim()) return;
+    if (!newFormulaName.value.trim() || !newFormulaContent.value.trim()) {
+      alertVisible_empty.value = true;
+      return;
+    }
 
     try {
       // Create formula in database
@@ -230,7 +332,53 @@
       isModalOpen.value = false;
       newFormulaName.value = '';
       newFormulaContent.value = '';
-      alertVisible.value = true;
+      alertVisible_create.value = true;
+    }
+  };
+
+  /**
+   * Delete formula item by ID and update display list
+   * @param formulaId - ID of the formula to delete
+   */
+  const deleteFormulaItem = async (formulaId: string) => {
+    try {
+      await deleteFormula(formulaId);
+      displayItems.value = displayItems.value.filter(
+        (item) => item.formula_id !== formulaId
+      );
+    } catch (error) {
+      console.error('Failed to delete formula:', error);
+    }
+  };
+
+  const editFormula = async () => {
+    if (!newFormulaName.value.trim() || !newFormulaContent.value.trim()) {
+      alertVisible_empty.value = true;
+      return;
+    }
+
+    try {
+      // Update formula in database
+      await updateFormula(
+        displayItems.value[0].formula_id,
+        newFormulaName.value,
+        newFormulaContent.value
+      );
+
+      // Update formula in display list
+      const updatedFormula: formulas = {
+        ...displayItems.value[0],
+        name: newFormulaName.value,
+        latex_code: newFormulaContent.value,
+      };
+      displayItems.value[0] = updatedFormula;
+    } catch (error) {
+      console.error('Failed to update formula:', error);
+    } finally {
+      // Reset form and close modal
+      isModalOpen_edit.value = false;
+      newFormulaName.value = '';
+      newFormulaContent.value = '';
     }
   };
 

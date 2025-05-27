@@ -33,13 +33,14 @@
     <div class="flex items-center justify-between p-4 border-b">
       <h3 class="text-lg font-bold">History Topics</h3>
     </div>
-    <div class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
+    <div ref="itemRef" class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
       <ul class="space-y-2">
         <li
           v-for="topic in historyTopics"
           :key="topic.id"
           class="p-2 bg-gray-100 rounded-md hover:bg-gray-200 cursor-pointer"
           @click="selectHistoryTopic(topic)"
+          @contextmenu.prevent="handleRightClick(topic, $event)"
         >
           {{ topic.title }}
         </li>
@@ -52,6 +53,13 @@
     class="fixed top-0 right-0 h-full w-3/4 bg-white border-l shadow-lg transition-transform duration-300 z-20"
     :class="isDrawerOpen ? 'translate-x-0' : 'translate-x-full'"
   >
+    <AlterItem
+      class="z-[9999]"
+      v-model:visible="alertVisible_empty"
+      title="Empty Input"
+      message="Can't be empty! Please check and fill the input."
+      :buttons="[{ text: 'OK', type: 'primary' }]"
+    />
     <!-- Top Toolbar -->
     <div
       class="flex items-center justify-between p-2 pb-2 border-b border-gray-300"
@@ -105,7 +113,13 @@
         title="Chat API Key"
         message="Chat API Key has existed. Update it?"
         :buttons="[
-          { text: 'Cancel', type: 'secondary' },
+          {
+            text: 'Cancel',
+            type: 'secondary',
+            callback: () => {
+              apiKey = '';
+            },
+          },
           {
             text: 'OK',
             type: 'primary',
@@ -200,12 +214,14 @@
 
 <script setup lang="ts">
   import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
-  import { isDrawerOpenEventBus } from '../eventBus';
+  import { isDrawerOpenEventBus, contextMenuEventBus } from '../eventBus';
   import {
-    createConservation,
-    getConservations,
+    deleteConversation,
+    createConversation,
+    getConversations,
     getMessages,
     createMessage,
+    updateConversation,
   } from '../utils/chatDB';
   import DOMPurify from 'dompurify';
   import type { messages } from '@prisma/client';
@@ -288,6 +304,8 @@
     });
   };
 
+  const itemRef = ref<HTMLElement | null>(null);
+
   // Chat container reference and scroll management
   const chatContainer = ref<HTMLDivElement | null>(null);
   const shouldAutoScroll = ref(true); // Auto-scroll state
@@ -296,6 +314,7 @@
   const alertVisible_initial = ref(false); // API key saved
   const alertVisible_existed = ref(false); // API key exists
   const alertVisible_error = ref(false); // API key missing
+  const alertVisible_empty = ref(false); // Empty input error
 
   // Sidebar states
   const isDrawerOpen = ref(false); // Main sidebar open state
@@ -318,8 +337,8 @@
 
   // Lifecycle hook: Fetch initial conversations
   onMounted(async () => {
-    const conservations = await getConservations();
-    historyTopics.value = conservations.map((conv) => ({
+    const conversations = await getConversations();
+    historyTopics.value = conversations.map((conv) => ({
       title: conv.title as string,
       id: conv.conversation_id,
     }));
@@ -482,9 +501,15 @@
 
   // Save API key handler
   async function saveKey() {
+    if (!apiKey.value.trim()) {
+      alertVisible_empty.value = true; // Show error if key is empty
+      return;
+    }
+
     const currentKey = (await window.servicesApi.getJsonConfig(
       'deepseek'
     )) as DeepSeekConfig;
+
     if (Object.keys(currentKey).length === 0) {
       // Save new key
       console.log('Saving new API key');
@@ -515,12 +540,19 @@
     isDrawerOpenEventBus.on('expression', (expr: string) => {
       inputText.value += expr; // Insert expressions into input
     });
+    contextMenuEventBus.on('deleteHistoryTopic', async (topic) => {
+      deleteConversation(topic.id); // Delete conversation from DB
+      historyTopics.value = historyTopics.value.filter(
+        (t) => t.id !== topic.id
+      );
+    });
   });
 
   // Event bus unsubscriptions
   onUnmounted(() => {
     isDrawerOpenEventBus.off('update');
     isDrawerOpenEventBus.off('expression');
+    contextMenuEventBus.off('deleteHistoryTopic');
   });
 
   // Start title editing
@@ -534,11 +566,40 @@
   }
 
   // Finish title editing
-  function finishEditingTitle() {
+  async function finishEditingTitle() {
+    await updateConversation(
+      currentTopic.value.id,
+      editableTitle.value.trim() || currentTopic.value.title
+    );
     currentTopic.value.title =
       editableTitle.value.trim() || currentTopic.value.title; // Use trimmed value or keep original
+
+    historyTopics.value = historyTopics.value.map((topic) =>
+      topic.id === currentTopic.value.id
+        ? { ...topic, title: currentTopic.value.title }
+        : topic
+    );
     editingTitle.value = false;
   }
+
+  const handleRightClick = async (topic: any, e: MouseEvent) => {
+    e.preventDefault();
+
+    await nextTick();
+    if (itemRef.value) {
+      // const rect = itemRef.value.getBoundingClientRect();
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      const x = rect.right - 20;
+      const y = rect.top + rect.height / 2 - 22;
+
+      contextMenuEventBus.emit('openContextMenu', {
+        x,
+        y,
+        expression: topic,
+        type: 'historyTopic',
+      });
+    }
+  };
 
   // Create new chat handler
   const createNewChat = async (defaultTitle: string) => {
@@ -555,7 +616,7 @@
     }
 
     // Create new conversation
-    const newData = await createConservation(uniqueTitle);
+    const newData = await createConversation(uniqueTitle);
 
     // Update state
     currentTopic.value.title = uniqueTitle;
