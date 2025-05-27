@@ -5,12 +5,12 @@ export interface SimpleTexConfig {
   /**
    * App key
    */
-  appId: string;
+  appId?: string;
 
   /**
    * App secret
    */
-  appSecret: string;
+  appSecret?: string;
 }
 
 /**
@@ -20,5 +20,5 @@ export interface DeepSeekConfig {
   /**
    * API key
    */
-  apiKey: string;
+  apiKey?: string;
 }
