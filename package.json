@@ -1,6 +1,6 @@
 {
   "name": "formulatex",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "AI based tool that can automatically convert formula into LaTeX code & other features.",
   "keywords": [
     "math",
