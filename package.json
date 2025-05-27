@@ -84,8 +84,11 @@
     "appId": "com.groupkappa.formulatex",
     "productName": "FormuLaTeX",
     "files": [
-      "dist/**/*",
-      "package.json"
+      "dist/main/**/*",
+      "dist/renderer/**/*",
+      "dist/server/**/**",
+      "package.json",
+      "!**/*.test.*"
     ],
     "directories": {
       "output": "dist"
