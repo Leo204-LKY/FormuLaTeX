@@ -103,7 +103,7 @@ jobs:
         working-directory: ./src/renderer
 
       - name: Build package
-        run: yarn package --no-git-tag-version
+        run: yarn package
 
       - name: Upload Artifacts to Release
         uses: softprops/action-gh-release@v2
