@@ -102,8 +102,8 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: ./src/renderer
 
-      - name: Build with electron-builder
-        run: yarn run electron-builder --publish never
+      - name: Build package
+        run: yarn package --no-git-tag-version
 
       - name: Upload Artifacts to Release
         uses: softprops/action-gh-release@v2
