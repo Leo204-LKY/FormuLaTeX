@@ -17,6 +17,26 @@ const createWindow = () => {
 
   if (process.platform !== 'darwin') mainWindow.maximize(); // Maximize on non-macOS platforms
 
+  mainWindow.setMenu(null); // Hide the menu bar
+
+  // Toggle DevTools with F12
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if (
+      input.key === 'F12' &&
+      !input.alt &&
+      !input.control &&
+      !input.shift &&
+      !input.meta
+    ) {
+      if (mainWindow && mainWindow.webContents.isDevToolsOpened()) {
+        mainWindow.webContents.closeDevTools();
+      } else if (mainWindow) {
+        mainWindow.webContents.openDevTools({ mode: 'detach' });
+      }
+      event.preventDefault();
+    }
+  });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
