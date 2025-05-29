@@ -1,4 +1,4 @@
-![FormuLaTeX](https://socialify.git.ci/Leo204-LKY/FormuLaTeX/image?custom_description=An+AI-powered+Electron+application+that+automatically+transforms+mathematical+formulas+into+LaTeX+code+%28Course+Project%29&description=1&font=Raleway&language=1&name=1&theme=Auto)
+![FormuLaTeX](/assets/doc/readme-banner.png)
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/Leo204-LKY/FormuLaTeX?style=for-the-badge)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/t/Leo204-LKY/FormuLaTeX?style=for-the-badge)](https://github.com/Leo204-LKY/FormuLaTeX/commits/main/)
