@@ -1,6 +1,6 @@
 {
   "extends": ["development"],
   "hints": {
-    "meta-viewport": "off",
-  },
+    "meta-viewport": "off"
+  }
 }
