@@ -2,6 +2,7 @@
   <div class="flex h-screen">
     <!-- Left: QuickInput -->
     <div class="w-1/4 h-full">
+      <TitleBar />
       <QuickInput />
     </div>
     <!-- Right: SymbolSelection & FormulaEdit -->
@@ -27,6 +28,7 @@
 
   import { ref, onMounted, onUnmounted } from 'vue';
   import { selectExpressionEventBus, selectSymbolEventBus } from './eventBus';
+  import TitleBar from './components/TitleBar.vue';
 
   const latexInput = ref('');
   const editorRef = ref();
