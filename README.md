@@ -1,5 +1,4 @@
-![FormuLaTeX](/assets/doc/readme-banner.png)
-
+![FormuLaTeX](/assets/doc/readme-banner.png)  
 ![GitHub Repo stars](https://img.shields.io/github/stars/Leo204-LKY/FormuLaTeX?style=for-the-badge)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/t/Leo204-LKY/FormuLaTeX?style=for-the-badge)](https://github.com/Leo204-LKY/FormuLaTeX/commits/main/)
 ![GitHub Issues](https://img.shields.io/github/issues/Leo204-LKY/FormuLaTeX?style=for-the-badge)
