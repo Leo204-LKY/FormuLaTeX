@@ -21,7 +21,9 @@
     "schema": "src/server/database/schema/schema.prisma"
   },
   "scripts": {
-    "postinstall": "npx prisma generate",
+    "postinstall": "yarn postinstall:prisma && yarn postinstall:renderer",
+    "postinstall:prisma": "npx prisma generate",
+    "postinstall:renderer": "cd src/renderer && yarn install --frozen-lockfile",
     "dev": "concurrently \"yarn dev:main\" \"yarn dev:renderer\"",
     "dev:main": "tsc --watch",
     "dev:renderer": "cd src/renderer && yarn dev",
