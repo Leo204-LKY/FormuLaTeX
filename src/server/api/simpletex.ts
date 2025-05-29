@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as crypto from 'crypto';
 import FormData from 'form-data';
-import * as fs from 'fs/promises'; // 使用 Promise API
+import * as fs from 'fs/promises'; // Use Promise API
 import { getCurrentTimestamp, getRandomStr } from '../utils';
 import type { SimpleTexConfig, SimpleTexResponse } from '../interfaces';
 import { getEncryptedJsonConfig } from '../services';

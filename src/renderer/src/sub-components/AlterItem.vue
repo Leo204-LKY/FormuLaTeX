@@ -47,7 +47,7 @@
 <script setup>
   import { defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 
-  // 组件属性
+  // Component properties
   const props = defineProps({
     visible: {
       type: Boolean,
