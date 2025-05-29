@@ -22,6 +22,9 @@
 _**Note:** Contains only the main project files and directories_
 
 - [`doc/`](/doc/) - Project documents
+- [`assets/`](/assets/) - Project assets
+  - [`doc/`](/assets/doc/) - Document assets
+  - [`icon/`](/assets/icon/) - App icon assets
 - [`scripts/`](/scripts/) - Scripts for debug and test use, see readme in the directory for detail
 - [`src/`](/src/) - App source code in TypeScript
   - [`main/`](/src/main/) - Main process code
@@ -47,7 +50,7 @@ _**Note:** Contains only the main project files and directories_
 
 - You will need Node.js and Yarn to run this program in source mode
   ```shell
-  yarn # this will install all dependencies and init prisma client
+  yarn install --frozen-lockfile # this will install all dependencies and init prisma client
   yarn run start
   ```
 - The `main` branch is protected, so you must [Create a Pull Request](https://github.com/Leo204-LKY/FormuLaTeX/compare) before merging
