@@ -15,6 +15,8 @@ const createWindow = () => {
 
   mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
+  if (process.platform !== 'darwin') mainWindow.maximize(); // Maximize on non-macOS platforms
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
