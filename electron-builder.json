@@ -14,15 +14,18 @@
   },
   "win": {
     "target": ["nsis", "zip"],
-    "sign": false
+    "sign": false,
+    "icon": "assets/icon/icon.ico"
   },
   "mac": {
     "target": ["dmg", "zip"],
-    "sign": false
+    "sign": false,
+    "icon": "assets/icon/icon.icns"
   },
   "linux": {
     "target": ["AppImage", "deb"],
-    "maintainer": "Team Kappa <contact-us-on@github.com>"
+    "maintainer": "Team Kappa <contact-us-on@github.com>",
+    "icon": "assets/icon/png"
   },
   "extraResources": [
     {
