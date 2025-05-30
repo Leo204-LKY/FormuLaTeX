@@ -16,7 +16,7 @@ export const createFormula = async (
   return formula_id;
 };
 
-// 获取全部公式，以供加载
+// Get all formulas by tag_id
 export const getFormulas = async (tag_id: string) => {
   const formulaIds =
     await window.formulaTagsTableApi.getFormulaIdsByTagId(tag_id);
@@ -29,19 +29,38 @@ export const getFormulas = async (tag_id: string) => {
     return window.formulasTableApi.getUniqueByUuid(formulaId);
   });
 
-  // 并行执行所有查询，等待结果返回
   const all_formulas = await Promise.all(formulaPromises);
 
   return all_formulas as formulas[];
 };
 
-// 对某个公式的名字/进行修改公式
-export const editFormulas = async (formula_id: string, new_name: string) => {
-  // 获取 对应 formula
-  const edit_formula =
-    await window.formulasTableApi.getUniqueByUuid(formula_id);
-  edit_formula!.name = new_name;
-  // 更新公式（Update命令）
-  //   FormulasTable.
-  return;
+// Ediit a formula by formula_id
+export const updateFormula = async (
+  f_id: string,
+  new_name: string,
+  new_content: string
+) => {
+  try {
+    const edit_formula: Prisma.formulasUpdateInput = {
+      name: new_name,
+      latex_code: new_content,
+    };
+    await window.formulasTableApi.updateUniqueByUuid(f_id, edit_formula);
+  } catch (error) {
+    console.error('Error editing formula:', error);
+    return 0;
+  }
+  return 1;
+};
+
+// Delete a formula by formula_id
+export const deleteFormula = async (f_id: string) => {
+  try {
+    await window.formulasTableApi.deleteUniqueByUuid(f_id);
+    console.log('Formula deleted successfully:', f_id);
+  } catch (error) {
+    console.error('Error deleting formula:', error);
+    return 0;
+  }
+  return 1;
 };

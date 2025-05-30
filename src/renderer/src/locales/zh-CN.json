@@ -1,0 +1,83 @@
+{
+  "language": "中文（简体）",
+  "translator": "Leo204-LKY",
+  "appName": "FormuLaTeX",
+  "appTitle": "FormuLaTeX - 基于 AI 的公式工具",
+  "common": {
+    "ok": "OK",
+    "cancel": "取消",
+    "mathIt": "MathIt",
+    "mathSf": "MathSF",
+    "mathBb": "MathBB",
+    "crossMark": "✕",
+    "save": "保存",
+    "new": "+ 新建",
+    "emptyInputTitle": "输入为空",
+    "emptyInputMessage": "输入不能为空！请检查并填写输入内容。"
+  },
+  "FormulaEdit": {
+    "formulaEditing": "公式编辑",
+    "enterApiConfig": "输入 API 配置：",
+    "formulaApiKeySaveTitle": "成功",
+    "formulaApiKeySaveMessage": "SimpleTex ID 和密钥已成功保存！",
+    "formulaRecognitionSuccessTitle": "公式识别成功",
+    "formulaRecognitionSuccessMessage": "公式已成功识别！",
+    "simpleTexNotSetTitle": "SimpleTex ID 和密钥未设置",
+    "simpleTexNotSetMessage": "尚未设置 SimpleTex API 配置，请在设置中进行配置。",
+    "formulaInputPlaceholder": "请输入公式 LaTeX，例如 {0}",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret",
+    "uploadImage": "上传图片",
+    "dragAndDropImage": "拖放图片到此处，或点击选择图片",
+    "supportImageTypes": "支持的图片类型：PNG，JPG，JPEG",
+    "askAi": "询问 AI",
+    "formulaPreview": "公式预览",
+    "renderError": "错误：公式渲染失败！"
+  },
+  "QuickInput": {
+    "quickInput": "快速输入",
+    "tags": {
+      "History": "历史",
+      "Common": "通用",
+      "Math": "数学",
+      "Physics": "物理"
+    },
+    "createSuccessTitle": "成功",
+    "createSuccessMessage": "公式已成功创建！",
+    "createFormula": "创建新公式",
+    "formulaName": "公式名称",
+    "formulaContent": "公式内容",
+    "editFormula": "编辑公式",
+    "enterFormulaName": "输入公式名称…",
+    "enterLatexFormula": "输入 LaTeX 公式…",
+    "saveFormula": "保存公式"
+  },
+  "SideBar": {
+    "history": "历史对话",
+    "chatTitle": "对话标题",
+    "chatApiSaveTitle": "成功",
+    "chatApiSaveMessage": "DeepSeek API 密钥已成功保存！",
+    "chatApiExistUpdateTitle": "更新 API",
+    "chatApiExistUpdateMessage": "DeepSeek API 已存在，是否要更新？",
+    "chatApiNotSetTitle": "DeepSeek API 密钥未设置",
+    "chatApiNotSetMessage": "尚未设置 DeepSeek API 配置，请在设置中进行配置。",
+    "enterApiKey": "输入 API 密钥",
+    "chatApiKey": "DeepSeek API Key",
+    "chatInputPlaceholder": "问我任何关于公式的问题...",
+    "send": "发送",
+    "newChatDefaultTitle": "新对话"
+  },
+  "SymbolSelect": {
+    "types": {
+      "Common": "常用",
+      "Operations": "运算符",
+      "Relations": "关系",
+      "Arrows": "箭头",
+      "Greek": "希腊字母",
+      "Matric": "矩阵",
+      "Mark": "标记",
+      "Equations": "方程",
+      "Accents": "重音符号"
+    }
+  }
+}

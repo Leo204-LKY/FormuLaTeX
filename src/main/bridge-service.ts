@@ -1,5 +1,6 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import {
+  AppSettingsConfig,
   ChatMessage,
   convertImageToLatex,
   FavouritesTable,
@@ -7,8 +8,11 @@ import {
   FormulaInterpretationsTable,
   FormulasTable,
   FormulaTagsTable,
+  getAppSetting,
   getEncryptedJsonConfig,
+  isConfigExist,
   MessagesTable,
+  saveAppSetting,
   saveEncryptedJsonConfig,
   TagsTable,
 } from '../server';
@@ -136,6 +140,17 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle(
+  'database:formula_conversations:updateUniqueByUuid',
+  async (
+    event,
+    uuid: string,
+    data: Prisma.formula_conversationsUpdateInput
+  ) => {
+    return await FormulaConversationsTable.updateUniqueByUuid(uuid, data);
+  }
+);
+
 // formula_interpretations table
 
 ipcMain.handle('database:formula_interpretations:getAll', async () => {
@@ -170,9 +185,9 @@ ipcMain.handle(
 );
 
 ipcMain.handle(
-  'database:formula_interpretations:deleteOne',
+  'database:formula_interpretations:deleteUniqueByUuid',
   async (event, uuid: string) => {
-    return await FormulaInterpretationsTable.deleteOne(uuid);
+    return await FormulaInterpretationsTable.deleteUniqueByUuid(uuid);
   }
 );
 
@@ -251,6 +266,13 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle(
+  'database:formulas:updateUniqueByUuid',
+  async (event, uuid: string, data: Prisma.formulasUpdateInput) => {
+    return await FormulasTable.updateUniqueByUuid(uuid, data);
+  }
+);
+
 // message table
 
 ipcMain.handle('database:messages:getAll', async () => {
@@ -306,9 +328,12 @@ ipcMain.handle(
   }
 );
 
-ipcMain.handle('database:tags:deleteOne', async (event, uuid: string) => {
-  return await TagsTable.deleteOne(uuid);
-});
+ipcMain.handle(
+  'database:tags:deleteUniqueByUuid',
+  async (event, uuid: string) => {
+    return await TagsTable.deleteUniqueByUuid(uuid);
+  }
+);
 
 ipcMain.handle(
   'database:tags:setColorByUuid',
@@ -329,5 +354,30 @@ ipcMain.handle(
   'services:saveJsonConfig',
   async (event, configName: string, config: object) => {
     return saveEncryptedJsonConfig(configName, config);
+  }
+);
+
+ipcMain.handle('services:isConfigExist', (event, configName: string) => {
+  return isConfigExist(configName);
+});
+
+ipcMain.handle(
+  'services:getAppSetting',
+  async (
+    event,
+    settingName: keyof AppSettingsConfig
+  ): Promise<string | null> => {
+    return getAppSetting(settingName);
+  }
+);
+
+ipcMain.handle(
+  'services:saveAppSetting',
+  async (
+    event,
+    settingName: keyof AppSettingsConfig,
+    value: string
+  ): Promise<void> => {
+    return saveAppSetting(settingName, value);
   }
 );

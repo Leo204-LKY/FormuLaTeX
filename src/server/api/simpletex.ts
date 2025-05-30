@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as crypto from 'crypto';
 import FormData from 'form-data';
-import * as fs from 'fs/promises'; // 使用 Promise API
+import * as fs from 'fs/promises'; // Use Promise API
 import { getCurrentTimestamp, getRandomStr } from '../utils';
 import type { SimpleTexConfig, SimpleTexResponse } from '../interfaces';
 import { getEncryptedJsonConfig } from '../services';
@@ -64,10 +64,12 @@ export async function convertImageToLatex(
 // Main function to run the request
 export async function convertImageToLatex(
   input: string | Buffer,
-  appId: string = (getEncryptedJsonConfig('simpletex') as SimpleTexConfig)
-    ?.appId,
-  appSecret: string = (getEncryptedJsonConfig('simpletex') as SimpleTexConfig)
-    ?.appSecret,
+  appId: string | undefined = (
+    getEncryptedJsonConfig('simpletex') as SimpleTexConfig
+  )?.appId,
+  appSecret: string | undefined = (
+    getEncryptedJsonConfig('simpletex') as SimpleTexConfig
+  )?.appSecret,
   timeout: number = TIMEOUT
 ): Promise<SimpleTexResponse> {
   if (!appId || !appSecret) {

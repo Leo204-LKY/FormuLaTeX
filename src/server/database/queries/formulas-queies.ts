@@ -98,4 +98,26 @@ export class FormulasTable {
 
     saveData();
   }
+
+  /**
+   * Update one formula by UUID
+   * @param uuid Formula UUID to update
+   * @param data Data to update
+   * @return Updated formula
+   */
+  static async updateUniqueByUuid(
+    uuid: string,
+    data: Prisma.formulasUpdateInput
+  ): Promise<formulas> {
+    const prisma = await FormulasTable.getPrismaClient();
+
+    const result = await prisma.formulas.update({
+      where: { formula_id: uuid },
+      data,
+    });
+
+    saveData();
+
+    return result;
+  }
 }

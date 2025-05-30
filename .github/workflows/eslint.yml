@@ -30,16 +30,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '22.14.0'
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Install ESLint
+      - name: Install ESLint Formatter for SARIF
         run: |
-          yarn add eslint@latest
           yarn add @microsoft/eslint-formatter-sarif@3.1.0
-          yarn add jiti
 
       - name: Run ESLint with TypeScript Config + Reviewdog
         uses: reviewdog/action-eslint@v1.33.2

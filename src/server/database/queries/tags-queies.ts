@@ -87,7 +87,7 @@ export class TagsTable {
    * Delete one tag by UUID
    * @param uuid Tag UUID
    */
-  static async deleteOne(uuid: string): Promise<void> {
+  static async deleteUniqueByUuid(uuid: string): Promise<void> {
     const prisma = await TagsTable.getPrismaClient();
 
     await prisma.tags.delete({

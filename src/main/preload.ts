@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { ChatMessage } from '../server';
+import { AppSettingsConfig, ChatMessage } from '../server';
 import { DeepSeekModel } from '../server/api/chat-client';
 import {
   favourites,
@@ -119,6 +119,17 @@ contextBridge.exposeInMainWorld('formulaConversationsTableApi', {
       uuid
     );
   },
+
+  updateUniqueByUuid: (
+    uuid: string,
+    data: Prisma.formula_conversationsUpdateInput
+  ): Promise<formula_conversations> => {
+    return ipcRenderer.invoke(
+      'database:formula_conversations:updateUniqueByUuid',
+      uuid,
+      data
+    );
+  },
 });
 
 contextBridge.exposeInMainWorld('formulaInterpretationsTableApi', {
@@ -151,9 +162,9 @@ contextBridge.exposeInMainWorld('formulaInterpretationsTableApi', {
     );
   },
 
-  deleteOne: (uuid: string): Promise<void> => {
+  deleteUniqueByUuid: (uuid: string): Promise<void> => {
     return ipcRenderer.invoke(
-      'database:formula_interpretations:deleteOne',
+      'database:formula_interpretations:deleteUniqueByUuid',
       uuid
     );
   },
@@ -215,6 +226,21 @@ contextBridge.exposeInMainWorld('formulasTableApi', {
   insertMany: (formulas: Prisma.formulasCreateManyInput[]): Promise<void> => {
     return ipcRenderer.invoke('database:formulas:insertMany', formulas);
   },
+
+  deleteUniqueByUuid: (uuid: string): Promise<void> => {
+    return ipcRenderer.invoke('database:formulas:deleteUniqueByUuid', uuid);
+  },
+
+  updateUniqueByUuid: (
+    uuid: string,
+    data: Prisma.formulasUpdateInput
+  ): Promise<formulas> => {
+    return ipcRenderer.invoke(
+      'database:formulas:updateUniqueByUuid',
+      uuid,
+      data
+    );
+  },
 });
 
 contextBridge.exposeInMainWorld('messagesTableApi', {
@@ -262,8 +288,8 @@ contextBridge.exposeInMainWorld('tagsTableApi', {
     return ipcRenderer.invoke('database:tags:insertMany', tags);
   },
 
-  deleteOne: (uuid: string): Promise<void> => {
-    return ipcRenderer.invoke('database:tags:deleteOne', uuid);
+  deleteUniqueByUuid: (uuid: string): Promise<void> => {
+    return ipcRenderer.invoke('database:tags:deleteUniqueByUuid', uuid);
   },
 
   setColorByUuid: (uuid: string, color: string): Promise<void> => {
@@ -278,6 +304,23 @@ contextBridge.exposeInMainWorld('servicesApi', {
 
   saveJsonConfig: (configName: string, config: object): Promise<void> => {
     return ipcRenderer.invoke('services:saveJsonConfig', configName, config);
+  },
+
+  isConfigExist: (configName: string): Promise<boolean> => {
+    return ipcRenderer.invoke('services:isConfigExist', configName);
+  },
+
+  getAppSetting: (
+    settingName: keyof AppSettingsConfig
+  ): Promise<string | null> => {
+    return ipcRenderer.invoke('services:getAppSetting', settingName);
+  },
+
+  saveAppSetting: (
+    settingName: keyof AppSettingsConfig,
+    value: string
+  ): Promise<void> => {
+    return ipcRenderer.invoke('services:saveAppSetting', settingName, value);
   },
 });
 

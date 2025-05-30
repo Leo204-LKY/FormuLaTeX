@@ -54,4 +54,25 @@ export class FormulaConversationsTable {
 
     saveData();
   }
+
+  /**
+   * Update one formula_conversation by UUID
+   * @param uuid formula_conversation UUID to update
+   * @param data Data to update
+   * @return Updated formula_conversation
+   */
+  static async updateUniqueByUuid(
+    uuid: string,
+    data: Prisma.formula_conversationsUpdateInput
+  ): Promise<formula_conversations> {
+    const prisma = await FormulaConversationsTable.getPrismaClient();
+
+    const result = await prisma.formula_conversations.update({
+      where: { conversation_id: uuid },
+      data,
+    });
+
+    saveData();
+    return result;
+  }
 }

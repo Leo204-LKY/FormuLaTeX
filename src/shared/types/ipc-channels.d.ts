@@ -1,4 +1,8 @@
-import type { ChatMessage, SimpleTexResponse } from '../../server';
+import type {
+  AppSettingsConfig,
+  ChatMessage,
+  SimpleTexResponse,
+} from '../../server';
 import type { DeepSeekModel } from '../../server/api/chat-client';
 import type {
   favourites,
@@ -203,6 +207,17 @@ declare global {
        * @param uuid Formula conversation UUID
        */
       deleteUniqueByUuid: (uuid: string) => Promise<void>;
+
+      /**
+       * Update one formula_conversation by UUID
+       * @param uuid formula_conversation UUID to update
+       * @param data Data to update
+       * @return Updated formula_conversation
+       */
+      updateUniqueByUuid: (
+        uuid: string,
+        data: Prisma.formula_conversationsUpdateInput
+      ) => Promise<formula_conversations>;
     };
 
     /**
@@ -245,7 +260,7 @@ declare global {
        * Delete one formula interpretation by UUID
        * @param uuid Formula interpretation UUID
        */
-      deleteOne: (uuid: string) => Promise<void>;
+      deleteUniqueByUuid: (uuid: string) => Promise<void>;
     };
 
     /**
@@ -323,6 +338,23 @@ declare global {
        * @param formulas Formulas to insert
        */
       insertMany: (data: Prisma.formulasCreateManyInput[]) => Promise<void>;
+
+      /**
+       * Delete one formula by UUID
+       * @param uuid Formula UUID
+       */
+      deleteUniqueByUuid: (uuid: string) => Promise<void>;
+
+      /**
+       * Update one formula by UUID
+       * @param uuid Formula UUID to update
+       * @param data Data to update
+       * @return Updated formula
+       */
+      updateUniqueByUuid: (
+        uuid: string,
+        data: Prisma.formulasUpdateInput
+      ) => Promise<formulas>;
     };
 
     /**
@@ -397,7 +429,7 @@ declare global {
        * Delete one tag by UUID
        * @param uuid Tag UUID
        */
-      deleteOne: (uuid: string) => Promise<void>;
+      deleteUniqueByUuid: (uuid: string) => Promise<void>;
 
       /**
        * Set tag color by UUID
@@ -424,6 +456,33 @@ declare global {
        * @example `scrert` means `secret.json`
        */
       saveJsonConfig: (configName: string, config: object) => Promise<void>;
+
+      /**
+       * Get whether the config file exists
+       * @param configName Config file name
+       * @example `scrert` means `secret.json`
+       * @return {boolean} Whether the config file exists
+       */
+      isConfigExist: (configName: string) => Promise<boolean>;
+
+      /**
+       * Get app setting
+       * @param settingName The name of the setting to retrieve
+       * @returns The value of the setting or null if it does not exist
+       */
+      getAppSetting: (
+        settingName: keyof AppSettingsConfig
+      ) => Promise<string | null>;
+
+      /**
+       * Save app setting
+       * @param settingName The name of the setting to save
+       * @param value The value to save for the setting
+       */
+      saveAppSetting: (
+        settingName: keyof AppSettingsConfig,
+        value: string
+      ) => Promise<void>;
     };
   }
 }

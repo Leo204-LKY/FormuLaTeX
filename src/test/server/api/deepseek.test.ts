@@ -34,7 +34,7 @@ describe('DeepSeekChatClient', () => {
   });
 
   it('should stream chat completion results', async () => {
-    // 模拟 stream 返回一个异步迭代器
+    // Simulating stream returns an asynchronous iterator.
     const mockStream = {
       async *[Symbol.asyncIterator]() {
         yield { choices: [{ delta: { content: 'Hello' } }] };
@@ -51,7 +51,7 @@ describe('DeepSeekChatClient', () => {
       },
     }));
 
-    client = new DeepSeekChatClient(mockApiKey); // 重新初始化以使用 mocked OpenAI
+    client = new DeepSeekChatClient(mockApiKey); // Reinitialize to use mocked OpenAI
 
     const generator = client.ask('Hello?');
     const results: string[] = [];

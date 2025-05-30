@@ -80,7 +80,7 @@ export class FormulaInterpretationsTable {
    * Delete one formula interpretation by UUID
    * @param uuid Formula interpretation UUID
    */
-  static async deleteOne(uuid: string): Promise<void> {
+  static async deleteUniqueByUuid(uuid: string): Promise<void> {
     const prisma = await FormulaInterpretationsTable.getPrismaClient();
 
     await prisma.formula_interpretations.delete({
