@@ -8,6 +8,7 @@ import {
   FormulasTable,
   FormulaTagsTable,
   getEncryptedJsonConfig,
+  isConfigExist,
   MessagesTable,
   saveEncryptedJsonConfig,
   TagsTable,
@@ -352,3 +353,7 @@ ipcMain.handle(
     return saveEncryptedJsonConfig(configName, config);
   }
 );
+
+ipcMain.handle('services:isConfigExist', (event, configName: string) => {
+  return isConfigExist(configName);
+});

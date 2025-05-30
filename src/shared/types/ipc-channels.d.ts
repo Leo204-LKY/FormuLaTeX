@@ -452,6 +452,14 @@ declare global {
        * @example `scrert` means `secret.json`
        */
       saveJsonConfig: (configName: string, config: object) => Promise<void>;
+
+      /**
+       * Get whether the config file exists
+       * @param configName Config file name
+       * @example `scrert` means `secret.json`
+       * @return {boolean} Whether the config file exists
+       */
+      isConfigExist: (configName: string) => Promise<boolean>;
     };
   }
 }

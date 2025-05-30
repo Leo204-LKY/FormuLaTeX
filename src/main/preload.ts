@@ -305,6 +305,10 @@ contextBridge.exposeInMainWorld('servicesApi', {
   saveJsonConfig: (configName: string, config: object): Promise<void> => {
     return ipcRenderer.invoke('services:saveJsonConfig', configName, config);
   },
+
+  isConfigExist: (configName: string): Promise<boolean> => {
+    return ipcRenderer.invoke('services:isConfigExist', configName);
+  },
 });
 
 window.addEventListener('DOMContentLoaded', () => {
