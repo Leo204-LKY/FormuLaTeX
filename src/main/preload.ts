@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { ChatMessage } from '../server';
+import { AppSettingsConfig, ChatMessage } from '../server';
 import { DeepSeekModel } from '../server/api/chat-client';
 import {
   favourites,
@@ -308,6 +308,19 @@ contextBridge.exposeInMainWorld('servicesApi', {
 
   isConfigExist: (configName: string): Promise<boolean> => {
     return ipcRenderer.invoke('services:isConfigExist', configName);
+  },
+
+  getAppSetting: (
+    settingName: keyof AppSettingsConfig
+  ): Promise<string | null> => {
+    return ipcRenderer.invoke('services:getAppSetting', settingName);
+  },
+
+  saveAppSetting: (
+    settingName: keyof AppSettingsConfig,
+    value: string
+  ): Promise<void> => {
+    return ipcRenderer.invoke('services:saveAppSetting', settingName, value);
   },
 });
 

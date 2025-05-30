@@ -1,4 +1,8 @@
-import type { ChatMessage, SimpleTexResponse } from '../../server';
+import type {
+  AppSettingsConfig,
+  ChatMessage,
+  SimpleTexResponse,
+} from '../../server';
 import type { DeepSeekModel } from '../../server/api/chat-client';
 import type {
   favourites,
@@ -460,6 +464,25 @@ declare global {
        * @return {boolean} Whether the config file exists
        */
       isConfigExist: (configName: string) => Promise<boolean>;
+
+      /**
+       * Get app setting
+       * @param settingName The name of the setting to retrieve
+       * @returns The value of the setting or null if it does not exist
+       */
+      getAppSetting: (
+        settingName: keyof AppSettingsConfig
+      ) => Promise<string | null>;
+
+      /**
+       * Save app setting
+       * @param settingName The name of the setting to save
+       * @param value The value to save for the setting
+       */
+      saveAppSetting: (
+        settingName: keyof AppSettingsConfig,
+        value: string
+      ) => Promise<void>;
     };
   }
 }

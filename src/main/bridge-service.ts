@@ -1,5 +1,6 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import {
+  AppSettingsConfig,
   ChatMessage,
   convertImageToLatex,
   FavouritesTable,
@@ -7,9 +8,11 @@ import {
   FormulaInterpretationsTable,
   FormulasTable,
   FormulaTagsTable,
+  getAppSetting,
   getEncryptedJsonConfig,
   isConfigExist,
   MessagesTable,
+  saveAppSetting,
   saveEncryptedJsonConfig,
   TagsTable,
 } from '../server';
@@ -357,3 +360,24 @@ ipcMain.handle(
 ipcMain.handle('services:isConfigExist', (event, configName: string) => {
   return isConfigExist(configName);
 });
+
+ipcMain.handle(
+  'services:getAppSetting',
+  async (
+    event,
+    settingName: keyof AppSettingsConfig
+  ): Promise<string | null> => {
+    return getAppSetting(settingName);
+  }
+);
+
+ipcMain.handle(
+  'services:saveAppSetting',
+  async (
+    event,
+    settingName: keyof AppSettingsConfig,
+    value: string
+  ): Promise<void> => {
+    return saveAppSetting(settingName, value);
+  }
+);
