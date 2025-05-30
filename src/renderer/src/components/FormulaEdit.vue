@@ -103,7 +103,7 @@
         <AlterItem
           v-model:visible="alertVisible1"
           title="Formula API Key"
-          message="Formul API Key has been saved successfully!"
+          message="Formula API Key has been saved successfully!"
           :buttons="[{ text: 'OK', type: 'primary' }]"
         />
 
@@ -162,7 +162,7 @@
       <AlterItem
         v-model:visible="alertVisible2"
         title="Formula Recognization"
-        message="Formul recognized successfully!"
+        message="Formula recognized successfully!"
         :buttons="[{ text: 'OK', type: 'primary' }]"
       />
 
