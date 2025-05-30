@@ -22,3 +22,13 @@ export interface DeepSeekConfig {
    */
   apiKey?: string;
 }
+
+/**
+ * App settings config
+ */
+export interface AppSettingsConfig {
+  /**
+   * Language for the app
+   */
+  language?: string;
+}
