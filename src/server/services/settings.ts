@@ -1,4 +1,4 @@
-import { AppSettingsConfig } from '../interfaces';
+import type { AppSettingsConfig } from '../interfaces';
 import {
   getEncryptedJsonConfig,
   isConfigExist,
