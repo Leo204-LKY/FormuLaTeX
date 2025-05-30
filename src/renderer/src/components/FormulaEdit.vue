@@ -157,7 +157,9 @@
         spellcheck="false"
         class="w-full border border-gray-200 p-2 rounded-md h-3/4"
         @input="onInputChange"
-        :placeholder="$t('FormulaEdit.formulaInputPlaceholder')"
+        :placeholder="
+          $t('FormulaEdit.formulaInputPlaceholder', ['\\frac{a}{b} = c...'])
+        "
       ></textarea>
 
       <!-- Recognition Success Alert -->

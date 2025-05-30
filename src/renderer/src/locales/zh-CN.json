@@ -23,7 +23,7 @@
     "formulaRecognitionSuccessMessage": "公式已成功识别！",
     "simpleTexNotSetTitle": "SimpleTex ID 和密钥未设置",
     "simpleTexNotSetMessage": "尚未设置 SimpleTex API 配置，请在设置中进行配置。",
-    "formulaInputPlaceholder": "请输入您的公式 LaTeX，例如 \\frac{a}{b} = c...",
+    "formulaInputPlaceholder": "请输入公式 LaTeX，例如 {0}",
     "simpleTexAppId": "SimpleTex App ID",
     "simpleTexAppSecret": "SimpleTex App Secret",
     "uploadImage": "上传图片",

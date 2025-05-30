@@ -23,7 +23,7 @@
     "formulaRecognitionSuccessMessage": "Formula has been recognized successfully!",
     "simpleTexNotSetTitle": "SimpleTex ID and Secret Not Set",
     "simpleTexNotSetMessage": "You have not set the SimpleTex API config, please set it in the settings.",
-    "formulaInputPlaceholder": "Enter your formula latex here, e.g. \\frac{a}{b} = c...",
+    "formulaInputPlaceholder": "Enter your formula latex here, e.g. {0}",
     "simpleTexAppId": "SimpleTex App ID",
     "simpleTexAppSecret": "SimpleTex App Secret",
     "uploadImage": "Upload Image",
