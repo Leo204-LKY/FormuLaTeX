@@ -2,6 +2,7 @@
   "language": "中文（简体）",
   "translator": "Leo204-LKY",
   "appName": "FormuLaTeX",
+  "appTitle": "FormuLaTeX - 基于 AI 的公式工具",
   "common": {
     "ok": "OK",
     "cancel": "取消",

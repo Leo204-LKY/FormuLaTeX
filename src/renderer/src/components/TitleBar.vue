@@ -38,6 +38,9 @@
     if (i18n) {
       i18n.global.locale = currentLocale.value;
       window.servicesApi.saveAppSetting('language', currentLocale.value);
+      document.title = (i18n.global as import('vue-i18n').Composer).t(
+        'appTitle'
+      );
     }
   }
 </script>
