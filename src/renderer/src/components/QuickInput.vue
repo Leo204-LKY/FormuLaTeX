@@ -6,19 +6,19 @@
     <AlterItem
       class="z-[9999]"
       v-model:visible="alertVisible_empty"
-      title="Empty Input"
-      message="Can't be empty! Please check and fill the input."
-      :buttons="[{ text: 'OK', type: 'primary' }]"
+      :title="t('common.emptyInputTitle')"
+      :message="t('common.emptyInputMessage')"
+      :buttons="[{ text: t('common.ok'), type: 'primary' }]"
     />
 
     <!-- Header section with title and create button -->
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-bold">{{ 'Quick Input' }}</h2>
+      <h2 class="text-xl font-bold">{{ t('QuickInput.quickInput') }}</h2>
       <button
         class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
         @click="openFormulaModal()"
       >
-        + New
+        {{ t('common.new') }}
       </button>
     </div>
 
@@ -36,7 +36,7 @@
         :class="{ 'outline-none ring-2 ring-blue-400': selectedTag === tag }"
         @click="fetchItemsByTag(tag)"
       >
-        {{ tag }}
+        {{ t(`QuickInput.tags.${tag}`) }}
       </button>
     </div>
 
@@ -74,8 +74,8 @@
   <!-- Success alert after creating formula -->
   <AlterItem
     v-model:visible="alertVisible_create"
-    title="Create Formula"
-    message="Create Formula successfully!"
+    :title="t('QuickInput.createSuccessTitle')"
+    :message="t('QuickInput.createSuccessMessage')"
     :buttons="[{ text: 'OK', type: 'primary' }]"
   />
 
@@ -96,34 +96,34 @@
       </button>
 
       <h3 class="text-xl font-bold mb-5 text-center text-gray-800">
-        Create New Formula
+        {{ t('QuickInput.createFormula') }}
       </h3>
 
       <!-- Form fields -->
       <div class="space-y-5">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
-            Formula Name
+            {{ t('QuickInput.formulaName') }}
           </label>
           <input
             v-model="newFormulaName"
             spellcheck="false"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-            placeholder="Enter formula name"
+            :placeholder="t('QuickInput.enterFormulaName')"
           />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
-            Formula Content
+            {{ t('QuickInput.formulaContent') }}
           </label>
           <textarea
             v-model="newFormulaContent"
             spellcheck="false"
             rows="5"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
-            placeholder="Enter LaTeX formula"
+            :placeholder="t('QuickInput.enterLatexFormula')"
           ></textarea>
         </div>
       </div>
@@ -138,7 +138,7 @@
             (newFormulaContent = ''))
           "
         >
-          Cancel
+          {{ t('common.cancel') }}
         </button>
         <button
           class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center min-w-[100px]"
@@ -167,34 +167,34 @@
       </button>
 
       <h3 class="text-xl font-bold mb-5 text-center text-gray-800">
-        Edit the Formula
+        {{ t('QuickInput.editFormula') }}
       </h3>
 
       <!-- Form fields -->
       <div class="space-y-5">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
-            Formula Name
+            {{ t('QuickInput.formulaName') }}
           </label>
           <input
             v-model="newFormulaName"
             spellcheck="false"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-            placeholder="Enter formula name"
+            :placeholder="t('QuickInput.enterFormulaName')"
           />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
-            Formula Content
+            {{ t('QuickInput.formulaContent') }}
           </label>
           <textarea
             v-model="newFormulaContent"
             spellcheck="false"
             rows="5"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
-            placeholder="Enter LaTeX formula"
+            :placeholder="t('QuickInput.enterLatexFormula')"
           ></textarea>
         </div>
       </div>
@@ -209,13 +209,13 @@
             (newFormulaContent = ''))
           "
         >
-          Cancel
+          {{ t('common.cancel') }}
         </button>
         <button
           class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center min-w-[100px]"
           @click="editFormula"
         >
-          Save Formula
+          {{ t('QuickInput.saveFormula') }}
         </button>
       </div>
     </div>
@@ -235,6 +235,10 @@
     getFormulas,
   } from '../utils/formulaDB';
   import type { formulas } from '@prisma/client';
+  import { useI18n } from 'vue-i18n';
+
+  // i18n
+  const { t } = useI18n();
 
   // Component references
   const tagSelectorRef = ref<HTMLElement | null>(null);

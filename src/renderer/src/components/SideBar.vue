@@ -31,7 +31,7 @@
     :class="isHistoryDrawerOpen ? 'translate-x-0' : '-translate-x-full'"
   >
     <div class="flex items-center justify-between p-4 border-b">
-      <h3 class="text-lg font-bold">History Topics</h3>
+      <h3 class="text-lg font-bold">{{ t('SideBar.history') }}</h3>
     </div>
     <div ref="itemRef" class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
       <ul class="space-y-2">
@@ -56,9 +56,9 @@
     <AlterItem
       class="z-[9999]"
       v-model:visible="alertVisible_empty"
-      title="Empty Input"
-      message="Can't be empty! Please check and fill the input."
-      :buttons="[{ text: 'OK', type: 'primary' }]"
+      :title="t('common.emptyInputTitle')"
+      :message="t('common.emptyInputMessage')"
+      :buttons="[{ text: t('common.ok'), type: 'primary' }]"
     />
     <!-- Top Toolbar -->
     <div
@@ -74,9 +74,9 @@
         </button>
         <button
           class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
-          @click="createNewChat('New Chat')"
+          @click="createNewChat(t('SideBar.newChatDefaultTitle'))"
         >
-          + New
+          {{ t('common.new') }}
         </button>
       </div>
 
@@ -103,25 +103,25 @@
       <!-- Alert Components -->
       <AlterItem
         v-model:visible="alertVisible_initial"
-        title="Chat API Key"
-        message="Chat API Key has been saved successfully!"
-        :buttons="[{ text: 'OK', type: 'primary' }]"
+        :title="t('common.chatApiSaveTitle')"
+        :message="t('common.chatApiSaveMessage')"
+        :buttons="[{ text: t('common.ok'), type: 'primary' }]"
       />
 
       <AlterItem
         v-model:visible="alertVisible_existed"
-        title="Chat API Key"
-        message="Chat API Key has existed. Update it?"
+        :title="t('SideBar.chatApiExistUpdateTitle')"
+        :message="t('SideBar.chatApiExistUpdateMessage')"
         :buttons="[
           {
-            text: 'Cancel',
+            text: t('common.cancel'),
             type: 'secondary',
             callback: () => {
               apiKey = '';
             },
           },
           {
-            text: 'OK',
+            text: t('common.ok'),
             type: 'primary',
             callback: () => {
               updateKey();
@@ -134,9 +134,9 @@
 
       <AlterItem
         v-model:visible="alertVisible_error"
-        title="Chat Key Error"
-        message="Can't find your Chat API key, please set it in settings."
-        :buttons="[{ text: 'OK', type: 'primary' }]"
+        :title="t('SideBar.chatApiNotSetTitle')"
+        :message="t('SideBar.chatApiNotSetMessage')"
+        :buttons="[{ text: t('common.ok'), type: 'primary' }]"
       />
 
       <!-- Settings Button & Panel -->
@@ -154,17 +154,19 @@
             v-if="showSetting"
             class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg p-4 z-30"
           >
-            <label class="block text-sm font-medium mb-2">Enter API Key:</label>
+            <label class="block text-sm font-medium mb-2">
+              {{ t('SideBar.enterApiKey') }}
+            </label>
             <input
               type="text"
               spellcheck="false"
               v-model="apiKey"
-              placeholder=" Your API Key"
+              :placeholder="t('SideBar.chatApiKey')"
               class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             <div class="flex justify-center mt-1">
               <button class="btn-style3 btn-status2" @click="saveKey">
-                Save
+                {{ t('common.save') }}
               </button>
             </div>
           </div>
@@ -204,10 +206,12 @@
     >
       <textarea
         v-model="inputText"
-        placeholder="Ask me anything about formula..."
+        :placeholder="t('SideBar.chatInputPlaceholder')"
         class="flex-1 p-2 border rounded-md mr-2 min-h-32 focus:outline-none shadow-md focus:ring-2 focus:ring-gray-500 w-full"
       ></textarea>
-      <button @click="sendMessage" class="btn-style3 btn-status2">Send</button>
+      <button @click="sendMessage" class="btn-style3 btn-status2">
+        {{ t('SideBar.send') }}
+      </button>
     </div>
   </div>
 </template>
@@ -231,6 +235,10 @@
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
   import type { DeepSeekConfig } from '../../../server';
+  import { useI18n } from 'vue-i18n';
+
+  // i18n
+  const { t } = useI18n();
 
   // Interface for chat topics
   interface Topics {
@@ -320,7 +328,10 @@
   const isDrawerOpen = ref(false); // Main sidebar open state
   const messagesData = ref<messages[]>([]); // Chat messages
   const inputText = ref(''); // Input text
-  const currentTopic = ref<Topics>({ title: 'Chat Title', id: 'default' }); // Current chat topic
+  const currentTopic = ref<Topics>({
+    title: t('SideBar.chatTitle'),
+    id: 'default',
+  }); // Current chat topic
 
   // History sidebar states
   const isHistoryDrawerOpen = ref(false); // History sidebar open state
@@ -608,7 +619,7 @@
 
     // Generate unique title
     let uniqueTitle = baseTitle;
-    if (defaultTitle === 'New Chat') {
+    if (defaultTitle === t('SideBar.newChatDefaultTitle')) {
       let counter = 1;
       while (existingTitles.includes(uniqueTitle)) {
         uniqueTitle = `${baseTitle} ${counter++}`;

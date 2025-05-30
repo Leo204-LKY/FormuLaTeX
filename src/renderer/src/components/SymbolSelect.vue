@@ -11,7 +11,7 @@
         }"
         @click="selectCategory(category)"
       >
-        {{ category }}
+        {{ t(`SymbolSelect.types.${category}`) }}
       </button>
     </div>
 
@@ -44,6 +44,10 @@
   import { ref, computed } from 'vue';
   import { selectSymbolEventBus } from '../eventBus';
   import SymbolsItem from '../sub-components/SymbolsItem.vue';
+  import { useI18n } from 'vue-i18n';
+
+  // i18n
+  const { t } = useI18n();
 
   // Symbol data grouped by category
   const symbolData: { [key: string]: string[][] } = {

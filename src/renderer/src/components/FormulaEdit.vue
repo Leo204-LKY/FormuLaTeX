@@ -3,13 +3,15 @@
     <AlterItem
       class="z-[9999]"
       v-model:visible="alertVisible_empty"
-      title="Empty Input"
-      message="Can't be empty! Please check and fill the input."
-      :buttons="[{ text: 'OK', type: 'primary' }]"
+      :title="t('common.emptyInputTitle')"
+      :message="t('common.emptyInputMessage')"
+      :buttons="[{ text: t('common.ok'), type: 'primary' }]"
     />
     <!-- Formula Editing Area -->
     <div class="w-1/2 border-r border-dashed border-blue-500 p-4 h-full">
-      <h2 class="text-lg font-bold mb-4">Formula Editing</h2>
+      <h2 class="text-lg font-bold mb-4">
+        {{ t('FormulaEdit.formulaEditing') }}
+      </h2>
 
       <!-- Toolbar -->
       <div
@@ -37,9 +39,9 @@
           v-model="selectedFont"
           @change="applyFontStyle"
         >
-          <option value="mathit">MathIt</option>
-          <option value="mathsf">MathSF</option>
-          <option value="mathbb">MathBB</option>
+          <option value="mathit">{{ t('common.mathIt') }}</option>
+          <option value="mathsf">{{ t('common.mathSf') }}</option>
+          <option value="mathbb">{{ t('common.mathBb') }}</option>
           <!-- TODO: Fix unclear style display bug & add more styles -->
         </select>
 
@@ -102,9 +104,9 @@
         <!-- API Key Save Alert -->
         <AlterItem
           v-model:visible="alertVisible1"
-          title="Formula API Key"
-          message="Formula API Key has been saved successfully!"
-          :buttons="[{ text: 'OK', type: 'primary' }]"
+          :title="t('FormulaEdit.formulaApiKeySaveTitle')"
+          :message="t('FormulaEdit.formulaApiKeySaveMessage')"
+          :buttons="[{ text: t('common.ok'), type: 'primary' }]"
         />
 
         <!-- Settings Section -->
@@ -122,25 +124,25 @@
               class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg p-4 z-30"
             >
               <label class="block text-sm font-medium mb-2">
-                Enter API config:
+                {{ t('FormulaEdit.enterApiConfig') }}
               </label>
               <input
                 type="text"
                 spellcheck="false"
                 v-model="appId"
-                placeholder="Your APP id"
+                :placeholder="t('FormulaEdit.simpleTexAppId')"
                 class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
               />
               <input
                 type="text"
                 spellcheck="false"
                 v-model="appSecret"
-                placeholder="Your APP secret"
+                :placeholder="t('FormulaEdit.simpleTexAppSecret')"
                 class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 mt-2"
               />
               <div class="flex justify-center mt-1">
                 <button class="btn-style3 btn-status2" @click="saveConfig">
-                  Save
+                  {{ t('common.save') }}
                 </button>
               </div>
             </div>
@@ -155,29 +157,29 @@
         spellcheck="false"
         class="w-full border border-gray-200 p-2 rounded-md h-3/4"
         @input="onInputChange"
-        placeholder="Please enter latex code, like: \frac{a}{b} = c"
+        :placeholder="$t('FormulaEdit.formulaInputPlaceholder')"
       ></textarea>
 
       <!-- Recognition Success Alert -->
       <AlterItem
         v-model:visible="alertVisible2"
-        title="Formula Recognization"
-        message="Formula recognized successfully!"
-        :buttons="[{ text: 'OK', type: 'primary' }]"
+        :title="t('FormulaEdit.formulaRecognitionSuccessTitle')"
+        :message="t('FormulaEdit.formulaRecognitionSuccessMessage')"
+        :buttons="[{ text: t('common.ok'), type: 'primary' }]"
       />
 
       <!-- API Key Error Alert -->
       <AlterItem
         v-model:visible="alertVisible3"
-        title="Formula Key Error"
-        message="Can't find your SimpleTex API key, please set it in settings."
-        :buttons="[{ text: 'OK', type: 'primary' }]"
+        :title="t('FormulaEdit.simpleTexNotSetTitle')"
+        :message="t('FormulaEdit.simpleTexNotSetMessage')"
+        :buttons="[{ text: t('common.ok'), type: 'primary' }]"
       />
 
       <!-- Image Upload Section -->
       <div class="flex justify-around items-center mt-4">
         <button class="btn-style3 btn-status2" @click="showUploadModal = true">
-          Upload Image
+          {{ t('FormulaEdit.uploadImage') }}
         </button>
 
         <!-- Image Upload Modal -->
@@ -194,9 +196,11 @@
               class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
               @click="showUploadModal = false"
             >
-              ✕
+              {{ t('crossMark') }}
             </button>
-            <h3 class="text-lg font-semibold mb-4 text-center">Upload Image</h3>
+            <h3 class="text-lg font-semibold mb-4 text-center">
+              {{ t('FormulaEdit.uploadImage') }}
+            </h3>
 
             <div
               class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 cursor-pointer hover:border-blue-400 relative"
@@ -215,14 +219,14 @@
                     class="absolute top-1 right-1 bg-red-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm cursor-pointer shadow-md hover:bg-red-600 transition-all duration-200"
                     :style="{ transform: 'translate(50%, -50%)' }"
                   >
-                    ✕
+                    {{ t('crossMark') }}
                   </button>
                 </div>
               </div>
 
               <!-- File Upload Prompt -->
               <div v-else>
-                Drag the file to here, or click to select
+                {{ t('FormulaEdit.dragAndDropImage') }}
                 <input
                   type="file"
                   ref="fileInputRef"
@@ -234,7 +238,7 @@
             </div>
 
             <p class="mt-4 text-xs text-gray-400 text-center">
-              Supported formats: PNG / JPG / JPEG
+              {{ t('FormulaEdit.supportImageTypes') }}
             </p>
           </div>
         </div>
@@ -244,14 +248,16 @@
           class="bg-purple-500 text-white text-sm px-4 py-2 rounded-md"
           @click="handleAIAnalysis"
         >
-          AI-Analysis
+          {{ t('FormulaEdit.askAi') }}
         </button>
       </div>
     </div>
 
     <!-- Formula Preview Area -->
     <div class="flex-1 p-4 h-full">
-      <h2 class="text-lg font-bold mb-4">Formula Preview</h2>
+      <h2 class="text-lg font-bold mb-4">
+        {{ t('FormulaEdit.formulaPreview') }}
+      </h2>
       <div
         id="formula-preview"
         class="w-full border border-gray-300 bg-white rounded-md h-5/6 p-4 flex items-center justify-center text-center"
@@ -271,6 +277,10 @@
   import type { SimpleTexConfig } from '../../../server';
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
+  import { useI18n } from 'vue-i18n';
+
+  // i18n
+  const { t } = useI18n();
 
   // Component Props and Emits
   const props = defineProps<{ latexInput?: string }>();
@@ -361,8 +371,7 @@
       inputEventBus.emit('input', latexInput.value);
     } catch (err) {
       console.error('KaTeX render error:', err);
-      previewRef.value.innerHTML =
-        '<span class="text-red-500">Error: Formula rendering failed!</span>';
+      previewRef.value.innerHTML = `<span class="text-red-500">${t('FormulaEdit.renderError')}</span>`;
     }
   };
 
