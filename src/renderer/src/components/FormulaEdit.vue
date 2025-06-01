@@ -198,7 +198,7 @@
               class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
               @click="showUploadModal = false"
             >
-              {{ t('crossMark') }}
+              {{ t('common.crossMark') }}
             </button>
             <h3 class="text-lg font-semibold mb-4 text-center">
               {{ t('FormulaEdit.uploadImage') }}
@@ -221,7 +221,7 @@
                     class="absolute top-1 right-1 bg-red-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm cursor-pointer shadow-md hover:bg-red-600 transition-all duration-200"
                     :style="{ transform: 'translate(50%, -50%)' }"
                   >
-                    {{ t('crossMark') }}
+                    {{ t('common.crossMark') }}
                   </button>
                 </div>
               </div>
