@@ -10,8 +10,8 @@ on:
       - 'v*.*.*' # Only match semantic versioning tags like v1.0.0
 
 jobs:
-  update-tag:
-    name: Update Tag and Version
+  check-tag:
+    name: Check if Tag Matches Package Version
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -45,8 +45,7 @@ jobs:
         with:
           node-version: '22.14.0'
 
-      - name: Update package.json version if different
-        id: version_check
+      - name: Check package.json version matches tag
         run: |
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           TAG_VERSION=${{ steps.info.outputs.tag }}
@@ -55,14 +54,12 @@ jobs:
           echo "Current version in package.json: $CURRENT_VERSION"
           echo "Tag version (clean): $TAG_VERSION_CLEAN"
 
-          if [ "$CURRENT_VERSION" = "$TAG_VERSION_CLEAN" ]; then
-            echo "Version matches tag. Skipping version bump."
-            echo "skip_bump=true" >> $GITHUB_OUTPUT
+          if [ "$CURRENT_VERSION" != "$TAG_VERSION_CLEAN" ]; then
+            echo "ERROR: package.json version ($CURRENT_VERSION) does not match tag version ($TAG_VERSION_CLEAN)."
+            echo "Please update package.json version before tagging a release."
+            exit 1
           else
-            yarn version --new-version "$TAG_VERSION_CLEAN" --no-git-tag-version
-            git commit -am "chore: update version to $TAG_VERSION_CLEAN"
-            git push origin ${{ steps.info.outputs.branch }}
-            echo "skip_bump=false" >> $GITHUB_OUTPUT
+            echo "Version matches tag."
           fi
 
       - name: Move tag to latest commit if version bumped
@@ -74,7 +71,7 @@ jobs:
           git push origin ${{ steps.info.outputs.tag }}
 
   build-and-release:
-    needs: update-tag
+    needs: check-tag
     name: Build and Release Package
     strategy:
       matrix:
