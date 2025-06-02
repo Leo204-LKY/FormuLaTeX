@@ -428,7 +428,7 @@
 
     // Create new conversation if default
     if (currentTopic.value.id === 'default') {
-      await createNewChat(new Date().toISOString());
+      await createNewChat(t('SideBar.newChatDefaultTitle'));
     }
 
     const text = inputText.value.trim();
