@@ -1,4 +1,5 @@
 <template>
+  <!-- Sidebar Toggle Button -->
   <button
     ref="drawerButton"
     @click="toggleDrawer"
@@ -24,22 +25,22 @@
     </svg>
   </button>
 
-  <!-- TODO: 对历史话题的记录，可优化 -->
-  <!-- TODO: 实现点击对应记录后，对对话的伪加载(后续后端加载) -->
+  <!-- History Sidebar -->
   <div
     class="fixed top-0 left-0 h-full w-1/4 bg-white border-r shadow-lg transition-transform duration-300 z-10"
     :class="isHistoryDrawerOpen ? 'translate-x-0' : '-translate-x-full'"
   >
     <div class="flex items-center justify-between p-4 border-b">
-      <h3 class="text-lg font-bold">History Topics</h3>
+      <h3 class="text-lg font-bold">{{ t('SideBar.history') }}</h3>
     </div>
-    <div class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
+    <div ref="itemRef" class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
       <ul class="space-y-2">
         <li
           v-for="topic in historyTopics"
           :key="topic.id"
           class="p-2 bg-gray-100 rounded-md hover:bg-gray-200 cursor-pointer"
           @click="selectHistoryTopic(topic)"
+          @contextmenu.prevent="handleRightClick(topic, $event)"
         >
           {{ topic.title }}
         </li>
@@ -47,13 +48,23 @@
     </div>
   </div>
 
+  <!-- Main Chat Sidebar -->
   <div
     class="fixed top-0 right-0 h-full w-3/4 bg-white border-l shadow-lg transition-transform duration-300 z-20"
     :class="isDrawerOpen ? 'translate-x-0' : 'translate-x-full'"
   >
+    <AlterItem
+      class="z-[9999]"
+      v-model:visible="alertVisible_empty"
+      :title="t('common.emptyInputTitle')"
+      :message="t('common.emptyInputMessage')"
+      :buttons="[{ text: t('common.ok'), type: 'primary' }]"
+    />
+    <!-- Top Toolbar -->
     <div
       class="flex items-center justify-between p-2 pb-2 border-b border-gray-300"
     >
+      <!-- Sidebar Toggle & New Chat Button -->
       <div class="flex items-center space-x-2">
         <button
           class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
@@ -63,11 +74,13 @@
         </button>
         <button
           class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
-          @click="createNewChat"
+          @click="createNewChat(t('SideBar.newChatDefaultTitle'))"
         >
-          + New
+          {{ t('common.new') }}
         </button>
       </div>
+
+      <!-- Chat Title Editing Area -->
       <div class="relative">
         <h2
           v-if="!editingTitle"
@@ -86,8 +99,48 @@
           ref="titleInput"
         />
       </div>
+
+      <!-- Alert Components -->
+      <AlterItem
+        v-model:visible="alertVisible_initial"
+        :title="t('SideBar.chatApiSaveTitle')"
+        :message="t('SideBar.chatApiSaveMessage')"
+        :buttons="[{ text: t('common.ok'), type: 'primary' }]"
+      />
+
+      <AlterItem
+        v-model:visible="alertVisible_existed"
+        :title="t('SideBar.chatApiExistUpdateTitle')"
+        :message="t('SideBar.chatApiExistUpdateMessage')"
+        :buttons="[
+          {
+            text: t('common.cancel'),
+            type: 'secondary',
+            callback: () => {
+              apiKey = '';
+            },
+          },
+          {
+            text: t('common.ok'),
+            type: 'primary',
+            callback: () => {
+              updateKey();
+              showSetting = false;
+              alertVisible_existed = false;
+            },
+          },
+        ]"
+      />
+
+      <AlterItem
+        v-model:visible="alertVisible_error"
+        :title="t('SideBar.chatApiNotSetTitle')"
+        :message="t('SideBar.chatApiNotSetMessage')"
+        :buttons="[{ text: t('common.ok'), type: 'primary' }]"
+      />
+
+      <!-- Settings Button & Panel -->
       <div class="flex items-center space-x-2">
-        <!-- 设置 -->
         <div class="relative">
           <button
             class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
@@ -95,29 +148,33 @@
           >
             <img src="../assets/icons/setting.svg" />
           </button>
-          <!-- 展开设置输入框 -->
+
+          <!-- Settings Panel -->
           <div
             v-if="showSetting"
             class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg p-4 z-30"
           >
-            <label class="block text-sm font-medium mb-2">Enter API Key:</label>
+            <label class="block text-sm font-medium mb-2">
+              {{ t('SideBar.enterApiKey') }}
+            </label>
             <input
               type="text"
               spellcheck="false"
               v-model="apiKey"
-              placeholder=" Your API Key"
+              :placeholder="t('SideBar.chatApiKey')"
               class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             <div class="flex justify-center mt-1">
               <button class="btn-style3 btn-status2" @click="saveKey">
-                Save
+                {{ t('common.save') }}
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- 聊天记录 -->
+
+    <!-- Chat Content Area -->
     <div ref="chatContainer" class="flex-1 p-4 h-3/4 overflow-y-auto space-y-4">
       <div
         v-for="(message, index) in messagesData"
@@ -125,6 +182,7 @@
         :class="message.role == 'user' ? 'text-right' : 'text-left'"
         class="p-2 h-auto"
       >
+        <!-- User Messages -->
         <span
           v-if="message.role === 'user'"
           class="bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
@@ -132,6 +190,8 @@
           {{ message.content }}
           <!-- <MarkdownRenderer :content="message.content" /> -->
         </span>
+
+        <!-- AI Response Messages (with Markdown rendering) -->
         <div
           v-else
           class="bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words whitespace-pre-wrap text-left"
@@ -140,89 +200,101 @@
       </div>
     </div>
 
-    <!-- 输入框和发送按钮 -->
+    <!-- Bottom Input Area -->
     <div
       class="flex items-center p-4 bg-white fixed bottom-0 left-0 right-0 max-h-64"
     >
       <textarea
         v-model="inputText"
-        placeholder="Ask me anything about formula..."
+        :placeholder="t('SideBar.chatInputPlaceholder')"
         class="flex-1 p-2 border rounded-md mr-2 min-h-32 focus:outline-none shadow-md focus:ring-2 focus:ring-gray-500 w-full"
       ></textarea>
-      <button @click="sendMessage" class="btn-style3 btn-status2">Send</button>
+      <button @click="sendMessage" class="btn-style3 btn-status2">
+        {{ t('SideBar.send') }}
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
-  import { isDrawerOpenEventBus } from '../eventBus';
+  import { isDrawerOpenEventBus, contextMenuEventBus } from '../eventBus';
   import {
-    createConservation,
-    getConservations,
+    deleteConversation,
+    createConversation,
+    getConversations,
     getMessages,
     createMessage,
+    updateConversation,
   } from '../utils/chatDB';
   import DOMPurify from 'dompurify';
-  // import { marked } from 'marked';
   import type { messages } from '@prisma/client';
   import { turnChatMessage } from '../utils/turnChatMessage';
-  // import MarkdownRenderer from '../sub-components/MarkdownRenderer.vue';
+  import AlterItem from '../sub-components/AlterItem.vue';
   import MarkdownIt from 'markdown-it';
   import katex from 'katex';
-  // import markdownItKatex from 'markdown-it-katex';
-  // import mathjax3 from 'markdown-it-mathjax3';
   import 'katex/dist/katex.min.css';
+  import type { DeepSeekConfig } from '../../../server';
+  import { useI18n } from 'vue-i18n';
 
+  // i18n
+  const { t } = useI18n();
+
+  // Interface for chat topics
   interface Topics {
     title: string;
     id: string;
   }
 
-  const renderMarkdown = (content: string) => {
+  // Markdown rendering with KaTeX support
+  const renderMarkdown = (content: string): string => {
+    // Preprocess content to handle line breaks in LaTeX blocks
     content = content
       .replace(/\\\[\s*\n+/g, '\\[')
       .replace(/\n+\s*\\\]/g, '\\]');
-    content = content
-      // 处理行内公式 $...$ 和 \(...\)
-      .replace(
-        /(?:\\?[$])([^$]*)(?:\\?[$])|\\\((.*?)\\\)/g,
-        (match, p1, p2) => {
-          const tex = p1 || p2;
-          try {
-            return katex.renderToString(tex, {
-              throwOnError: false,
-              displayMode: false,
-            });
-          } catch (e) {
-            console.error('KaTeX render error:', e);
-            return match;
-          }
-        }
-      )
-      // 处理块级公式 $$...$$ 和 \[...\]
-      .replace(
-        /(?:\\?[$][$])([^$]*)(?:\\?[$][$])|\\\[(.*?)\\\]|^\s*\[(.*?)\]\s*$/gm,
-        (match, p1, p2, p3) => {
-          const tex = p1 || p2 || p3;
-          try {
-            return katex.renderToString(tex.trim(), {
-              throwOnError: false,
-              displayMode: true,
-            });
-          } catch (e) {
-            console.error('KaTeX render error:', e);
-            return match;
-          }
-        }
-      );
 
+    // Inline formula handling ($...$ and \(...\))
+    content = content.replace(
+      /(?:\\?[$])([^$]*)(?:\\?[$])|\\\((.*?)\\\)/g,
+      (match, inline, inlineBlock) => {
+        const tex = inline || inlineBlock;
+        try {
+          return katex.renderToString(tex, {
+            throwOnError: false,
+            displayMode: false,
+          });
+        } catch (e) {
+          console.error('KaTeX inline render error:', e);
+          return match;
+        }
+      }
+    );
+
+    // Block formula handling ($$...$$, \[...\], and [text])
+    content = content.replace(
+      /(?:\\?[$][$])([^$]*)(?:\\?[$][$])|\\\[(.*?)\\\]|^\s*\[(.*?)\]\s*$/gm,
+      (match, block, blockBracket, blockSquare) => {
+        const tex = block || blockBracket || blockSquare;
+        try {
+          return katex.renderToString(tex.trim(), {
+            throwOnError: false,
+            displayMode: true,
+          });
+        } catch (e) {
+          console.error('KaTeX block render error:', e);
+          return match;
+        }
+      }
+    );
+
+    // Initialize Markdown parser
     const md = new MarkdownIt({
       html: true,
       breaks: false,
       linkify: true,
     });
 
+    // Render and sanitize HTML output
     const html = md.render(content);
     return DOMPurify.sanitize(html, {
       ADD_TAGS: [
@@ -240,62 +312,72 @@
     });
   };
 
+  const itemRef = ref<HTMLElement | null>(null);
+
+  // Chat container reference and scroll management
   const chatContainer = ref<HTMLDivElement | null>(null);
-  const shouldAutoScroll = ref(true); // 是否自动滚动
-  // const mathRegex = /(?:\$.*?\$)|(?:`{3}math\n?.*?\n?`{3})/g;
+  const shouldAutoScroll = ref(true); // Auto-scroll state
 
-  const isDrawerOpen = ref(false);
-  const messagesData = ref<messages[]>([]);
-  const inputText = ref('');
+  // Alert states
+  const alertVisible_initial = ref(false); // API key saved
+  const alertVisible_existed = ref(false); // API key exists
+  const alertVisible_error = ref(false); // API key missing
+  const alertVisible_empty = ref(false); // Empty input error
+
+  // Sidebar states
+  const isDrawerOpen = ref(false); // Main sidebar open state
+  const messagesData = ref<messages[]>([]); // Chat messages
+  const inputText = ref(''); // Input text
   const currentTopic = ref<Topics>({
-    title: 'Chat Title',
+    title: t('SideBar.chatTitle'),
     id: 'default',
-  });
+  }); // Current chat topic
 
-  const isHistoryDrawerOpen = ref(false);
-  const showSetting = ref(false);
-  const apiKey = ref('');
+  // History sidebar states
+  const isHistoryDrawerOpen = ref(false); // History sidebar open state
+  const showSetting = ref(false); // Settings panel state
+  const apiKey = ref(''); // API key input
 
-  const editableTitle = ref('');
-  const editingTitle = ref(false);
-  const titleInput = ref<HTMLInputElement | null>(null);
+  // Title editing states
+  const editableTitle = ref(''); // Editable title value
+  const editingTitle = ref(false); // Title edit mode
+  const titleInput = ref<HTMLInputElement | null>(null); // Title input reference
 
-  // TODO: 历史 Topic
-  const historyTopics = ref<Topics[]>([]);
+  // History topics storage
+  const historyTopics = ref<Topics[]>([]); // List of saved conversations
 
+  // Lifecycle hook: Fetch initial conversations
   onMounted(async () => {
-    const conservations = await getConservations();
-    historyTopics.value = conservations.map((conv) => ({
+    const conversations = await getConversations();
+    historyTopics.value = conversations.map((conv) => ({
       title: conv.title as string,
       id: conv.conversation_id,
     }));
   });
 
+  // Lifecycle hook: Scroll event listener
   onMounted(() => {
     if (chatContainer.value) {
       chatContainer.value.addEventListener('scroll', (e) => {
         const { scrollTop, scrollHeight, clientHeight } =
           e.target as HTMLDivElement;
-        // 当滚动距离小于总高度 - 容器高度 - 100 时，认为用户手动滚动
-        shouldAutoScroll.value = scrollTop + clientHeight >= scrollHeight - 100;
+        shouldAutoScroll.value = scrollTop + clientHeight >= scrollHeight - 100; // Detect manual scroll
       });
     }
   });
 
+  // Scroll to bottom function
   const scrollToBottom = () => {
-    chatContainer.value?.scrollIntoView({
-      behavior: 'smooth', // 平滑滚动
-      block: 'end',
-    });
+    chatContainer.value?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   };
 
-  // 监听消息变化，触发滚动
+  // Watcher: Auto-scroll on message updates
   watch(
     messagesData,
     () => {
       if (shouldAutoScroll.value && chatContainer.value) {
-        // 延迟执行确保DOM更新完成
         nextTick(() => {
+          // Ensure DOM update
           chatContainer.value!.scrollTop = chatContainer.value!.scrollHeight;
         });
       }
@@ -303,47 +385,76 @@
     { deep: true }
   );
 
+  // Sidebar toggle handler
   function toggleDrawer() {
     isDrawerOpen.value = !isDrawerOpen.value;
-    if (!isDrawerOpen.value) isHistoryDrawerOpen.value = false;
+    if (!isDrawerOpen.value) isHistoryDrawerOpen.value = false; // Close history sidebar when main closes
   }
+
+  // Settings toggle handler
   function toggleSetting() {
     showSetting.value = !showSetting.value;
-    apiKey.value = '';
+    apiKey.value = ''; // Clear input on toggle
   }
 
+  // Select history topic handler
   async function selectHistoryTopic(topic: Topics) {
-    console.log('Choose Topic:', topic.title);
+    console.log('Selected Topic:', topic.title);
     isHistoryDrawerOpen.value = false;
     currentTopic.value = { ...topic };
-    messagesData.value = await getChatMessage(topic.id);
+    messagesData.value = await getChatMessage(topic.id); // Load messages for selected topic
   }
 
+  // Formula insertion method
   const insertFormula = (formula: string) => {
-    inputText.value += formula;
+    inputText.value += formula; // Append formula to input
   };
+
+  // Exposed methods
   defineExpose({ isDrawerOpen, insertFormula });
 
+  // Message sending handler
   async function sendMessage() {
+    const currentKey = (await window.servicesApi.getJsonConfig(
+      'deepseek'
+    )) as DeepSeekConfig;
+
+    // Validate API key
+    if (!currentKey || !currentKey.apiKey) {
+      alertVisible_error.value = true;
+      showSetting.value = true;
+      return;
+    }
+
+    // Create new conversation if default
+    if (currentTopic.value.id === 'default') {
+      await createNewChat(t('SideBar.newChatDefaultTitle'));
+    }
+
     const text = inputText.value.trim();
-    if (text === '') return;
-    const m_id1 = await createMessage(currentTopic.value.id, 'user', text);
-    // TODO: 实际回复转写逻辑
+    if (!text) return; // Prevent empty messages
+
+    // Save user message
+    const mId1 = await createMessage(currentTopic.value.id, 'user', text);
     messagesData.value.push({
       conversation_id: currentTopic.value.id,
-      message_id: m_id1,
+      message_id: mId1,
       content: text,
       role: 'user',
       created_at: new Date(),
     });
-    inputText.value = '';
+    inputText.value = ''; // Clear input
 
     try {
+      // Stream AI response
       const answer = await new Promise<string>((resolve, reject) => {
         let partialAnswer = '';
+
+        // Handle response chunks
         window.chatClientApi.onDeepseekChunk((chunk) => {
           partialAnswer += chunk;
 
+          // Update temporary AI message
           const botMessage = messagesData.value.find(
             (msg) => msg.role === 'assistant' && msg.message_id === 'temp-ai'
           );
@@ -352,41 +463,41 @@
           } else {
             messagesData.value.push({
               conversation_id: currentTopic.value.id,
-              message_id: 'temp-ai', // 临时 ID
+              message_id: 'temp-ai', // Temporary ID for streaming
               content: partialAnswer,
               role: 'assistant',
               created_at: new Date(),
             });
           }
-          scrollToBottom();
+          scrollToBottom(); // Scroll during streaming
         });
 
-        window.chatClientApi.onDeepseekEnd(() => {
-          resolve(partialAnswer);
-        });
+        // Handle response completion
+        window.chatClientApi.onDeepseekEnd(() => resolve(partialAnswer));
+        // Handle errors
+        window.chatClientApi.onDeepseekError((error) => reject(error));
 
-        window.chatClientApi.onDeepseekError((error) => {
-          reject(error);
-        });
-
+        // Send request to AI API
         window.chatClientApi.deepseekAsk(
           text,
-          turnChatMessage(messagesData.value)
+          turnChatMessage(messagesData.value) // Format chat history
         );
       });
 
-      const m_id2 = await createMessage(
+      // Save final AI message
+      const mId2 = await createMessage(
         currentTopic.value.id,
         'assistant',
         answer
       );
       messagesData.value = messagesData.value.map((msg) =>
         msg.message_id === 'temp-ai'
-          ? { ...msg, message_id: m_id2, content: answer }
+          ? { ...msg, message_id: mId2, content: answer }
           : msg
       );
     } catch (error) {
       console.error('AI response error:', error);
+      // Handle error message
       messagesData.value.push({
         conversation_id: currentTopic.value.id,
         message_id: crypto.randomUUID(),
@@ -395,67 +506,139 @@
         created_at: new Date(),
       });
     }
-    shouldAutoScroll.value = true;
-    scrollToBottom();
+    shouldAutoScroll.value = true; // Reset auto-scroll
+    scrollToBottom(); // Scroll to end after response
   }
 
-  function saveKey() {
-    console.log('保存的API Key:', apiKey.value);
-    showSetting.value = false;
-    // TODO: 处理保存key逻辑
-    window.chatClientApi.deepseekUpdateApiKey(apiKey.value);
-    apiKey.value = '';
+  // Save API key handler
+  async function saveKey() {
+    if (!apiKey.value.trim()) {
+      alertVisible_empty.value = true; // Show error if key is empty
+      return;
+    }
+
+    const currentKey = (await window.servicesApi.getJsonConfig(
+      'deepseek'
+    )) as DeepSeekConfig;
+
+    if (Object.keys(currentKey).length === 0) {
+      // Save new key
+      console.log('Saving new API key');
+      showSetting.value = false;
+      updateKey();
+      alertVisible_initial.value = true;
+      apiKey.value = '';
+    } else {
+      // Key exists, prompt update
+      console.log('API key already exists');
+      alertVisible_existed.value = true;
+    }
   }
 
+  // Update API key handler
+  async function updateKey() {
+    await window.chatClientApi.deepseekUpdateApiKey(apiKey.value); // Update client
+    await window.servicesApi.saveJsonConfig('deepseek', {
+      apiKey: apiKey.value,
+    } as DeepSeekConfig); // Save to config
+  }
+
+  // Event bus subscriptions
   onMounted(() => {
     isDrawerOpenEventBus.on('update', (value: boolean) => {
-      isDrawerOpen.value = value;
+      isDrawerOpen.value = value; // Sync sidebar state with event bus
     });
     isDrawerOpenEventBus.on('expression', (expr: string) => {
-      inputText.value += expr;
+      inputText.value += expr; // Insert expressions into input
+    });
+    contextMenuEventBus.on('deleteHistoryTopic', async (topic) => {
+      deleteConversation(topic.id); // Delete conversation from DB
+      historyTopics.value = historyTopics.value.filter(
+        (t) => t.id !== topic.id
+      );
     });
   });
+
+  // Event bus unsubscriptions
   onUnmounted(() => {
     isDrawerOpenEventBus.off('update');
     isDrawerOpenEventBus.off('expression');
+    contextMenuEventBus.off('deleteHistoryTopic');
   });
 
+  // Start title editing
   function startEditingTitle() {
     editableTitle.value = currentTopic.value.title;
     editingTitle.value = true;
 
     nextTick(() => {
-      titleInput.value?.focus();
+      titleInput.value?.focus(); // Focus input after DOM update
     });
   }
 
-  function finishEditingTitle() {
+  // Finish title editing
+  async function finishEditingTitle() {
+    await updateConversation(
+      currentTopic.value.id,
+      editableTitle.value.trim() || currentTopic.value.title
+    );
     currentTopic.value.title =
-      editableTitle.value.trim() || currentTopic.value.title;
+      editableTitle.value.trim() || currentTopic.value.title; // Use trimmed value or keep original
+
+    historyTopics.value = historyTopics.value.map((topic) =>
+      topic.id === currentTopic.value.id
+        ? { ...topic, title: currentTopic.value.title }
+        : topic
+    );
     editingTitle.value = false;
   }
 
-  // TODO:创建新聊天
-  const createNewChat = async () => {
-    const baseTitle = 'New Chat';
-    const existingTitles = historyTopics.value.map((chat) => chat.title);
-    let uniqueTitle = baseTitle;
-    let counter = 1;
-    while (existingTitles.includes(uniqueTitle)) {
-      uniqueTitle = `${baseTitle} ${counter++}`;
-    }
-    const newData = await createConservation(uniqueTitle); // 空标题会自动转为默认值
+  const handleRightClick = async (topic: Topics, e: MouseEvent) => {
+    e.preventDefault();
 
-    currentTopic.value.title = uniqueTitle;
-    historyTopics.value.unshift({
-      title: uniqueTitle,
-      id: newData.id,
-    });
-    messagesData.value = [];
+    await nextTick();
+    if (itemRef.value) {
+      // const rect = itemRef.value.getBoundingClientRect();
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      const x = rect.right - 20;
+      const y = rect.top + rect.height / 2 - 22;
+
+      contextMenuEventBus.emit('openContextMenu', {
+        x,
+        y,
+        expression: topic,
+        type: 'historyTopic',
+      });
+    }
   };
 
-  const getChatMessage = async (c_id: string) => {
-    const topic_message = await getMessages(c_id);
-    return topic_message;
+  // Create new chat handler
+  const createNewChat = async (defaultTitle: string) => {
+    const baseTitle = defaultTitle;
+    const existingTitles = historyTopics.value.map((chat) => chat.title);
+
+    // Generate unique title
+    let uniqueTitle = baseTitle;
+    if (defaultTitle === t('SideBar.newChatDefaultTitle')) {
+      let counter = 1;
+      while (existingTitles.includes(uniqueTitle)) {
+        uniqueTitle = `${baseTitle} ${counter++}`;
+      }
+    }
+
+    // Create new conversation
+    const newData = await createConversation(uniqueTitle);
+
+    // Update state
+    currentTopic.value.title = uniqueTitle;
+    historyTopics.value.unshift({ title: uniqueTitle, id: newData.id });
+    selectHistoryTopic({ title: uniqueTitle, id: newData.id });
+    messagesData.value = []; // Clear messages for new chat
+  };
+
+  // Fetch chat messages by conversation ID
+  const getChatMessage = async (cId: string) => {
+    const topicMessage = await getMessages(cId);
+    return topicMessage;
   };
 </script>

@@ -1,0 +1,83 @@
+{
+  "language": "English",
+  "translator": "yc1016",
+  "appName": "FormuLaTeX",
+  "appTitle": "FormuLaTeX - AI-Based Formula Tool",
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "mathIt": "MathIt",
+    "mathSf": "MathSF",
+    "mathBb": "MathBB",
+    "crossMark": "✕",
+    "save": "Save",
+    "new": "+ New",
+    "emptyInputTitle": "Empty Input",
+    "emptyInputMessage": "Can't be empty! Please check and fill the input."
+  },
+  "FormulaEdit": {
+    "formulaEditing": "Formula Editing",
+    "enterApiConfig": "Enter API Config:",
+    "formulaApiKeySaveTitle": "Success",
+    "formulaApiKeySaveMessage": "SimpleTex ID and secret has been saved successfully!",
+    "formulaRecognitionSuccessTitle": "Formula Recognition Success",
+    "formulaRecognitionSuccessMessage": "Formula has been recognized successfully!",
+    "simpleTexNotSetTitle": "SimpleTex ID and Secret Not Set",
+    "simpleTexNotSetMessage": "You have not set the SimpleTex API config, please set it in the settings.",
+    "formulaInputPlaceholder": "Enter your formula latex here, e.g. {0}",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret",
+    "uploadImage": "Upload Image",
+    "dragAndDropImage": "Drag and drop an image here, or click to select an image",
+    "supportImageTypes": "Supported image types: PNG, JPG, JPEG",
+    "askAi": "Ask AI",
+    "formulaPreview": "Formula Preview",
+    "renderError": "Error: Formula render failed!"
+  },
+  "QuickInput": {
+    "quickInput": "Quick Input",
+    "tags": {
+      "History": "History",
+      "Common": "Common",
+      "Math": "Math",
+      "Physics": "Physics"
+    },
+    "createSuccessTitle": "Success",
+    "createSuccessMessage": "Formula has been created successfully!",
+    "createFormula": "Create New Formula",
+    "formulaName": "Formula Name",
+    "formulaContent": "Formula Content",
+    "editFormula": "Edit Formula",
+    "enterFormulaName": "Enter formula name...",
+    "enterLatexFormula": "Enter LaTeX formula...",
+    "saveFormula": "Save Formula"
+  },
+  "SideBar": {
+    "history": "History",
+    "chatTitle": "Chat Title",
+    "chatApiSaveTitle": "Success",
+    "chatApiSaveMessage": "DeepSeek API Key has been saved successfully!",
+    "chatApiExistUpdateTitle": "Update API",
+    "chatApiExistUpdateMessage": "DeepSeek API already exists, do you want to update it?",
+    "chatApiNotSetTitle": "DeepSeek API Key Not Set",
+    "chatApiNotSetMessage": "You have not set the DeepSeek API config, please set it in the settings.",
+    "enterApiKey": "Enter API Key",
+    "chatApiKey": "DeepSeek API Key",
+    "chatInputPlaceholder": "Ask me anything about formula...",
+    "send": "Send",
+    "newChatDefaultTitle": "New Chat"
+  },
+  "SymbolSelect": {
+    "types": {
+      "Common": "Common",
+      "Operations": "Operations",
+      "Relations": "Relations",
+      "Arrows": "Arrows",
+      "Greek": "Greek",
+      "Matric": "Matric",
+      "Mark": "Mark",
+      "Equations": "Equations",
+      "Accents": "Accents"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 # Ignore artifacts:
 .vscode
+.hintrc
 build
 coverage
 node_modules

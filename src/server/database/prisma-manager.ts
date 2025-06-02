@@ -5,9 +5,11 @@ import { getSafeTempDir } from '../services';
 import { getAppDataDirectory } from '../services/file-service';
 import { createTempDecryptedDB, saveEncryptedDB } from './temp-db-manager';
 import { getRandomStr } from '../utils';
-import { execSync } from 'child_process';
+import { app } from 'electron';
 
 const encryptedDbPath = path.join(getAppDataDirectory(), 'encrypted-data.db');
+const rootDir = path.resolve(__dirname, '..', '..', '..');
+const isDev = !app.isPackaged; // Check if the app is in development mode
 let tempDbPath: string | undefined;
 
 let prisma: PrismaClient | undefined;
@@ -37,25 +39,26 @@ export async function getPrismaClient(): Promise<PrismaClient> {
         fs.mkdirSync(tempDir, { recursive: true });
       }
 
-      const schemaPath = path.join(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        'src',
-        'server',
-        'database',
-        'schema',
-        'schema.prisma'
-      );
+      let templateDbPath: string;
 
-      execSync(`npx prisma db push --skip-generate --schema="${schemaPath}"`, {
-        env: {
-          ...process.env,
-          DATABASE_URL: `file:${tempDbPath}`,
-        },
-      });
+      if (isDev) {
+        templateDbPath = path.join(rootDir, 'dist', 'template.db');
+      } else {
+        templateDbPath = path.join(
+          (process as NodeJS.Process & { resourcesPath?: string })
+            .resourcesPath!,
+          'template.db'
+        );
+      }
 
+      if (!fs.existsSync(templateDbPath)) {
+        console.error('Template database file not found at:', templateDbPath);
+        throw new Error(
+          'Template database file not found at: ' + templateDbPath
+        );
+      }
+
+      fs.copyFileSync(templateDbPath, tempDbPath);
       console.log('Database initialized successfully at: ', tempDbPath);
 
       // Instantiate PrismaClient
@@ -63,6 +66,16 @@ export async function getPrismaClient(): Promise<PrismaClient> {
         datasources: { db: { url: `file:${tempDbPath}` } },
       });
       await prisma.$connect();
+
+      // Default tags
+      await prisma.tags.createMany({
+        data: [
+          { tag_id: 'History', name: 'History' },
+          { tag_id: 'Common', name: 'Common' },
+          { tag_id: 'Math', name: 'Math' },
+          { tag_id: 'Physics', name: 'Physics' },
+        ],
+      });
 
       saveData();
     } else {
@@ -100,6 +113,6 @@ export function saveData(
   if (tempPath) {
     saveEncryptedDB(savePath, tempPath);
   } else {
-    console.warn('No temp database path found. Cannot save data.');
+    console.warn('No temporary database path found. Cannot save data.');
   }
 }

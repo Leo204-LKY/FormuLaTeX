@@ -3,17 +3,26 @@
     class="bg-white border border-gray-200 rounded-md p-4 flex flex-col h-screen"
     style="height: 100%"
   >
+    <AlterItem
+      class="z-[9999]"
+      v-model:visible="alertVisible_empty"
+      :title="t('common.emptyInputTitle')"
+      :message="t('common.emptyInputMessage')"
+      :buttons="[{ text: t('common.ok'), type: 'primary' }]"
+    />
+
+    <!-- Header section with title and create button -->
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-bold">{{ 'Quick Input' }}</h2>
+      <h2 class="text-xl font-bold">{{ t('QuickInput.quickInput') }}</h2>
       <button
         class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
         @click="openFormulaModal()"
       >
-        + New
+        {{ t('common.new') }}
       </button>
     </div>
 
-    <!-- Tags选择栏 -->
+    <!-- Tags selector -->
     <div
       id="tag-selector"
       ref="tagSelectorRef"
@@ -27,11 +36,11 @@
         :class="{ 'outline-none ring-2 ring-blue-400': selectedTag === tag }"
         @click="fetchItemsByTag(tag)"
       >
-        {{ tag }}
+        {{ t(`QuickInput.tags.${tag}`) }}
       </button>
     </div>
 
-    <!-- 展示对应Tags下的公式 -->
+    <!-- Formula list for the selected tag -->
     <div
       id="expression-list"
       ref="expressionListRef"
@@ -51,10 +60,26 @@
         "
         :expression="expr"
         @select-expression="handleSelectExpression"
+        @edit="
+          ((isModalOpen_edit = true),
+          (newFormulaName = expr.name!),
+          (newFormulaContent = expr.latex_code))
+        "
+        @delete="deleteFormulaItem(expr.formula_id)"
       />
+      <ContextMenu />
     </div>
   </div>
 
+  <!-- Success alert after creating formula -->
+  <AlterItem
+    v-model:visible="alertVisible_create"
+    :title="t('QuickInput.createSuccessTitle')"
+    :message="t('QuickInput.createSuccessMessage')"
+    :buttons="[{ text: t('common.ok'), type: 'primary' }]"
+  />
+
+  <!-- Create formula modal -->
   <div
     v-if="isModalOpen"
     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
@@ -69,44 +94,51 @@
       >
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
+
       <h3 class="text-xl font-bold mb-5 text-center text-gray-800">
-        Create New Formula
+        {{ t('QuickInput.createFormula') }}
       </h3>
 
+      <!-- Form fields -->
       <div class="space-y-5">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
-            Formula Name
+            {{ t('QuickInput.formulaName') }}
           </label>
           <input
             v-model="newFormulaName"
             spellcheck="false"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-            placeholder="Enter formula name"
+            :placeholder="t('QuickInput.enterFormulaName')"
           />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">
-            Formula Content
+            {{ t('QuickInput.formulaContent') }}
           </label>
           <textarea
             v-model="newFormulaContent"
             spellcheck="false"
             rows="5"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
-            placeholder="Enter LaTeX formula"
+            :placeholder="t('QuickInput.enterLatexFormula')"
           ></textarea>
         </div>
       </div>
 
+      <!-- Action buttons -->
       <div class="mt-7 flex justify-center space-x-4">
         <button
           class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]"
-          @click="isModalOpen = false"
+          @click="
+            ((isModalOpen = false),
+            (newFormulaName = ''),
+            (newFormulaContent = ''))
+          "
         >
-          Cancel
+          {{ t('common.cancel') }}
         </button>
         <button
           class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center min-w-[100px]"
@@ -117,50 +149,149 @@
       </div>
     </div>
   </div>
+
+  <!-- Edit formula modal -->
+  <div
+    v-if="isModalOpen_edit"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+  >
+    <div
+      class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl relative transform transition-all duration-300 scale-100 opacity-100"
+      :class="{ 'scale-95 opacity-0': !isModalOpen_edit }"
+    >
+      <button
+        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition-colors"
+        @click="isModalOpen_edit = false"
+      >
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <h3 class="text-xl font-bold mb-5 text-center text-gray-800">
+        {{ t('QuickInput.editFormula') }}
+      </h3>
+
+      <!-- Form fields -->
+      <div class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ t('QuickInput.formulaName') }}
+          </label>
+          <input
+            v-model="newFormulaName"
+            spellcheck="false"
+            type="text"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            :placeholder="t('QuickInput.enterFormulaName')"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ t('QuickInput.formulaContent') }}
+          </label>
+          <textarea
+            v-model="newFormulaContent"
+            spellcheck="false"
+            rows="5"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
+            :placeholder="t('QuickInput.enterLatexFormula')"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="mt-7 flex justify-center space-x-4">
+        <button
+          class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]"
+          @click="
+            ((isModalOpen_edit = false),
+            (newFormulaName = ''),
+            (newFormulaContent = ''))
+          "
+        >
+          {{ t('common.cancel') }}
+        </button>
+        <button
+          class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center min-w-[100px]"
+          @click="editFormula"
+        >
+          {{ t('QuickInput.saveFormula') }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-  import ExpressionItem from '../sub-components/ExpressionItem.vue';
   import { ref, onMounted, onUnmounted, reactive } from 'vue';
+  import ExpressionItem from '../sub-components/ExpressionItem.vue';
+  import ContextMenu from '../sub-components/ContextMenu.vue';
+  import AlterItem from '../sub-components/AlterItem.vue';
   import { inputEventBus } from '../eventBus';
-  import { createFormula, getFormulas } from '../utils/formulaDB';
+  import {
+    createFormula,
+    deleteFormula,
+    updateFormula,
+    getFormulas,
+  } from '../utils/formulaDB';
   import type { formulas } from '@prisma/client';
+  import { useI18n } from 'vue-i18n';
 
-  type ExpressionItemInstance = InstanceType<typeof ExpressionItem>;
-  const tagSelectorRef = ref(null);
-  const expressionListRef = ref(null);
-  const expressionItemRefs: Record<number | string, ExpressionItemInstance> =
-    reactive({});
+  // i18n
+  const { t } = useI18n();
 
+  // Component references
+  const tagSelectorRef = ref<HTMLElement | null>(null);
+  const expressionListRef = ref<HTMLElement | null>(null);
+
+  // Reference map for ExpressionItem instances
+  const expressionItemRefs = reactive<
+    Record<string, InstanceType<typeof ExpressionItem>>
+  >({});
+
+  // UI state management
+  const alertVisible_create = ref(false);
+  const alertVisible_empty = ref(false);
   const isModalOpen = ref(false);
+  const isModalOpen_edit = ref(false);
   const newFormulaName = ref('');
   const newFormulaContent = ref('');
-  const tags = ['History', 'Common', 'Math', 'Physics']; // 举例
-  const selectedTag = ref(tags[0]);
-  const displayItems = ref<formulas[]>([]); // 或你具体的数据类型
+  const latexInput = ref('');
 
+  // Tag and formula management
+  const tags = ['History', 'Common', 'Math', 'Physics'];
+  const selectedTag = ref(tags[0]);
+  const displayItems = ref<formulas[]>([]);
+
+  /**
+   * Fetch formula items from database by tag
+   * @param tag - Tag to filter formulas
+   */
   const fetchItemsByTag = async (tag: string) => {
     selectedTag.value = tag;
-    const result = await fetchFromDB(tag);
-    displayItems.value = result;
+    displayItems.value = await fetchFromDB(tag);
   };
 
-  // TODO: 替换为实际的数据库查询逻辑
-  const fetchFromDB = async (tag: string) => {
-    const formulasData: formulas[] = await getFormulas(tag);
-    return formulasData;
+  /**
+   * Database query wrapper to fetch formulas by tag
+   * @param tag - Tag to filter formulas
+   * @returns Array of formula items
+   */
+  const fetchFromDB = async (tag: string): Promise<formulas[]> => {
+    return await getFormulas(tag);
   };
 
-  onMounted(() => {
-    fetchItemsByTag(tags[0]); // 默认加载第一个 tag 对应内容
-  });
-
-  const latexInput = ref('');
+  /**
+   * Handle expression selection and update input value
+   * @param expr - Selected formula item
+   */
   const handleSelectExpression = (expr: formulas) => {
     latexInput.value = expr.latex_code;
   };
 
-  // 打开模态框并复制当前输入内容
+  /**
+   * Open formula creation modal with default name
+   */
   const openFormulaModal = () => {
     isModalOpen.value = true;
     newFormulaName.value = new Date()
@@ -169,36 +300,26 @@
       .slice(0, 19);
   };
 
-  onMounted(() => {
-    inputEventBus.on('input', (value) => {
-      if (value.trim() !== '') {
-        newFormulaContent.value = value;
-      }
-    });
-  });
-
-  onUnmounted(() => {
-    inputEventBus.off('input');
-  });
-
-  // TODO：保存公式
+  /**
+   * Save new formula to database and update display list
+   */
   const saveFormula = async () => {
     if (!newFormulaName.value.trim() || !newFormulaContent.value.trim()) {
+      alertVisible_empty.value = true;
       return;
     }
-    console.log('Saving formula:', {
-      name: newFormulaName.value,
-      content: newFormulaContent.value,
-      created_at: new Date().toISOString(),
-    });
+
     try {
-      const f_id = await createFormula(
+      // Create formula in database
+      const formulaId = await createFormula(
         selectedTag.value,
         newFormulaName.value,
         newFormulaContent.value
       );
+
+      // Add new formula to display list
       const newFormula: formulas = {
-        formula_id: f_id,
+        formula_id: formulaId,
         name: newFormulaName.value,
         latex_code: newFormulaContent.value,
         description: '',
@@ -206,13 +327,80 @@
         confidence: 1,
         created_at: new Date(),
       };
+
       displayItems.value.unshift(newFormula);
     } catch (error) {
-      console.error('Request error', error);
+      console.error('Failed to save formula:', error);
+    } finally {
+      // Reset form and show success alert
+      isModalOpen.value = false;
+      newFormulaName.value = '';
+      newFormulaContent.value = '';
+      alertVisible_create.value = true;
+    }
+  };
+
+  /**
+   * Delete formula item by ID and update display list
+   * @param formulaId - ID of the formula to delete
+   */
+  const deleteFormulaItem = async (formulaId: string) => {
+    try {
+      await deleteFormula(formulaId);
+      displayItems.value = displayItems.value.filter(
+        (item) => item.formula_id !== formulaId
+      );
+    } catch (error) {
+      console.error('Failed to delete formula:', error);
+    }
+  };
+
+  const editFormula = async () => {
+    if (!newFormulaName.value.trim() || !newFormulaContent.value.trim()) {
+      alertVisible_empty.value = true;
+      return;
     }
 
-    isModalOpen.value = false;
-    newFormulaName.value = '';
-    newFormulaContent.value = '';
+    try {
+      // Update formula in database
+      await updateFormula(
+        displayItems.value[0].formula_id,
+        newFormulaName.value,
+        newFormulaContent.value
+      );
+
+      // Update formula in display list
+      const updatedFormula: formulas = {
+        ...displayItems.value[0],
+        name: newFormulaName.value,
+        latex_code: newFormulaContent.value,
+      };
+      displayItems.value[0] = updatedFormula;
+    } catch (error) {
+      console.error('Failed to update formula:', error);
+    } finally {
+      // Reset form and close modal
+      isModalOpen_edit.value = false;
+      newFormulaName.value = '';
+      newFormulaContent.value = '';
+    }
   };
+
+  // Lifecycle hooks
+  onMounted(() => {
+    // Fetch initial formulas
+    fetchItemsByTag(tags[0]);
+
+    // Subscribe to input events
+    inputEventBus.on('input', (value) => {
+      if (value.trim()) {
+        newFormulaContent.value = value;
+      }
+    });
+  });
+
+  onUnmounted(() => {
+    // Unsubscribe from input events
+    inputEventBus.off('input');
+  });
 </script>

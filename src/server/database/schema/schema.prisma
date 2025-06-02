@@ -51,7 +51,7 @@ model formula_interpretations {
   /// Generate time
   generated_at      DateTime  @default(now())
 
-  formula formulas  @relation(fields: [formula_id], references: [formula_id])
+  formula formulas  @relation(fields: [formula_id], references: [formula_id], onDelete: Cascade)
 }
 
 /// tags - Formula tags
@@ -81,8 +81,8 @@ model formula_tags {
   /// Tag add time
   created_at  DateTime  @default(now())
 
-  formula formulas  @relation(fields: [formula_id], references: [formula_id])
-  tag     tags      @relation(fields: [tag_id], references: [tag_id])
+  formula formulas  @relation(fields: [formula_id], references: [formula_id], onDelete: Cascade)
+  tag     tags      @relation(fields: [tag_id], references: [tag_id], onDelete: Cascade)
 
   @@id([formula_id, tag_id])
 }
@@ -96,7 +96,7 @@ model favourites {
   /// Favourite time
   created_at    DateTime  @default(now())
 
-  formula formulas  @relation(fields: [formula_id], references: [formula_id])
+  formula formulas  @relation(fields: [formula_id], references: [formula_id], onDelete: Cascade)
 }
 
 /// formula_conversations - Conversation record for each conversation
@@ -126,5 +126,5 @@ model messages {
   /// Send time
   created_at      DateTime  @default(now())
 
-  conversation  formula_conversations @relation(fields: [conversation_id], references: [conversation_id])
+  conversation  formula_conversations @relation(fields: [conversation_id], references: [conversation_id], onDelete: Cascade)
 }

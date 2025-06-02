@@ -1,110 +1,94 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0" version="26.2.13">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0" version="27.1.0">
   <diagram name="FormuLaTeX DB Schema" id="formula-db-schema">
-    <mxGraphModel dx="1073" dy="572" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="912" dy="551" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="2" target="4">
+        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=-0.003;exitY=0.086;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="5" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="260" y="40" />
-              <mxPoint x="260" y="90" />
+              <mxPoint x="260" y="70" />
             </Array>
+            <mxPoint x="310" y="200" as="sourcePoint" />
+            <mxPoint x="240" y="70" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="2" value="formula_sessions" style="shape=swimlane;childLayout=stackLayout;horizontal=1;" parent="1" vertex="1">
-          <mxGeometry x="60" y="20" width="180" height="110" as="geometry" />
-        </mxCell>
-        <mxCell id="3" value="session_id [PK]&#xa;input_type&#xa;source_content&#xa;created_at" style="text" parent="2" vertex="1">
-          <mxGeometry y="40" width="160" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4" target="7">
+        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" target="16" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="500" y="40" />
-              <mxPoint x="500" y="100" />
+              <mxPoint x="500" y="70" />
+              <mxPoint x="500" y="290" />
             </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="4" target="14">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="300" y="240" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-44" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="4" target="8">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="413" y="339.9999999999999" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="460" y="230" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="4" target="16">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="310" y="330" />
-            </Array>
+            <mxPoint x="480" y="70" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="4" value="formulas" style="shape=swimlane;childLayout=stackLayout;horizontal=1;" parent="1" vertex="1">
-          <mxGeometry x="280" y="20" width="200" height="160" as="geometry" />
+          <mxGeometry x="280" y="20" width="200" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="5" value="formula_id [PK]&#xa;session_id [FK]&#xa;latex_code&#xa;recognized_by&#xa;confidence&#xa;name&#xa;description&#xa;created_at" style="text" parent="4" vertex="1">
-          <mxGeometry y="40" width="180" height="120" as="geometry" />
+        <mxCell id="5" value="formula_id [PK]&#xa;latex_code&#xa;recognized_by&#xa;confidence&#xa;name&#xa;description&#xa;created_at" style="text" parent="4" vertex="1">
+          <mxGeometry y="40" width="180" height="110" as="geometry" />
         </mxCell>
         <mxCell id="6" value="formula_interpretations" style="shape=swimlane;childLayout=stackLayout;horizontal=1;" parent="1" vertex="1">
-          <mxGeometry x="520" y="20" width="220" height="120" as="geometry" />
+          <mxGeometry x="520" width="220" height="120" as="geometry" />
         </mxCell>
         <mxCell id="7" value="interpretation_id [PK]&#xa;formula_id [FK]&#xa;explanation&#xa;engine_used&#xa;generated_at" style="text" parent="6" vertex="1">
           <mxGeometry y="40" width="200" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="8" target="10">
+        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" target="10" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="740" y="180" />
-              <mxPoint x="740" y="390" />
+              <mxPoint x="740" y="190" />
+              <mxPoint x="740" y="370" />
             </Array>
+            <mxPoint x="720" y="190" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="8" value="formula_conversations" style="shape=swimlane;childLayout=stackLayout;horizontal=1;" parent="1" vertex="1">
-          <mxGeometry x="520" y="160" width="200" height="110" as="geometry" />
+          <mxGeometry x="520" y="140" width="200" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="9" value="conversation_id [PK]&#xa;formula_id [FK]&#xa;started_at&#xa;updated_at" style="text" parent="8" vertex="1">
+        <mxCell id="9" value="conversation_id [PK]&#xa;title&#xa;started_at&#xa;updated_at" style="text" parent="8" vertex="1">
           <mxGeometry y="40" width="180" height="70" as="geometry" />
         </mxCell>
         <mxCell id="10" value="messages" style="shape=swimlane;childLayout=stackLayout;horizontal=1;" parent="1" vertex="1">
-          <mxGeometry x="530" y="320" width="180" height="120" as="geometry" />
+          <mxGeometry x="530" y="270" width="180" height="120" as="geometry" />
         </mxCell>
         <mxCell id="11" value="message_id [PK]&#xa;conversation_id [FK]&#xa;role&#xa;content&#xa;created_at" style="text" parent="10" vertex="1">
           <mxGeometry y="40" width="160" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="12" target="14">
+        <mxCell id="Yo8RNc7SqV5ROfsIkOtE-42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="12" target="15" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="270" y="340" />
-              <mxPoint x="270" y="260" />
+              <mxPoint x="40" y="290" />
+              <mxPoint x="40" y="90" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="12" value="tags" style="shape=swimlane;childLayout=stackLayout;horizontal=1;" parent="1" vertex="1">
-          <mxGeometry x="60" y="320" width="180" height="140" as="geometry" />
+          <mxGeometry x="60" y="240" width="180" height="140" as="geometry" />
         </mxCell>
         <mxCell id="13" value="tag_id [PK]&#xa;name&#xa;description&#xa;color&#xa;created_at&#xa;updated_at" style="text" parent="12" vertex="1">
           <mxGeometry y="40" width="160" height="100" as="geometry" />
         </mxCell>
         <mxCell id="14" value="formula_tags" style="shape=swimlane;childLayout=stackLayout;horizontal=1;" parent="1" vertex="1">
-          <mxGeometry x="60" y="190" width="180" height="100" as="geometry" />
+          <mxGeometry x="60" y="20" width="180" height="100" as="geometry" />
         </mxCell>
         <mxCell id="15" value="formula_id [PK, FK]&#xa;tag_id [PK, FK]&#xa;created_at" style="text" parent="14" vertex="1">
           <mxGeometry y="40" width="160" height="60" as="geometry" />
         </mxCell>
         <mxCell id="16" value="favourites" style="shape=swimlane;childLayout=stackLayout;horizontal=1;" parent="1" vertex="1">
-          <mxGeometry x="330" y="260" width="180" height="100" as="geometry" />
+          <mxGeometry x="290" y="260" width="180" height="100" as="geometry" />
         </mxCell>
         <mxCell id="17" value="favourite_id [PK]&#xa;formula_id [FK]&#xa;created_at" style="text" parent="16" vertex="1">
           <mxGeometry y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fQBn9s283SJJcfJZf4g--17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="70" as="sourcePoint" />
+            <mxPoint x="520" y="70" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="500" y="70" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

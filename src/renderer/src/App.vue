@@ -1,16 +1,17 @@
 <template>
   <div class="flex h-screen">
-    <!-- QuickInput组件在最左边 -->
+    <!-- Left: QuickInput -->
     <div class="w-1/4 h-full">
+      <TitleBar />
       <QuickInput />
     </div>
-    <!-- SymbolSelection和FormulaEdit组件在右边 -->
+    <!-- Right: SymbolSelection & FormulaEdit -->
     <div class="flex-1 flex flex-col">
-      <!-- SymbolSelection组件在顶部右边 -->
+      <!-- Top Right: SymbolSelection -->
       <div class="h-1/4">
         <SymbolSelect />
       </div>
-      <!-- FormulaEdit组件在右下角 -->
+      <!-- Bottom Right: FormulaEdit -->
       <div class="flex-1">
         <FormulaEdit ref="editorRef" v-model:latexInput="latexInput" />
       </div>
@@ -27,6 +28,7 @@
 
   import { ref, onMounted, onUnmounted } from 'vue';
   import { selectExpressionEventBus, selectSymbolEventBus } from './eventBus';
+  import TitleBar from './components/TitleBar.vue';
 
   const latexInput = ref('');
   const editorRef = ref();
@@ -37,7 +39,7 @@
   };
 
   const handleSelect = (expr: string) => {
-    // 👇 通过引用调用插入函数
+    // Call the insert function by reference
     if (isSideBarExpanded()) {
       sideBarRef.value?.insertFormula(expr);
     } else {

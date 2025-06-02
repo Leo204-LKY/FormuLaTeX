@@ -39,3 +39,14 @@ export function saveEncryptedJsonConfig(configName: string, config: object) {
 
   writeFileSync(configPath, encrypted, { encoding: 'utf-8' });
 }
+
+/**
+ * Get whether the config file exists
+ * @param configName Config file name
+ * @example `scrert` means `secret.json`
+ * @return {boolean} Whether the config file exists
+ */
+export function isConfigExist(configName: string): boolean {
+  const configPath = path.join(APP_DATA_DIR, `${configName}.json`);
+  return fs.existsSync(configPath);
+}
