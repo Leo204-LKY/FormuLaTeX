@@ -61,17 +61,25 @@ jobs:
           else
             yarn version --new-version "$TAG_VERSION_CLEAN" --no-git-tag-version
             git commit -am "chore: update version to $TAG_VERSION_CLEAN"
-            git push origin ${{ steps.info.outputs.branch }}
             echo "skip_bump=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Push version bump with PAT
+        if: steps.version_check.outputs.skip_bump == 'false'
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git push https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }} ${{ steps.info.outputs.branch }}
+
       - name: Move tag to latest commit if version bumped
         if: steps.version_check.outputs.skip_bump == 'false'
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git tag -d ${{ steps.info.outputs.tag }}
-          git push origin :refs/tags/${{ steps.info.outputs.tag }}
+          git tag -d ${{ steps.info.outputs.tag }} || true
+          git push https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }} :refs/tags/${{ steps.info.outputs.tag }}
           git tag ${{ steps.info.outputs.tag }}
-          git push origin ${{ steps.info.outputs.tag }}
+          git push https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }} ${{ steps.info.outputs.tag }}
 
   build-and-release:
     needs: update-tag
