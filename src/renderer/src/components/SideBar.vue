@@ -103,8 +103,8 @@
       <!-- Alert Components -->
       <AlterItem
         v-model:visible="alertVisible_initial"
-        :title="t('common.chatApiSaveTitle')"
-        :message="t('common.chatApiSaveMessage')"
+        :title="t('SideBar.chatApiSaveTitle')"
+        :message="t('SideBar.chatApiSaveMessage')"
         :buttons="[{ text: t('common.ok'), type: 'primary' }]"
       />
 
