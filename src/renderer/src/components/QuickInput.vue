@@ -76,7 +76,7 @@
     v-model:visible="alertVisible_create"
     :title="t('QuickInput.createSuccessTitle')"
     :message="t('QuickInput.createSuccessMessage')"
-    :buttons="[{ text: 'OK', type: 'primary' }]"
+    :buttons="[{ text: t('common.ok'), type: 'primary' }]"
   />
 
   <!-- Create formula modal -->

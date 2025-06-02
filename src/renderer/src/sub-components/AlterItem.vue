@@ -67,7 +67,7 @@
     },
     buttons: {
       type: Array,
-      default: () => [{ text: 'OK', callback: () => {} }],
+      default: () => [{ text: t('common.ok'), callback: () => {} }],
     },
     closeOnEsc: {
       type: Boolean,
