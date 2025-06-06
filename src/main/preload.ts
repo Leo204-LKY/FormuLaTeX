@@ -326,12 +326,19 @@ contextBridge.exposeInMainWorld('servicesApi', {
   getAppSetting: <K extends keyof AppSettingsConfig>(
     settingName: K,
     defaultValue?: AppSettingsConfig[K]
-  ): Promise<AppSettingsConfig[K] | undefined> => {
-    return ipcRenderer.invoke(
-      'services:getAppSetting',
-      settingName,
-      defaultValue
-    );
+  ): Promise<AppSettingsConfig[K]> => {
+    if (defaultValue) {
+      return ipcRenderer.invoke(
+        'services:getAppSetting:withDefault',
+        settingName,
+        defaultValue
+      );
+    } else {
+      return ipcRenderer.invoke(
+        'services:getAppSetting:noDefault',
+        settingName
+      );
+    }
   },
 
   saveAppSetting: <K extends keyof AppSettingsConfig>(

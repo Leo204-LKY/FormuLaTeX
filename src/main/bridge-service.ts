@@ -530,13 +530,25 @@ ipcMain.handle(
 );
 
 ipcMain.handle(
-  'services:getAppSetting',
+  'services:getAppSetting:noDefault',
+  safeIpcHandler(
+    async <K extends keyof AppSettingsConfig>(
+      event: IpcMainInvokeEvent,
+      settingName: K
+    ): Promise<AppSettingsConfig[K] | undefined> => {
+      return getAppSetting(settingName);
+    }
+  )
+);
+
+ipcMain.handle(
+  'services:getAppSetting:withDefault',
   safeIpcHandler(
     async <K extends keyof AppSettingsConfig>(
       event: IpcMainInvokeEvent,
       settingName: K,
-      defaultValue?: AppSettingsConfig[K]
-    ): Promise<AppSettingsConfig[K] | undefined> => {
+      defaultValue: NonNullable<AppSettingsConfig[K]>
+    ): Promise<NonNullable<AppSettingsConfig[K]>> => {
       return getAppSetting(settingName, defaultValue);
     }
   )

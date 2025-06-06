@@ -10,9 +10,24 @@ const APP_SETTINGS_CONFIG_NAME = 'appSettings';
 /**
  * Get app setting
  * @param settingName The name of the setting to retrieve
- * @param defaultValue The default value to return if the setting does not exist, defaults to null
  * @returns The value of the setting or null if it does not exist
  */
+export function getAppSetting<K extends keyof AppSettingsConfig>(
+  settingName: K
+): AppSettingsConfig[K] | undefined;
+
+/**
+ * Get app setting
+ * @param settingName The name of the setting to retrieve
+ * @param defaultValue The default value to return if the setting does not exist
+ * @returns The value of the setting or defaultValue if it does not exist
+ */
+export function getAppSetting<K extends keyof AppSettingsConfig>(
+  settingName: K,
+  defaultValue: NonNullable<AppSettingsConfig[K]>
+): NonNullable<AppSettingsConfig[K]>;
+
+// Main function to get the app setting
 export function getAppSetting<K extends keyof AppSettingsConfig>(
   settingName: K,
   defaultValue?: AppSettingsConfig[K]

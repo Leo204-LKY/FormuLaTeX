@@ -487,14 +487,28 @@ declare global {
 
       /**
        * Get app setting
-       * @param settingName The name of the setting to retrieve
-       * @param defaultValue The default value to return if the setting does not exist, defaults to null
-       * @returns The value of the setting or null if it does not exist
        */
-      getAppSetting: <K extends keyof AppSettingsConfig>(
-        settingName: K,
-        defaultValue?: AppSettingsConfig[K]
-      ) => Promise<AppSettingsConfig[K] | undefined>;
+      getAppSetting: {
+        /**
+         * Get app setting
+         * @param settingName The name of the setting to retrieve
+         * @returns The value of the setting or null if it does not exist
+         */
+        <K extends keyof AppSettingsConfig>(
+          settingName: K
+        ): Promise<AppSettingsConfig[K] | undefined>;
+
+        /**
+         * Get app setting
+         * @param settingName The name of the setting to retrieve
+         * @param defaultValue The default value to return if the setting does not exist
+         * @returns The value of the setting or defaultValue if it does not exist
+         */
+        <K extends keyof AppSettingsConfig>(
+          settingName: K,
+          defaultValue: NonNullable<AppSettingsConfig[K]>
+        ): Promise<NonNullable<AppSettingsConfig[K]>>;
+      };
 
       /**
        * Save app setting
