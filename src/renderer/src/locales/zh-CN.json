@@ -87,5 +87,13 @@
     "dismiss": "忽略",
     "showFile": "查看文件",
     "report": "报告问题"
+  },
+  "WelcomeCard": {
+    "title": "欢迎使用 FormuLaTeX",
+    "subtitle": "请完成初始配置",
+    "language": "选择语言:",
+    "skipButton": "暂时跳过",
+    "submitButton": "完成",
+    "okButton": "确定"
   }
 }

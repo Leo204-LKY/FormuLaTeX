@@ -87,5 +87,13 @@
     "dismiss": "Dismiss",
     "showFile": "Show File",
     "report": "Report"
+  },
+  "WelcomeCard": {
+    "title": "Welcome to use FormuLaTeX",
+    "subtitle": "Please complete the initial configuration",
+    "language": "Select language :",
+    "skipButton": "Skip temporarily",
+    "submitButton": "Completed",
+    "okButton": "OK"
   }
 }
