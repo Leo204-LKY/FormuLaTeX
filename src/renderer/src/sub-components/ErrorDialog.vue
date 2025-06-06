@@ -113,4 +113,8 @@
   onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
   });
+
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown);
+  });
 </script>
