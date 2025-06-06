@@ -117,13 +117,7 @@
   var isFirstOpen: boolean = false;
 
   const getFirstOpen = async () => {
-    isFirstOpen = (await window.servicesApi.getAppSetting(
-      'isFirstLaunch'
-    )) as boolean;
-
-    if (isFirstOpen === null) {
-      isFirstOpen = true;
-    }
+    isFirstOpen = await window.servicesApi.getAppSetting('isFirstLaunch', true);
   };
 
   onMounted(async () => {
