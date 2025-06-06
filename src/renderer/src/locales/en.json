@@ -89,11 +89,11 @@
     "report": "Report"
   },
   "WelcomeCard": {
-    "title": "Welcome to use FormuLaTeX",
+    "title": "Welcome to FormuLaTeX",
     "subtitle": "Please complete the initial configuration",
-    "language": "Select language :",
-    "skipButton": "Skip temporarily",
-    "submitButton": "Completed",
+    "language": "Select language: ",
+    "skipButton": "Skip for now",
+    "submitButton": "Complete",
     "okButton": "OK"
   }
 }
