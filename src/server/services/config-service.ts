@@ -38,8 +38,6 @@ export function saveEncryptedJsonConfig(configName: string, config: object) {
   const encrypted = encryptJson(config);
 
   writeFileSync(configPath, encrypted, { encoding: 'utf-8' });
-
-  throw new Error('Test Error');
 }
 
 /**
