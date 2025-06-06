@@ -20,6 +20,23 @@ export {};
 declare global {
   interface Window {
     /**
+     * Backend Error API
+     */
+    backendErrorApi: {
+      /**
+       * Backend error callback
+       * @param callback Callback function to handle backend errors
+       */
+      onBackendError: (
+        callback: (error: {
+          type: string;
+          message: string;
+          stack?: string;
+        }) => void
+      ) => void;
+    };
+
+    /**
      * Chat client API
      */
     chatClientApi: {

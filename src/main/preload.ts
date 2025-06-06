@@ -17,6 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.style.overflow = 'hidden';
 });
 
+contextBridge.exposeInMainWorld('backendErrorApi', {
+  onBackendError: (
+    callback: (error: { type: string; message: string; stack?: string }) => void
+  ) => {
+    ipcRenderer.on('backend:error', (_event, error) => callback(error));
+  },
+});
+
 contextBridge.exposeInMainWorld('chatClientApi', {
   deepseekAsk: (
     question: string,

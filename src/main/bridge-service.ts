@@ -20,6 +20,39 @@ import { DeepSeekChatClient, DeepSeekModel } from '../server/api/chat-client';
 import { Prisma } from '@prisma/client';
 
 // *******************************************
+// Back-end Exception Handling
+// *******************************************
+
+process.on('uncaughtException', (error) => {
+  const win = BrowserWindow.getAllWindows()[0];
+  win?.webContents.send('backend:error', {
+    type: 'uncaughtException',
+    message: error.message,
+    stack: error.stack,
+  });
+});
+
+process.on('unhandledRejection', (reason: unknown) => {
+  const win = BrowserWindow.getAllWindows()[0];
+  let message: string;
+  let stack: string | undefined;
+
+  if (reason instanceof Error) {
+    message = reason.message;
+    stack = reason.stack;
+  } else {
+    message = String(reason);
+    stack = undefined;
+  }
+
+  win?.webContents.send('backend:error', {
+    type: 'unhandledRejection',
+    message,
+    stack,
+  });
+});
+
+// *******************************************
 // DeepSeek Chat Client APIs
 // *******************************************
 
