@@ -26,7 +26,7 @@ export interface DeepSeekConfig {
 /**
  * App settings config
  */
-export interface AppSettingsConfig {
+export type AppSettingsConfig = {
   /**
    * Language for the app
    */
@@ -36,4 +36,4 @@ export interface AppSettingsConfig {
    * Is first launch of the app
    */
   isFirstLaunch?: boolean;
-}
+};
