@@ -508,8 +508,9 @@ declare global {
        * Save log file to app data directory
        * @param logContent Content to save in the log file
        * @param logFileName Name of the log file (default: yyyy-MM-dd-HH-mm-ss-log)
+       * @returns The path to the saved log file
        */
-      saveLog: (logContent: string, logFileName: string?) => Promise<void>;
+      saveLog: (logContent: string, logFileName: string?) => Promise<string>;
 
       /**
        * Open file directory in system file explorer

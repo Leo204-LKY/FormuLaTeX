@@ -549,7 +549,7 @@ ipcMain.handle(
 
 ipcMain.handle(
   'services:saveLog',
-  safeIpcHandler<[string, string?], Promise<void>>(
+  safeIpcHandler<[string, string?], Promise<string>>(
     async (event, logContent: string, logFileName?: string) => {
       return saveLog(logContent, logFileName);
     }
