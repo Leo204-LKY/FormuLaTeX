@@ -531,17 +531,28 @@ ipcMain.handle(
 
 ipcMain.handle(
   'services:getAppSetting',
-  safeIpcHandler<[keyof AppSettingsConfig], Promise<string | null>>(
-    async (event, settingName: keyof AppSettingsConfig) => {
-      return getAppSetting(settingName);
+  safeIpcHandler<
+    [keyof AppSettingsConfig, string | boolean],
+    Promise<string | boolean | null>
+  >(
+    async (
+      event,
+      settingName: keyof AppSettingsConfig,
+      defaultValue?: string | boolean
+    ) => {
+      return getAppSetting(settingName, defaultValue);
     }
   )
 );
 
 ipcMain.handle(
   'services:saveAppSetting',
-  safeIpcHandler<[keyof AppSettingsConfig, string], Promise<void>>(
-    async (event, settingName: keyof AppSettingsConfig, value: string) => {
+  safeIpcHandler<[keyof AppSettingsConfig, string | boolean], Promise<void>>(
+    async (
+      event,
+      settingName: keyof AppSettingsConfig,
+      value: string | boolean
+    ) => {
       return saveAppSetting(settingName, value);
     }
   )

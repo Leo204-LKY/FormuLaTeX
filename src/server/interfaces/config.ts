@@ -31,4 +31,9 @@ export interface AppSettingsConfig {
    * Language for the app
    */
   language?: string;
+
+  /**
+   * Is first launch of the app
+   */
+  isFirstLaunch?: boolean;
 }

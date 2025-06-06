@@ -324,14 +324,19 @@ contextBridge.exposeInMainWorld('servicesApi', {
   },
 
   getAppSetting: (
-    settingName: keyof AppSettingsConfig
-  ): Promise<string | null> => {
-    return ipcRenderer.invoke('services:getAppSetting', settingName);
+    settingName: keyof AppSettingsConfig,
+    defaultValue?: string | boolean
+  ): Promise<string | boolean | null> => {
+    return ipcRenderer.invoke(
+      'services:getAppSetting',
+      settingName,
+      defaultValue
+    );
   },
 
   saveAppSetting: (
     settingName: keyof AppSettingsConfig,
-    value: string
+    value: string | boolean
   ): Promise<void> => {
     return ipcRenderer.invoke('services:saveAppSetting', settingName, value);
   },

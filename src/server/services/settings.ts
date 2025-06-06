@@ -10,11 +10,13 @@ const APP_SETTINGS_CONFIG_NAME = 'appSettings';
 /**
  * Get app setting
  * @param settingName The name of the setting to retrieve
+ * @param defaultValue The default value to return if the setting does not exist, defaults to null
  * @returns The value of the setting or null if it does not exist
  */
 export function getAppSetting(
-  settingName: keyof AppSettingsConfig
-): string | null {
+  settingName: keyof AppSettingsConfig,
+  defaultValue: string | boolean | null = null
+): string | boolean | null {
   if (!isConfigExist(APP_SETTINGS_CONFIG_NAME)) {
     return null;
   } else {
@@ -22,7 +24,7 @@ export function getAppSetting(
       APP_SETTINGS_CONFIG_NAME
     ) as AppSettingsConfig;
 
-    return appSettings[settingName] ?? null;
+    return appSettings[settingName] ?? defaultValue;
   }
 }
 
@@ -33,7 +35,7 @@ export function getAppSetting(
  */
 export function saveAppSetting(
   settingName: keyof AppSettingsConfig,
-  value: string
+  value: string | boolean
 ): void {
   if (!isConfigExist(APP_SETTINGS_CONFIG_NAME)) {
     saveEncryptedJsonConfig(APP_SETTINGS_CONFIG_NAME, {
@@ -44,7 +46,11 @@ export function saveAppSetting(
       APP_SETTINGS_CONFIG_NAME
     ) as AppSettingsConfig;
 
-    appSettings[settingName] = value;
+    if (settingName === 'language' && typeof value === 'string') {
+      appSettings[settingName] = value;
+    } else if (settingName === 'isFirstLaunch' && typeof value === 'boolean') {
+      appSettings[settingName] = value;
+    }
 
     saveEncryptedJsonConfig(APP_SETTINGS_CONFIG_NAME, appSettings);
   }
