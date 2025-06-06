@@ -5,7 +5,7 @@ import * as fs from 'fs';
 /**
  * Save log file to app data directory
  * @param logContent Content to save in the log file
- * @param logFileName Name of the log file (default:')
+ * @param logFileName Name of the log file (default: yyyy-MM-dd-HH-mm-ss-log)
  */
 export function saveLog(
   logContent: string,
