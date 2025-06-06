@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-100 flex items-center justify-center">
-    <!-- 容器 -->
+    <!-- Container -->
     <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
-      <!-- Logo 和标题 -->
+      <!-- Logo and Title -->
       <div class="flex items-center justify-center mb-8">
         <img
           src="../assets/app-icon.png"
@@ -12,14 +12,14 @@
         <h1 class="text-2xl font-bold text-gray-800">FormuLaTeX</h1>
       </div>
 
-      <!-- 欢迎文本 -->
+      <!-- Welcome Text -->
       <p class="text-center text-gray-600 mb-6">
         {{ t('WelcomeCard.title') }}
         <br />
         {{ t('WelcomeCard.subtitle') }}
       </p>
 
-      <!-- 语言选择 -->
+      <!-- Language Select -->
       <div class="mb-6">
         <label class="block text-sm font-medium text-gray-700">
           {{ t('WelcomeCard.language') }}
@@ -34,7 +34,7 @@
         </select>
       </div>
 
-      <!-- API 配置 -->
+      <!-- API Configuration -->
       <div v-show="!isSkipped" class="mb-6">
         <div class="mt-4">
           <div class="mb-2">
@@ -70,7 +70,7 @@
         </div>
       </div>
 
-      <!-- 按钮组 -->
+      <!-- Button Group -->
       <div class="flex justify-between items-center">
         <button
           v-if="!isSkipped"
@@ -136,7 +136,7 @@
     currentLocale.value = i18n!.global.locale as string;
   });
 
-  // 表单验证
+  // Form validation
   const validateForm = () => {
     return (
       !isSkipped.value &&
@@ -145,13 +145,13 @@
     );
   };
 
-  // 跳过设置
+  // Skip setup
   const skipSetup = async () => {
     emit('on-complete');
     isSkipped.value = true;
   };
 
-  // 提交处理
+  // Handle form submission
   const handleSubmit = async () => {
     if (!isSkipped.value) {
       await window.servicesApi.saveJsonConfig('deepseek', {
