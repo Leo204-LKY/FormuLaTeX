@@ -1,6 +1,7 @@
 import { getCurrentFormatTime } from '../../utils';
 import { getAppDataDirectory } from './data-file';
 import * as fs from 'fs';
+import * as path from 'path';
 
 /**
  * Save log file to app data directory
@@ -13,11 +14,11 @@ export function saveLog(
   logFileName: string = `${getCurrentFormatTime('yyyy-MM-dd-HH-mm-ss')}-log`
 ) {
   const appDataDir = getAppDataDirectory();
-  const logFilePath = `${appDataDir}/logs/${logFileName}.txt`;
+  const logFilePath = path.join(appDataDir, 'logs', `${logFileName}.txt`);
 
   // Ensure the logs directory exists
-  if (!fs.existsSync(`${appDataDir}/logs`)) {
-    fs.mkdirSync(`${appDataDir}/logs`, { recursive: true });
+  if (!fs.existsSync(path.join(appDataDir, 'logs'))) {
+    fs.mkdirSync(path.join(appDataDir, 'logs'), { recursive: true });
   }
 
   fs.writeFileSync(logFilePath, logContent, { encoding: 'utf-8' });
