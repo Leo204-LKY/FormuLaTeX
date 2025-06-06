@@ -323,10 +323,10 @@ contextBridge.exposeInMainWorld('servicesApi', {
     return ipcRenderer.invoke('services:isConfigExist', configName);
   },
 
-  getAppSetting: (
-    settingName: keyof AppSettingsConfig,
-    defaultValue?: string | boolean
-  ): Promise<string | boolean | null> => {
+  getAppSetting: <K extends keyof AppSettingsConfig>(
+    settingName: K,
+    defaultValue?: AppSettingsConfig[K]
+  ): Promise<AppSettingsConfig[K] | undefined> => {
     return ipcRenderer.invoke(
       'services:getAppSetting',
       settingName,
@@ -334,9 +334,9 @@ contextBridge.exposeInMainWorld('servicesApi', {
     );
   },
 
-  saveAppSetting: (
-    settingName: keyof AppSettingsConfig,
-    value: string | boolean
+  saveAppSetting: <K extends keyof AppSettingsConfig>(
+    settingName: K,
+    value: AppSettingsConfig[K]
   ): Promise<void> => {
     return ipcRenderer.invoke('services:saveAppSetting', settingName, value);
   },
