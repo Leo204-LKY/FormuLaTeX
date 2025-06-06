@@ -12,9 +12,11 @@ import {
   getEncryptedJsonConfig,
   isConfigExist,
   MessagesTable,
+  openUrlInBrowser,
   saveAppSetting,
   saveEncryptedJsonConfig,
   saveLog,
+  showFileInFolder,
   TagsTable,
 } from '../server';
 import { DeepSeekChatClient, DeepSeekModel } from '../server/api/chat-client';
@@ -426,3 +428,18 @@ ipcMain.handle(
     return saveAppSetting(settingName, value);
   }
 );
+
+ipcMain.handle(
+  'services:saveLog',
+  async (event, logContent: string, logFileName?: string) => {
+    return saveLog(logContent, logFileName);
+  }
+);
+
+ipcMain.handle('services:showFileInFolder', async (event, filePath: string) => {
+  return showFileInFolder(filePath);
+});
+
+ipcMain.handle('services:openUrlInBrowser', async (event, url: string) => {
+  return openUrlInBrowser(url);
+});

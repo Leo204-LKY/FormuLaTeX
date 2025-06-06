@@ -333,6 +333,18 @@ contextBridge.exposeInMainWorld('servicesApi', {
   ): Promise<void> => {
     return ipcRenderer.invoke('services:saveAppSetting', settingName, value);
   },
+
+  saveLog: (logContent: string, logFileName?: string): Promise<void> => {
+    return ipcRenderer.invoke('services:saveLog', logContent, logFileName);
+  },
+
+  showFileInFolder: (filePath: string): Promise<void> => {
+    return ipcRenderer.invoke('services:showFileInFolder', filePath);
+  },
+
+  openUrlInBrowser: (url: string): Promise<void> => {
+    return ipcRenderer.invoke('services:openUrlInBrowser', url);
+  },
 });
 
 window.addEventListener('DOMContentLoaded', () => {

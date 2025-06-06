@@ -504,5 +504,24 @@ declare global {
         value: string
       ) => Promise<void>;
     };
+
+    /**
+     * Save log file to app data directory
+     * @param logContent Content to save in the log file
+     * @param logFileName Name of the log file (default: yyyy-MM-dd-HH-mm-ss-log)
+     */
+    saveLog: (logContent: string, logFileName: string?) => Promise<void>;
+
+    /**
+     * Open file directory in system file explorer
+     * @param filePath Path to the file or directory to open
+     */
+    showFileInFolder: (filePath: string) => Promise<void>;
+
+    /**
+     * Open URL in default browser
+     * @param url URL to open
+     */
+    openUrlInBrowser: (url: string) => Promise<void>;
   }
 }
