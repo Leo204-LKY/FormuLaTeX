@@ -28,11 +28,14 @@ declare global {
        * @param callback Callback function to handle backend errors
        */
       onBackendError: (
-        callback: (error: {
-          type: string;
-          message: string;
-          stack?: string;
-        }) => void
+        callback: (
+          error: {
+            type: string;
+            message: string;
+            stack?: string;
+          },
+          logFilePath: string
+        ) => void
       ) => void;
     };
 

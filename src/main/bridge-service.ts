@@ -14,6 +14,7 @@ import {
   MessagesTable,
   saveAppSetting,
   saveEncryptedJsonConfig,
+  saveLog,
   TagsTable,
 } from '../server';
 import { DeepSeekChatClient, DeepSeekModel } from '../server/api/chat-client';
@@ -24,12 +25,17 @@ import { Prisma } from '@prisma/client';
 // *******************************************
 
 process.on('uncaughtException', (error) => {
+  const logFilePath = saveLog(`${error.message}\n${error.stack}`);
   const win = BrowserWindow.getAllWindows()[0];
-  win?.webContents.send('backend:error', {
-    type: 'uncaughtException',
-    message: error.message,
-    stack: error.stack,
-  });
+  win?.webContents.send(
+    'backend:error',
+    {
+      type: 'uncaughtException',
+      message: error.message,
+      stack: error.stack,
+    },
+    logFilePath
+  );
 });
 
 process.on('unhandledRejection', (reason: unknown) => {
@@ -45,11 +51,17 @@ process.on('unhandledRejection', (reason: unknown) => {
     stack = undefined;
   }
 
-  win?.webContents.send('backend:error', {
-    type: 'unhandledRejection',
-    message,
-    stack,
-  });
+  const logFilePath = saveLog(`${message}\n${stack}`);
+
+  win?.webContents.send(
+    'backend:error',
+    {
+      type: 'unhandledRejection',
+      message,
+      stack,
+    },
+    logFilePath
+  );
 });
 
 // *******************************************

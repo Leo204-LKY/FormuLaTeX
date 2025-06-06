@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 contextBridge.exposeInMainWorld('backendErrorApi', {
   onBackendError: (
-    callback: (error: { type: string; message: string; stack?: string }) => void
+    callback: (
+      error: { type: string; message: string; stack?: string },
+      logFilePath?: string
+    ) => void
   ) => {
     ipcRenderer.on('backend:error', (_event, error) => callback(error));
   },
