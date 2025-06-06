@@ -1,4 +1,9 @@
 <template>
+  <ErrorDialog
+    v-model:visible="errorDialogVisible"
+    :detail="backendErrorMessage"
+    :filePath="backendErrorFilePath"
+  />
   <div class="flex h-screen">
     <!-- Left: QuickInput -->
     <div class="w-1/4 h-full">
@@ -29,10 +34,16 @@
   import { ref, onMounted, onUnmounted } from 'vue';
   import { selectExpressionEventBus, selectSymbolEventBus } from './eventBus';
   import TitleBar from './components/TitleBar.vue';
+  import ErrorDialog from './sub-components/ErrorDialog.vue';
 
   const latexInput = ref('');
   const editorRef = ref();
   const sideBarRef = ref();
+
+  // Error dialog
+  const errorDialogVisible = ref(false);
+  const backendErrorMessage = ref('');
+  const backendErrorFilePath = ref('');
 
   const isSideBarExpanded = () => {
     return sideBarRef.value?.isDrawerOpen;
@@ -50,6 +61,14 @@
   onMounted(() => {
     selectExpressionEventBus.on('selectExpression', handleSelect);
     selectSymbolEventBus.on('selectSymbol', handleSelect);
+
+    // Backend error handling
+    window.backendErrorApi.onBackendError((error, logFilePath) => {
+      console.log('Backend error:' + error + ', Path: ' + logFilePath);
+      backendErrorMessage.value = `Message: ${error.message || 'Unknown Error'}\n${error.stack || 'Unknown stack'}`;
+      backendErrorFilePath.value = logFilePath || '';
+      errorDialogVisible.value = true;
+    });
   });
 
   onUnmounted(() => {
