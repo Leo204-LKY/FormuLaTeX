@@ -24,7 +24,9 @@ contextBridge.exposeInMainWorld('backendErrorApi', {
       logFilePath?: string
     ) => void
   ) => {
-    ipcRenderer.on('backend:error', (_event, error) => callback(error));
+    ipcRenderer.on('backend:error', (_event, error, logFilePath) =>
+      callback(error, logFilePath)
+    );
   },
 });
 
