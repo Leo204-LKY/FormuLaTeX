@@ -79,5 +79,13 @@
       "Equations": "Equations",
       "Accents": "Accents"
     }
+  },
+  "ErrorDialog": {
+    "title": "An Error Occurred",
+    "logfileTip": "Log file has been saved to: ",
+    "reportTip": "If the issue persists, please report it on GitHub and attach the log file.",
+    "dismiss": "Dismiss",
+    "showFile": "Show File",
+    "report": "Report"
   }
 }

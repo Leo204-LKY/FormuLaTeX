@@ -79,5 +79,13 @@
       "Equations": "方程",
       "Accents": "重音符号"
     }
+  },
+  "ErrorDialog": {
+    "title": "发生错误",
+    "logfileTip": "日志文件已保存到：",
+    "reportTip": "如果问题仍然存在，请在 GitHub 上向我们反馈，并附上日志文件。",
+    "dismiss": "忽略",
+    "showFile": "查看文件",
+    "report": "报告问题"
   }
 }
