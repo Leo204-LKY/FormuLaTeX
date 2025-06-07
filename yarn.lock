@@ -991,6 +991,11 @@
   resolved "https://registry.npmmirror.com/@pkgr/core/-/core-0.2.4.tgz#d897170a2b0ba51f78a099edccd968f7b103387c"
   integrity sha512-ROFF39F6ZrnzSUEmQQZUar0Jt4xVoP9WnDRdWwF4NNcXs3xBTLgBUDoOwW141y1jP+S8nahIbdxbFC7IShw9Iw==
 
+"@popperjs/core@^2.11.0":
+  version "2.11.8"
+  resolved "https://registry.npmmirror.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
+  integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
+
 "@prisma/client@^6.6.0":
   version "6.7.0"
   resolved "https://registry.npmmirror.com/@prisma/client/-/client-6.7.0.tgz#69f913b0a8cfb6aa5de5dca6aa57bfd4e91e7e95"
@@ -3593,6 +3598,11 @@ has-unicode@^2.0.1:
   resolved "https://registry.npmmirror.com/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
   integrity sha512-8Rf9Y83NBReMnx0gFzA8JImQACstCYWUplepDa9xprwwtmgEZUF0h/i5xSA625zB/I37EtrswSST6OXxwaaIJQ==
 
+hash-sum@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/hash-sum/-/hash-sum-2.0.0.tgz#81d01bb5de8ea4a214ad5d6ead1b523460b0b45a"
+  integrity sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==
+
 hasown@^2.0.2:
   version "2.0.2"
   resolved "https://registry.npmmirror.com/hasown/-/hasown-2.0.2.tgz#003eaf91be7adc372e84ec59dc37252cedb80003"
@@ -4425,6 +4435,11 @@ juice@^8.0.0:
     mensch "^0.3.4"
     slick "^1.12.2"
     web-resource-inliner "^6.0.1"
+
+jump.js@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmmirror.com/jump.js/-/jump.js-1.0.2.tgz#e0641b47f40a38f2139c25fda0500bf28e43015a"
+  integrity sha512-oUkJJ/Y4ATU5qjkXBntCZSKctbSyS3ewe2jrLaUu/cc9jsQiAn0fnTUxQnZz3mJdDdem1Q279zrD6h3n+Cgxtg==
 
 katex@^0.6.0:
   version "0.6.0"
@@ -6337,6 +6352,15 @@ util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.npmmirror.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
+
+v3-tour@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.npmmirror.com/v3-tour/-/v3-tour-3.1.2.tgz#0819811534d290d24209e3358ab2a695dfd25038"
+  integrity sha512-9/iBfrdO68dseQPmYo6T7PK+S7evBetZR5dkwz28kw+RisRMon899eNB+QVBeQpqY4qfF99oXYfxOJHpLR7O5A==
+  dependencies:
+    "@popperjs/core" "^2.11.0"
+    hash-sum "^2.0.0"
+    jump.js "^1.0.2"
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"

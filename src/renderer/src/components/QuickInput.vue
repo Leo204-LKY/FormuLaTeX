@@ -12,7 +12,10 @@
     />
 
     <!-- Header section with title and create button -->
-    <div class="flex items-center justify-between mb-4">
+    <div
+      class="flex items-center justify-between mb-4"
+      id="createFormula-button"
+    >
       <h2 class="text-xl font-bold">{{ t('QuickInput.quickInput') }}</h2>
       <button
         class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"

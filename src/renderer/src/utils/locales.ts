@@ -7,7 +7,7 @@ let i18n: ReturnType<typeof createI18n> | undefined;
 export async function getI18n() {
   if (!i18n) {
     const locale =
-      (await window.servicesApi.getAppSetting('language')) ||
+      ((await window.servicesApi.getAppSetting('language')) as string) ||
       navigator.language;
 
     i18n = createI18n({

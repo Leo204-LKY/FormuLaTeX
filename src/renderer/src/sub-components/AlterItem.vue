@@ -111,9 +111,9 @@
       case 'secondary':
         return 'px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]';
       case 'danger':
-        return 'px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors';
+        return 'px-5 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center min-w-[100px]';
       default:
-        return 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors';
+        return 'px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center min-w-[100px]';
     }
   };
 

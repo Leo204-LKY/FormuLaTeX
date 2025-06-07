@@ -17,6 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.style.overflow = 'hidden';
 });
 
+contextBridge.exposeInMainWorld('backendErrorApi', {
+  onBackendError: (
+    callback: (
+      error: { type: string; message: string; stack?: string },
+      logFilePath?: string
+    ) => void
+  ) => {
+    ipcRenderer.on('backend:error', (_event, error, logFilePath) =>
+      callback(error, logFilePath)
+    );
+  },
+});
+
 contextBridge.exposeInMainWorld('chatClientApi', {
   deepseekAsk: (
     question: string,
@@ -310,17 +323,41 @@ contextBridge.exposeInMainWorld('servicesApi', {
     return ipcRenderer.invoke('services:isConfigExist', configName);
   },
 
-  getAppSetting: (
-    settingName: keyof AppSettingsConfig
-  ): Promise<string | null> => {
-    return ipcRenderer.invoke('services:getAppSetting', settingName);
+  getAppSetting: <K extends keyof AppSettingsConfig>(
+    settingName: K,
+    defaultValue?: AppSettingsConfig[K]
+  ): Promise<AppSettingsConfig[K]> => {
+    if (defaultValue) {
+      return ipcRenderer.invoke(
+        'services:getAppSetting:withDefault',
+        settingName,
+        defaultValue
+      );
+    } else {
+      return ipcRenderer.invoke(
+        'services:getAppSetting:noDefault',
+        settingName
+      );
+    }
   },
 
-  saveAppSetting: (
-    settingName: keyof AppSettingsConfig,
-    value: string
+  saveAppSetting: <K extends keyof AppSettingsConfig>(
+    settingName: K,
+    value: AppSettingsConfig[K]
   ): Promise<void> => {
     return ipcRenderer.invoke('services:saveAppSetting', settingName, value);
+  },
+
+  saveLog: (logContent: string, logFileName?: string): Promise<void> => {
+    return ipcRenderer.invoke('services:saveLog', logContent, logFileName);
+  },
+
+  showFileInFolder: (filePath: string): Promise<void> => {
+    return ipcRenderer.invoke('services:showFileInFolder', filePath);
+  },
+
+  openUrlInBrowser: (url: string): Promise<void> => {
+    return ipcRenderer.invoke('services:openUrlInBrowser', url);
   },
 });
 
