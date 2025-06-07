@@ -50,7 +50,7 @@
   import WelcomeCard from './components/WelcomeCard.vue';
   import AlterItem from './sub-components/AlterItem.vue';
 
-  import { ref, reactive, onMounted, onUnmounted } from 'vue';
+  import { ref, onMounted, onUnmounted, computed } from 'vue';
   import { nextTick } from 'vue';
   import { selectExpressionEventBus, selectSymbolEventBus } from './eventBus';
   import TitleBar from './components/TitleBar.vue';
@@ -68,7 +68,7 @@
   const tour = ref();
   const alertVisible_tour = ref(false);
 
-  const steps = reactive([
+  const steps = computed(() => [
     {
       target: '#step1',
       content: t('UserTour.step1.whole'),
@@ -149,7 +149,7 @@
     },
   ]);
 
-  const myOptions = reactive({
+  const myOptions = computed(() => ({
     useKeyboardNavigation: false,
     labels: {
       buttonSkip: t('UserTour.buttonSkip'),
@@ -158,7 +158,7 @@
       buttonStop: t('UserTour.buttonStop'),
     },
     highlight: true,
-  });
+  }));
 
   // Error dialog
   const errorDialogVisible = ref(false);
