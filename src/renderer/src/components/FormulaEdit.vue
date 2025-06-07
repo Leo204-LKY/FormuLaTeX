@@ -15,6 +15,7 @@
 
       <!-- Toolbar -->
       <div
+        id="tools-bar"
         class="flex items-center space-x-2 border border-dashed border-gray-200 p-2 rounded-md"
       >
         <!-- Undo Button -->
@@ -80,7 +81,6 @@
             <img src="../assets/icons/color.svg" />
           </button>
           <!-- Color Picker Panel -->
-          <!-- TODO: Add color picker component -->
           <div
             v-if="colorPickerVisible"
             class="absolute z-10 top-10 left-0 bg-white border border-gray-300 rounded-md p-2 shadow-md"
@@ -113,6 +113,7 @@
         <div class="flex items-center space-x-2 ml-auto">
           <div class="relative">
             <button
+              id="simpleTexSetting-button"
               class="btn-icon w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
               @click="toggleSetting"
             >
@@ -180,7 +181,11 @@
 
       <!-- Image Upload Section -->
       <div class="flex justify-around items-center mt-4">
-        <button class="btn-style3 btn-status2" @click="showUploadModal = true">
+        <button
+          id="upload-button"
+          class="btn-style3 btn-status2"
+          @click="showUploadModal = true"
+        >
           {{ t('FormulaEdit.uploadImage') }}
         </button>
 
@@ -247,6 +252,7 @@
 
         <!-- AI Analysis Button -->
         <button
+          id="askAI-button"
           class="bg-purple-500 text-white text-sm px-4 py-2 rounded-md"
           @click="handleAIAnalysis"
         >

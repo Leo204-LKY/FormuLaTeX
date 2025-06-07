@@ -2,6 +2,7 @@
   <!-- Sidebar Toggle Button -->
   <button
     ref="drawerButton"
+    :id="id"
     @click="toggleDrawer"
     class="fixed top-1/2 right-4 transform -translate-y-1/2 z-30 bg-blue-200 text-white rounded-md transition-all duration-300 ease-in-out"
     :class="{
@@ -239,6 +240,9 @@
 
   // i18n
   const { t } = useI18n();
+
+  const props = defineProps<{ id?: string }>();
+  console.log('SideBar props:', props);
 
   // Interface for chat topics
   interface Topics {

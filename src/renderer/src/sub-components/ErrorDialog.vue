@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps, defineEmits, onMounted } from 'vue';
+  import { defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
   import { useI18n } from 'vue-i18n';
 
   // i18n

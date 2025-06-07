@@ -4,25 +4,41 @@
     :detail="backendErrorMessage"
     :filePath="backendErrorFilePath"
   />
+
   <WelcomeCard v-if="isFirstOpen" @on-complete="handleComplete" />
   <div v-else class="flex h-screen">
+    <v-tour ref="tour" name="myTour" :steps="steps" :options="myOptions" />
+
+    <AlterItem
+      v-model:visible="alertVisible_tour"
+      :title="t('UserTour.title')"
+      :message="t('UserTour.subtitle')"
+      :buttons="[
+        { text: t('UserTour.Nobutton'), type: 'secondary' },
+        { text: t('UserTour.Yesbutton'), type: 'primary', callback: startTour },
+      ]"
+    />
     <!-- Left: QuickInput -->
-    <div class="w-1/4 h-full">
-      <TitleBar />
-      <QuickInput />
+    <div class="w-1/4 h-full flex flex-col">
+      <div class="h-12 shrink-0">
+        <TitleBar />
+      </div>
+      <div class="flex-1 overflow-y-auto" id="step1">
+        <QuickInput />
+      </div>
     </div>
     <!-- Right: SymbolSelection & FormulaEdit -->
     <div class="flex-1 flex flex-col">
       <!-- Top Right: SymbolSelection -->
       <div class="h-1/4">
-        <SymbolSelect />
+        <SymbolSelect id="step2" />
       </div>
       <!-- Bottom Right: FormulaEdit -->
-      <div class="flex-1">
+      <div class="flex-1" id="step3">
         <FormulaEdit ref="editorRef" v-model:latexInput="latexInput" />
       </div>
     </div>
-    <SideBar ref="sideBarRef" />
+    <SideBar ref="sideBarRef" id="step4" />
   </div>
 </template>
 
@@ -32,16 +48,117 @@
   import SymbolSelect from './components/SymbolSelect.vue';
   import SideBar from './components/SideBar.vue';
   import WelcomeCard from './components/WelcomeCard.vue';
+  import AlterItem from './sub-components/AlterItem.vue';
 
-  import { ref, onMounted, onUnmounted } from 'vue';
+  import { ref, reactive, onMounted, onUnmounted } from 'vue';
+  import { nextTick } from 'vue';
   import { selectExpressionEventBus, selectSymbolEventBus } from './eventBus';
   import TitleBar from './components/TitleBar.vue';
   import ErrorDialog from './sub-components/ErrorDialog.vue';
+
+  import { useI18n } from 'vue-i18n';
+
+  // i18n
+  const { t } = useI18n();
 
   const isFirstOpen = ref<boolean>(false);
   const latexInput = ref('');
   const editorRef = ref();
   const sideBarRef = ref();
+  const tour = ref();
+  const alertVisible_tour = ref(false);
+
+  const steps = reactive([
+    {
+      target: '#step1',
+      content: t('UserTour.step1.whole'),
+      params: {
+        placement: 'right',
+        highlightpadding: 2,
+      },
+    },
+    {
+      target: '#step1 #createFormula-button',
+      content: t('UserTour.step1.createFormula-button'),
+      params: {
+        placement: 'right',
+      },
+    },
+    {
+      target: '#step1 #tag-selector',
+      content: t('UserTour.step1.tags-list'),
+      params: {
+        placement: 'right',
+      },
+    },
+    {
+      target: '#step1 #expression-list',
+      content: t('UserTour.step1.expression-list'),
+      params: {
+        placement: 'right',
+      },
+    },
+    {
+      target: '#step3',
+      content: t('UserTour.step3.whole'),
+      params: {
+        placement: 'left',
+      },
+    },
+    {
+      target: '#step3 #tools-bar',
+      content: t('UserTour.step3.tools-bar'),
+      params: {
+        placement: 'left',
+      },
+    },
+    {
+      target: '#step3 #simpleTexSetting-button',
+      content: t('UserTour.step3.simpleTexSetting-button'),
+      params: {
+        placement: 'left',
+      },
+    },
+    {
+      target: '#step3 #upload-button',
+      content: t('UserTour.step3.upload-button'),
+      params: {
+        placement: 'left',
+      },
+    },
+    {
+      target: '#step3 #askAI-button',
+      content: t('UserTour.step3.askAI-button'),
+      params: {
+        placement: 'left',
+      },
+    },
+    {
+      target: '#step2',
+      content: t('UserTour.step2.whole'),
+      params: {
+        placement: 'auto',
+      },
+    },
+    {
+      target: '#step4',
+      content: t('UserTour.step4.whole'),
+      params: {
+        placement: 'left',
+      },
+    },
+  ]);
+
+  const myOptions = reactive({
+    useKeyboardNavigation: false,
+    labels: {
+      buttonSkip: t('UserTour.buttonSkip'),
+      buttonPrevious: t('UserTour.buttonPrevious'),
+      buttonNext: t('UserTour.buttonNext'),
+      buttonStop: t('UserTour.buttonStop'),
+    },
+    highlight: true,
+  });
 
   // Error dialog
   const errorDialogVisible = ref(false);
@@ -88,8 +205,44 @@
     isFirstOpen.value = isFirstLaunch ?? true;
   };
 
+  async function startTour() {
+    alertVisible_tour.value = false;
+    await nextTick();
+    tour.value?.start();
+  }
+
   const handleComplete = async () => {
     isFirstOpen.value = false;
     await window.servicesApi.saveAppSetting('isFirstLaunch', false);
+    alertVisible_tour.value = true;
   };
 </script>
+
+<!-- <style scoped>
+  .v-step {
+    background-color: greenyellow !important;
+    color: #ffffff !important;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    max-width: 320px;
+  }
+
+  .v-step__arrow {
+    border-color: #2d3748 !important;
+  }
+
+  .v-step__buttons button {
+    background-color: #3182ce !important;
+    color: white !important;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin: 4px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .v-tour__buttons button:hover {
+    background-color: #2b6cb0 !important;
+  }
+</style> -->

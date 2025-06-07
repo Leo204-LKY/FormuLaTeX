@@ -95,5 +95,34 @@
     "skipButton": "Skip for now",
     "submitButton": "Complete",
     "okButton": "OK"
+  },
+  "UserTour": {
+    "title": "User Tour",
+    "subtitle": "This is your first time using FormuLaTex. 🤗Do you need to simply show you how to use the software?",
+    "Nobutton": "No, thanks",
+    "Yesbutton": "Yes, start tour",
+    "step1": {
+      "whole": "This is the QuickInput area where you can create and manage your formulas.",
+      "createFormula-button": "Click the New button to create a new formula.",
+      "tags-list": "This is the tag list where you can manage formulas under different categories.",
+      "expression-list": "This shows the formulas under the current tag. Right-click a formula to edit or delete it."
+    },
+    "step2": {
+      "whole": "This is the SymbolSelect area where you can choose commonly used mathematical symbols."
+    },
+    "step3": {
+      "whole": "This is the FormulaEditing & Preview area. You can edit formula content on the left and preview it on the right.",
+      "tools-bar": "This is the toolbar where you can choose the font, size, and color of the formula.",
+      "simpleTexSetting-button": "Click this settings button to import or update the SimpleTex ID and key (used for formula recognition).",
+      "upload-button": "Click the Upload Image button to recognize formulas in an image.",
+      "askAI-button": "Click the Ask AI button to jump to the AI chat area."
+    },
+    "step4": {
+      "whole": "Click this button to open the AI chat panel, where you can ask any questions about formulas."
+    },
+    "buttonSkip": "Skip",
+    "buttonPrevious": "Previous",
+    "buttonNext": "Next",
+    "buttonStop": "Finish"
   }
 }
