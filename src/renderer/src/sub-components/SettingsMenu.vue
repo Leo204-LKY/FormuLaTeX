@@ -388,6 +388,8 @@
       apiKey: apiKey,
     } as DeepSeekConfig);
 
+    await window.chatClientApi.deepseekUpdateApiKey(apiKey); // Update client
+
     isDeepseekEditing.value = false;
     deepseekConfigNotSavedError.value = false;
   }
