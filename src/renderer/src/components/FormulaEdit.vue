@@ -285,7 +285,7 @@
   import { isDrawerOpenEventBus, inputEventBus } from '../eventBus';
   import AlterItem from '../sub-components/AlterItem.vue';
   import { Buffer } from 'buffer';
-  import type { SimpleTexConfig } from '../../../server';
+  import type { SimpleTexConfig } from '../../../shared/interfaces';
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
   import { useI18n } from 'vue-i18n';

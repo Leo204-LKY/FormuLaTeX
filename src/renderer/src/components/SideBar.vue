@@ -239,7 +239,7 @@
   import MarkdownIt from 'markdown-it';
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
-  import type { DeepSeekConfig } from '../../../server';
+  import type { DeepSeekConfig } from '../../../shared/interfaces';
   import { useI18n } from 'vue-i18n';
   import { onContextMenu } from '../utils/context-menu';
 

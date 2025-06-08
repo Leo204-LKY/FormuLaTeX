@@ -103,7 +103,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import type { SimpleTexConfig } from '../../../server';
+  import type { SimpleTexConfig } from '../../../shared/interfaces';
   import { useI18n } from 'vue-i18n';
   import { getI18n } from '../utils/locales';
   import type { createI18n } from 'vue-i18n';

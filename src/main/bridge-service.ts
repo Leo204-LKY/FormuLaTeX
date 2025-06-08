@@ -6,8 +6,6 @@ import {
   MenuItemConstructorOptions,
 } from 'electron';
 import {
-  AppSettingsConfig,
-  ChatMessage,
   convertImageToLatex,
   FavouritesTable,
   FormulaConversationsTable,
@@ -23,9 +21,13 @@ import {
   saveEncryptedJsonConfig,
   saveLog,
   showFileInFolder,
-  SimpleTexResponse,
   TagsTable,
 } from '../server';
+import {
+  AppSettingsConfig,
+  ChatMessage,
+  SimpleTexResponse,
+} from '../shared/interfaces';
 import {
   DeepSeekChatClient,
   DeepSeekModel,

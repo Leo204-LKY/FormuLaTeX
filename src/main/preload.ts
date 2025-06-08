@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { AppSettingsConfig, ChatMessage } from '../server';
+import { AppSettingsConfig, ChatMessage } from '../shared/interfaces';
 import { DeepSeekModel } from '../server/api/chat-client';
 import {
   favourites,

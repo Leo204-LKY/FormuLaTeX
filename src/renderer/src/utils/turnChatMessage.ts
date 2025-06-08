@@ -1,4 +1,4 @@
-import type { ChatMessage } from '../../../server';
+import type { ChatMessage } from '../../../shared/interfaces';
 import type { messages } from '@prisma/client';
 import { getI18n } from './locales';
 
