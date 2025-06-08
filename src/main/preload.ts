@@ -54,6 +54,10 @@ contextBridge.exposeInMainWorld('chatClientApi', {
   deepseekUpdateApiKey: (apiKey: string): Promise<void> => {
     return ipcRenderer.invoke('deepseek:updateApiKey', apiKey);
   },
+
+  getSystemPrompt: (replyLanuage: string): Promise<string> => {
+    return ipcRenderer.invoke('chatClient:getSystemPrompt', replyLanuage);
+  },
 });
 
 contextBridge.exposeInMainWorld('simpleTexApi', {

@@ -26,7 +26,11 @@ import {
   SimpleTexResponse,
   TagsTable,
 } from '../server';
-import { DeepSeekChatClient, DeepSeekModel } from '../server/api/chat-client';
+import {
+  DeepSeekChatClient,
+  DeepSeekModel,
+  getSystemPrompt,
+} from '../server/api/chat-client';
 import {
   favourites,
   formula_conversations,
@@ -118,6 +122,13 @@ ipcMain.handle(
   'deepseek:updateApiKey',
   safeIpcHandler<[string], void>(async (event, apiKey: string) => {
     deepseekClient.updateApiKey(apiKey);
+  })
+);
+
+ipcMain.handle(
+  'chatClient:getSystemPrompt',
+  safeIpcHandler<[string], string>(async (event, replyLanugage: string) => {
+    return getSystemPrompt(replyLanugage);
   })
 );
 

@@ -132,6 +132,13 @@ declare global {
        * @param apiKey API key
        */
       deepseekUpdateApiKey: (apiKey: string) => Promise<void>;
+
+      /**
+       * Generates a system prompt for the AI assistant in the FormuLaTeX App.
+       * @param replyLanguage The language in which the AI should respond to the user.
+       * @returns The system prompt for the AI assistant.
+       */
+      getSystemPrompt: (replyLanguage: string) => Promise<string>;
     };
 
     /**
