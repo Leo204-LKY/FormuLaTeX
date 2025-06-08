@@ -11,6 +11,20 @@ async function bootstrap() {
   document.title = (i18n.global as import('vue-i18n').Composer).t('appTitle');
 
   createApp(App).use(i18n).use(VueTour).mount('#app');
+
+  document.addEventListener('keydown', (e) => {
+    // Prevent default behavior for Ctrl/Cmd + A
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+      const target = e.target as HTMLElement;
+      const isInput =
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        (target as HTMLElement).isContentEditable;
+      if (!isInput) {
+        e.preventDefault();
+      }
+    }
+  });
 }
 
 bootstrap();
