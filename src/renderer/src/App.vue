@@ -114,7 +114,7 @@
       target: '#step3',
       content: t('UserTour.step3.whole'),
       params: {
-        placement: 'left',
+        placement: 'top',
       },
     },
     {
@@ -263,5 +263,6 @@
     box-shadow: none !important;
     outline: 2px dashed #fb923c !important;
     border-radius: 6px !important;
+    pointer-events: none !important;
   }
 </style>
