@@ -219,6 +219,10 @@
 
   async function startTour() {
     alertVisible_tour.value = false;
+
+    if (sideBarRef.value && sideBarRef.value.isDrawerOpen) {
+      sideBarRef.value.isDrawerOpen = false;
+    }
     await nextTick();
     tour.value?.start();
   }
