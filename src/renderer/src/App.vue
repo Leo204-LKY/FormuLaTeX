@@ -9,15 +9,26 @@
   <div v-else class="flex h-screen">
     <v-tour ref="tour" name="myTour" :steps="steps" :options="myOptions" />
 
-    <AlterItem
-      v-model:visible="alertVisible_tour"
-      :title="t('UserTour.title')"
-      :message="t('UserTour.subtitle')"
-      :buttons="[
-        { text: t('UserTour.Nobutton'), type: 'secondary' },
-        { text: t('UserTour.Yesbutton'), type: 'primary', callback: startTour },
-      ]"
-    />
+    <Transition
+      name="bounce"
+      enter-active-class="animate__animated animate__bounceIn"
+    >
+      <AlterItem
+        v-model:visible="alertVisible_tour"
+        :title="t('UserTour.title')"
+        :message="t('UserTour.subtitle')"
+        :overlay="false"
+        :buttons="[
+          { text: t('UserTour.Nobutton'), type: 'secondary' },
+          {
+            text: t('UserTour.Yesbutton'),
+            type: 'primary',
+            callback: startTour,
+          },
+        ]"
+      />
+    </Transition>
+
     <!-- Left: QuickInput -->
     <div class="w-1/4 h-full flex flex-col">
       <div class="h-12 shrink-0">
@@ -56,6 +67,7 @@
   import TitleBar from './components/TitleBar.vue';
   import ErrorDialog from './sub-components/ErrorDialog.vue';
 
+  import 'animate.css';
   import { useI18n } from 'vue-i18n';
 
   // i18n
@@ -66,7 +78,7 @@
   const editorRef = ref();
   const sideBarRef = ref();
   const tour = ref();
-  const alertVisible_tour = ref(true);
+  const alertVisible_tour = ref(false);
 
   const steps = computed(() => [
     {

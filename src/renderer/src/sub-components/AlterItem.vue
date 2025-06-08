@@ -3,8 +3,13 @@
   <!-- Modal Overlay -->
   <div
     v-show="visible"
-    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300"
-    :class="{ 'opacity-0 pointer-events-none': !visible }"
+    class="fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300"
+    :class="[
+      visible
+        ? 'opacity-100 pointer-events-auto'
+        : 'opacity-0 pointer-events-none',
+      props.overlay ? 'bg-black/50' : 'bg-transparent',
+    ]"
     @click.self="closeOnOverlay && close()"
   >
     <!-- Modal Content -->
@@ -74,6 +79,10 @@
       default: true,
     },
     closeOnOverlay: {
+      type: Boolean,
+      default: true,
+    },
+    overlay: {
       type: Boolean,
       default: true,
     },
