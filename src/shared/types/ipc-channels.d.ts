@@ -545,11 +545,19 @@ declare global {
       /**
        * Show context menu
        */
-      showContextMenu: (params: {
-        selectedText: string;
-        hasSelection: boolean;
-        isInput: boolean;
-      }) => Promise<void>;
+      showContextMenu: (
+        params: {
+          selectedText: string;
+          hasSelection: boolean;
+          isInput: boolean;
+        },
+        locales: {
+          cut: string;
+          copy: string;
+          paste: string;
+          selectAll: string;
+        }
+      ) => Promise<void>;
     };
   }
 }

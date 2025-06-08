@@ -604,30 +604,36 @@ ipcMain.on(
   'utils:showContextMenu',
   (
     event,
-    params: { selectedText: string; hasSelection: boolean; isInput: boolean }
+    params: { selectedText: string; hasSelection: boolean; isInput: boolean },
+    locales: {
+      cut: string;
+      copy: string;
+      paste: string;
+      selectAll: string;
+    }
   ) => {
     let menuTemplate: MenuItemConstructorOptions[];
     if (params.isInput) {
       menuTemplate = [
         {
-          label: 'Cut',
+          label: locales.cut,
           role: 'cut',
           accelerator: 'CmdOrCtrl+X',
           enabled: params.hasSelection ?? false,
         },
         {
-          label: 'Copy',
+          label: locales.copy,
           role: 'copy',
           accelerator: 'CmdOrCtrl+C',
           enabled: params.hasSelection ?? false,
         },
         {
-          label: 'Paste',
+          label: locales.paste,
           role: 'paste',
           accelerator: 'CmdOrCtrl+V',
         },
         {
-          label: 'Select All',
+          label: locales.selectAll,
           role: 'selectAll',
           accelerator: 'CmdOrCtrl+A',
         },
@@ -635,14 +641,10 @@ ipcMain.on(
     } else {
       menuTemplate = [
         {
-          label: 'Copy',
+          label: locales.copy,
           role: 'copy',
           accelerator: 'CmdOrCtrl+C',
           enabled: params.hasSelection ?? false,
-        },
-        {
-          label: 'Select All',
-          role: 'selectAll',
         },
       ];
     }

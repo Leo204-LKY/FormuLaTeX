@@ -362,12 +362,20 @@ contextBridge.exposeInMainWorld('servicesApi', {
 });
 
 contextBridge.exposeInMainWorld('utilsApi', {
-  showContextMenu: (params: {
-    selectedText: string;
-    hasSelection: boolean;
-    isInput: boolean;
-  }): void => {
-    ipcRenderer.send('utils:showContextMenu', params);
+  showContextMenu: (
+    params: {
+      selectedText: string;
+      hasSelection: boolean;
+      isInput: boolean;
+    },
+    locales: {
+      cut: string;
+      copy: string;
+      paste: string;
+      selectAll: string;
+    }
+  ): void => {
+    ipcRenderer.send('utils:showContextMenu', params, locales);
   },
 });
 
