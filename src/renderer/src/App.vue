@@ -32,7 +32,7 @@
     <!-- Left: QuickInput -->
     <div class="w-1/4 h-full flex flex-col">
       <div class="h-12 shrink-0">
-        <TitleBar @restart-tour="startTour" />
+        <TitleBar id="step5" @restart-tour="startTour" />
       </div>
       <div class="flex-1 overflow-y-auto" id="step1">
         <QuickInput />
@@ -125,13 +125,6 @@
       },
     },
     {
-      target: '#step3 #simpleTexSetting-button',
-      content: t('UserTour.step3.simpleTexSetting-button'),
-      params: {
-        placement: 'left',
-      },
-    },
-    {
       target: '#step3 #upload-button',
       content: t('UserTour.step3.upload-button'),
       params: {
@@ -157,6 +150,13 @@
       content: t('UserTour.step4.whole'),
       params: {
         placement: 'left',
+      },
+    },
+    {
+      target: '#step5 #settings-button',
+      content: t('UserTour.step5.settings-button'),
+      params: {
+        placement: 'bottom',
       },
     },
   ]);

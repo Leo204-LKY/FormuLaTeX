@@ -87,27 +87,29 @@
   },
   "UserTour": {
     "title": "用户引导",
-    "subtitle": "这是你第一次使用FormuLaTeX。🤗是否需要操作引导?",
+    "subtitle": "这是你第一次使用FormuLaTeX。🤗是否需要操作引导？（可以随时在设置中重新开始引导）",
     "Nobutton": "不需要",
     "Yesbutton": "需要",
     "step1": {
-      "whole": "这里是快速输入区域，您可以在这里创建和管理公式。",
+      "whole": "这里是快速输入区域，你可以在这里创建和管理公式。",
       "createFormula-button": "点击新建按钮，创建公式。",
       "tags-list": "这是标签列表，你可以管理不同标签下的公式。",
       "expression-list": "这里展示当前标签下的公式，右键公式区域可以修改和删除公式。"
     },
     "step2": {
-      "whole": "这里是符号选择区域，您可以在这里选择常用的数学符号。"
+      "whole": "这里是符号选择区域，你可以在这里选择常用的数学符号。"
     },
     "step3": {
-      "whole": "这里是公式修改和预览区域，您可以在左侧编辑公式内容，并再右侧预览它们。",
-      "tools-bar": "这是工具栏，您可以在这里选择公式的字体、大小、颜色。",
-      "simpleTexSetting-button": "点击这个设置按钮，导入或更新SimpleTex ID 和密钥（这将用于公式识别）。",
+      "whole": "这里是公式修改和预览区域，你可以在左侧编辑公式内容，并再右侧预览它们。",
+      "tools-bar": "这是工具栏，你可以在这里选择公式的字体、大小、颜色。",
       "upload-button": "点击上传图片按钮，识别含有公式的图片。",
-      "askAI-button": "点击询问AI按钮，跳转到AI对话区域。"
+      "askAI-button": "点击询问 AI 按钮，跳转到 AI 对话区域。"
     },
     "step4": {
-      "whole": "点击这个按钮可以打开AI对话界面，您可以在这里询问任何有关公式的问题。"
+      "whole": "点击这个按钮可以打开 AI 对话界面，你可以在这里询问任何有关公式的问题。"
+    },
+    "step5": {
+      "settings-button": "设置菜单位于这里，你可以在这里配置 App 语言、DeepSeek 和 SimpleTex API 的相关信息等。"
     },
     "buttonSkip": "跳过",
     "buttonPrevious": "上一条",

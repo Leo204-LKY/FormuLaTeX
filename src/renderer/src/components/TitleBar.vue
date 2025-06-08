@@ -11,6 +11,7 @@
       <span class="text-lg font-bold text-gray-800">FormuLaTeX</span>
     </div>
     <button
+      id="settings-button"
       class="w-10 h-10 flex items-center justify-center border border-gray-300 bg-white rounded-md transition-colors duration-150 hover:bg-blue-100 focus:outline-none focus:ring-2"
       @click="isSettingsOpen = true"
     >

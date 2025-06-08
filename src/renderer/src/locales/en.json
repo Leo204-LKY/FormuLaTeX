@@ -87,7 +87,7 @@
   },
   "UserTour": {
     "title": "User Tour",
-    "subtitle": "This is your first time using FormuLaTex. 🤗Do you need to simply show you how to use the software?",
+    "subtitle": "This is your first time using FormuLaTex. 🤗Do you need to simply show you how to use the software? (You can always restart the tour in Settings)",
     "Nobutton": "No, thanks",
     "Yesbutton": "Yes, start tour",
     "step1": {
@@ -102,12 +102,14 @@
     "step3": {
       "whole": "This is the FormulaEditing & Preview area. You can edit formula content on the left and preview it on the right.",
       "tools-bar": "This is the toolbar where you can choose the font, size, and color of the formula.",
-      "simpleTexSetting-button": "Click this settings button to import or update the SimpleTex ID and key (used for formula recognition).",
       "upload-button": "Click the Upload Image button to recognize formulas in an image.",
       "askAI-button": "Click the Ask AI button to jump to the AI chat area."
     },
     "step4": {
       "whole": "Click this button to open the AI chat panel, where you can ask any questions about formulas."
+    },
+    "step5": {
+      "settings-button": "The Settings menu is located here, where you can configure the app language, DeepSeek and SimpleTex API settings, and more."
     },
     "buttonSkip": "Skip",
     "buttonPrevious": "Previous",
