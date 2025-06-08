@@ -32,7 +32,7 @@
     <!-- Left: QuickInput -->
     <div class="w-1/4 h-full flex flex-col">
       <div class="h-12 shrink-0">
-        <TitleBar />
+        <TitleBar @restart-tour="startTour" />
       </div>
       <div class="flex-1 overflow-y-auto" id="step1">
         <QuickInput />
