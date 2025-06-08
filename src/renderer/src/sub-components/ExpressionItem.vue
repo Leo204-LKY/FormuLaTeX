@@ -1,11 +1,11 @@
 <template>
   <div
-    class="mb-4 relative"
+    class="mb-4 relative select-none"
     ref="itemRef"
     @contextmenu.prevent="handleRightClick"
   >
     <div class="flex justify-between items-center mb-2">
-      <span class="bg-green-100 text-xs px-1 py-0.5 rounded-md">
+      <span class="bg-green-100 text-xs px-1 py-0.5 rounded-md select-text">
         {{ expression.name }}
       </span>
     </div>

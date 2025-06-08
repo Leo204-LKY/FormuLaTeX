@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white border border-gray-200 rounded-md p-4 flex flex-col h-screen"
+    class="select-none bg-white border border-gray-200 rounded-md p-4 flex flex-col h-screen"
     style="height: 100%"
   >
     <AlterItem
@@ -74,6 +74,7 @@
 
   <!-- Success alert after creating formula -->
   <AlterItem
+    class="select-none"
     v-model:visible="alertVisible_create"
     :title="t('QuickInput.createSuccessTitle')"
     :message="t('QuickInput.createSuccessMessage')"
@@ -83,7 +84,7 @@
   <!-- Create formula modal -->
   <div
     v-if="isModalOpen"
-    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    class="select-none fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
   >
     <div
       class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl relative transform transition-all duration-300 scale-100 opacity-100"
@@ -154,7 +155,7 @@
   <!-- Edit formula modal -->
   <div
     v-if="isModalOpen_edit"
-    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    class="select-none fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
   >
     <div
       class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl relative transform transition-all duration-300 scale-100 opacity-100"
@@ -201,7 +202,7 @@
       </div>
 
       <!-- Action buttons -->
-      <div class="mt-7 flex justify-center space-x-4">
+      <div class="select-none mt-7 flex justify-center space-x-4">
         <button
           class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]"
           @click="

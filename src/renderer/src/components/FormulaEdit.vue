@@ -9,14 +9,14 @@
     />
     <!-- Formula Editing Area -->
     <div class="w-1/2 border-r border-dashed border-blue-500 p-4 h-full">
-      <h2 class="text-lg font-bold mb-4">
+      <h2 class="select-none text-lg font-bold mb-4">
         {{ t('FormulaEdit.formulaEditing') }}
       </h2>
 
       <!-- Toolbar -->
       <div
         id="tools-bar"
-        class="flex items-center space-x-2 border border-dashed border-gray-200 p-2 rounded-md"
+        class="select-none flex items-center space-x-2 border border-dashed border-gray-200 p-2 rounded-md"
       >
         <!-- Undo Button -->
         <button
@@ -180,7 +180,7 @@
       />
 
       <!-- Image Upload Section -->
-      <div class="flex justify-around items-center mt-4">
+      <div class="select-none flex justify-around items-center mt-4">
         <button
           id="upload-button"
           class="btn-style3 btn-status2"
@@ -192,7 +192,7 @@
         <!-- Image Upload Modal -->
         <div
           v-if="showUploadModal"
-          class="fixed inset-0 bg-white/10 backdrop-blur-sm bg-opacity-40 flex items-center justify-center z-50"
+          class="select-none fixed inset-0 bg-white/10 backdrop-blur-sm bg-opacity-40 flex items-center justify-center z-50"
         >
           <div
             class="bg-white rounded-lg p-6 w-96 shadow-lg relative"
@@ -210,7 +210,7 @@
             </h3>
 
             <div
-              class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 cursor-pointer hover:border-blue-400 relative"
+              class="select-none border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 cursor-pointer hover:border-blue-400 relative"
               @click="triggerFileInput"
             >
               <!-- Image Preview -->
@@ -253,7 +253,7 @@
         <!-- AI Analysis Button -->
         <button
           id="askAI-button"
-          class="bg-purple-500 text-white text-sm px-4 py-2 rounded-md"
+          class="select-none bg-purple-500 text-white text-sm px-4 py-2 rounded-md"
           @click="handleAIAnalysis"
         >
           {{ t('FormulaEdit.askAi') }}
@@ -263,7 +263,7 @@
 
     <!-- Formula Preview Area -->
     <div class="flex-1 p-4 h-full">
-      <h2 class="text-lg font-bold mb-4">
+      <h2 class="select-none text-lg font-bold mb-4">
         {{ t('FormulaEdit.formulaPreview') }}
       </h2>
       <div

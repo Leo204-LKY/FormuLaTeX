@@ -1,5 +1,5 @@
 <template>
-  <div ref="container"></div>
+  <div ref="container" class="select-none"></div>
 </template>
 
 <script setup lang="ts">

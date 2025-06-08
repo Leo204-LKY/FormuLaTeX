@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="visible"
-    class="absolute z-50 bg-white shadow-md border rounded-md text-sm w-24"
+    class="absolute z-50 bg-white shadow-md border rounded-md text-sm w-24 select-none"
     :style="{ left: `${position.x}px`, top: `${position.y}px` }"
     @click.stop
   >

@@ -1,7 +1,7 @@
 <template>
   <div
     v-show="visible"
-    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300]"
+    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300] select-none"
     :class="{ 'opacity-0 pointer-events-none': !visible }"
   >
     <div
@@ -15,28 +15,26 @@
       <div
         class="px-6 py-4 border-b border-gray-200 flex justify-center items-center"
       >
-        <h3 class="select-none text-lg font-semibold text-center text-red-600">
+        <h3 class="text-lg font-semibold text-center text-red-600">
           {{ t('ErrorDialog.title') }}
         </h3>
       </div>
       <!-- Error Detail Scroll Box -->
       <div
-        class="px-6 py-4 max-h-60 overflow-auto bg-gray-50 rounded text-left font-mono text-xs text-gray-800 border"
+        class="px-6 py-4 max-h-60 overflow-auto bg-gray-50 rounded text-left font-mono text-xs text-gray-800 border select-text"
       >
         <pre class="whitespace-pre-wrap break-all">{{ detail }}</pre>
       </div>
       <!-- Tip -->
-      <div class="select-none px-6 py-2 text-xs text-gray-500 text-left">
+      <div class="px-6 py-2 text-xs text-gray-500 text-left">
         {{ t('ErrorDialog.logfileTip') }}
         <span class="select-all font-mono">{{ filePath }}</span>
       </div>
-      <div class="select-none px-6 py-2 text-sm text-left">
+      <div class="px-6 py-2 text-sm text-left">
         {{ t('ErrorDialog.reportTip') }}
       </div>
       <!-- Buttons -->
-      <div
-        class="select-none px-6 py-3 bg-gray-50 flex justify-center space-x-3"
-      >
+      <div class="px-6 py-3 bg-gray-50 flex justify-center space-x-3">
         <button :class="getButtonClass('primary')" @click="onDismiss">
           {{ t('ErrorDialog.dismiss') }}
         </button>

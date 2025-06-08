@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-white border border-gray-200 rounded-md p-4 h-full">
+  <div
+    class="select-none bg-white border border-gray-200 rounded-md p-4 h-full"
+  >
     <!-- Category Selection Bar -->
     <div class="flex justify-start items-center mb-4 space-x-6">
       <button

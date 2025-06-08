@@ -3,7 +3,7 @@
   <!-- Modal Overlay -->
   <div
     v-show="visible"
-    class="fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300"
+    class="fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 select-none"
     :class="[
       visible
         ? 'opacity-100 pointer-events-auto'

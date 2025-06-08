@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div
+    class="select-none min-h-screen bg-gray-100 flex items-center justify-center"
+  >
     <!-- Container -->
     <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
       <!-- Logo and Title -->

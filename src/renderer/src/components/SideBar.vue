@@ -3,7 +3,7 @@
   <button
     ref="drawerButton"
     @click="toggleDrawer"
-    class="fixed top-1/2 right-4 transform -translate-y-1/2 z-30 bg-blue-200 text-white rounded-md transition-all duration-300 ease-in-out"
+    class="select-none fixed top-1/2 right-4 transform -translate-y-1/2 z-30 bg-blue-200 text-white rounded-md transition-all duration-300 ease-in-out"
     :class="{
       'translate-x-0 rotate-180 -right-8': isDrawerOpen,
       'translate-x-full rotate-0 right-8': !isDrawerOpen,
@@ -28,7 +28,7 @@
 
   <!-- History Sidebar -->
   <div
-    class="fixed top-0 left-0 h-full w-1/4 bg-white border-r shadow-lg transition-transform duration-300 z-10"
+    class="select-none fixed top-0 left-0 h-full w-1/4 bg-white border-r shadow-lg transition-transform duration-300 z-10"
     :class="isHistoryDrawerOpen ? 'translate-x-0' : '-translate-x-full'"
   >
     <div class="flex items-center justify-between p-4 border-b">
@@ -51,7 +51,7 @@
 
   <!-- Main Chat Sidebar -->
   <div
-    class="fixed top-0 right-0 h-full w-3/4 bg-white border-l shadow-lg transition-transform duration-300 z-20"
+    class="select-none fixed top-0 right-0 h-full w-3/4 bg-white border-l shadow-lg transition-transform duration-300 z-20"
     :class="isDrawerOpen ? 'translate-x-0' : 'translate-x-full'"
   >
     <AlterItem
@@ -186,7 +186,7 @@
         <!-- User Messages -->
         <span
           v-if="message.role === 'user'"
-          class="bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
+          class="select-text bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
         >
           {{ message.content }}
           <!-- <MarkdownRenderer :content="message.content" /> -->
@@ -195,7 +195,7 @@
         <!-- AI Response Messages (with Markdown rendering) -->
         <div
           v-else
-          class="bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words whitespace-pre-wrap text-left"
+          class="select-text bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words whitespace-pre-wrap text-left"
           v-html="renderMarkdown(message.content)"
         ></div>
       </div>

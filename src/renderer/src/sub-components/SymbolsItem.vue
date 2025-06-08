@@ -1,6 +1,6 @@
 <!-- SymbolsItem.vue -->
 <template>
-  <span ref="containerRef"></span>
+  <span ref="containerRef" class="select-none"></span>
 </template>
 
 <script setup lang="ts">
