@@ -546,6 +546,12 @@ declare global {
        * @param url URL to open
        */
       openUrlInBrowser: (url: string) => Promise<void>;
+
+      /**
+       * Get app version
+       * @returns The version of the app (e.g., "1.0.0")
+       */
+      getAppVersion: () => Promise<string>;
     };
 
     utilsApi: {

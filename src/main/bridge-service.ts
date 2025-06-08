@@ -1,4 +1,5 @@
 import {
+  app,
   BrowserWindow,
   ipcMain,
   IpcMainInvokeEvent,
@@ -606,6 +607,13 @@ ipcMain.handle(
   'services:openUrlInBrowser',
   safeIpcHandler<[string], Promise<void>>(async (event, url: string) => {
     return openUrlInBrowser(url);
+  })
+);
+
+ipcMain.handle(
+  'services:getAppVersion',
+  safeIpcHandler<[], string>(async () => {
+    return app.getVersion();
   })
 );
 

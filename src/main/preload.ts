@@ -363,6 +363,10 @@ contextBridge.exposeInMainWorld('servicesApi', {
   openUrlInBrowser: (url: string): Promise<void> => {
     return ipcRenderer.invoke('services:openUrlInBrowser', url);
   },
+
+  getAppVersion: (): Promise<string> => {
+    return ipcRenderer.invoke('services:getAppVersion');
+  },
 });
 
 contextBridge.exposeInMainWorld('utilsApi', {
