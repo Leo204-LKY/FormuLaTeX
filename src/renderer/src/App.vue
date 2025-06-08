@@ -66,7 +66,7 @@
   const editorRef = ref();
   const sideBarRef = ref();
   const tour = ref();
-  const alertVisible_tour = ref(false);
+  const alertVisible_tour = ref(true);
 
   const steps = computed(() => [
     {
@@ -218,31 +218,34 @@
   };
 </script>
 
-<!-- <style scoped>
-  .v-step {
-    background-color: greenyellow !important;
-    color: #ffffff !important;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    max-width: 320px;
+<style scoped>
+  ::v-deep(.v-step) {
+    background-color: #fff7ed !important;
+    color: #78350f !important;
+    border-radius: 12px !important;
+    padding: 1.25rem !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1) !important;
+    max-width: 340px !important;
+    border: 1px solid #fed7aa;
   }
 
-  .v-step__arrow {
-    border-color: #2d3748 !important;
+  ::v-deep(.v-step__arrow) {
+    display: none !important;
   }
 
-  .v-step__buttons button {
-    background-color: #3182ce !important;
+  ::v-deep(.v-step__buttons button) {
+    background-color: #fdba74 !important;
     color: white !important;
-    border-radius: 4px;
-    padding: 6px 12px;
-    margin: 4px;
-    border: none;
-    cursor: pointer;
+    border: none !important;
   }
 
-  .v-tour__buttons button:hover {
-    background-color: #2b6cb0 !important;
+  ::v-deep(.v-step__buttons button:hover) {
+    background-color: #f97316 !important;
   }
-</style> -->
+
+  ::v-deep(.v-tour__target--highlighted) {
+    box-shadow: none !important;
+    outline: 2px dashed #fb923c !important;
+    border-radius: 6px !important;
+  }
+</style>

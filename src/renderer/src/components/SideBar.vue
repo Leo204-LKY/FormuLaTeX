@@ -2,7 +2,6 @@
   <!-- Sidebar Toggle Button -->
   <button
     ref="drawerButton"
-    :id="id"
     @click="toggleDrawer"
     class="fixed top-1/2 right-4 transform -translate-y-1/2 z-30 bg-blue-200 text-white rounded-md transition-all duration-300 ease-in-out"
     :class="{
@@ -11,6 +10,7 @@
     }"
   >
     <svg
+      :id="id"
       class="w-8 h-8 transform transition-transform duration-300"
       fill="none"
       stroke="currentColor"
