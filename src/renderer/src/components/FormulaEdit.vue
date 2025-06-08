@@ -1,12 +1,5 @@
 <template>
   <div class="bg-white border border-gray-200 rounded-md p-4 h-full flex">
-    <AlterItem
-      class="z-[9999]"
-      v-model:visible="alertVisible_empty"
-      :title="t('common.emptyInputTitle')"
-      :message="t('common.emptyInputMessage')"
-      :buttons="[{ text: t('common.ok'), type: 'primary' }]"
-    />
     <!-- Formula Editing Area -->
     <div class="w-1/2 border-r border-dashed border-blue-500 p-4 h-full">
       <h2 class="select-none text-lg font-bold mb-4">
@@ -100,57 +93,6 @@
         <button class="btn-icon" @click="toggleClear">
           <img src="../assets/icons/clear.svg" />
         </button>
-
-        <!-- API Key Save Alert -->
-        <AlterItem
-          v-model:visible="alertVisible1"
-          :title="t('FormulaEdit.formulaApiKeySaveTitle')"
-          :message="t('FormulaEdit.formulaApiKeySaveMessage')"
-          :buttons="[{ text: t('common.ok'), type: 'primary' }]"
-        />
-
-        <!-- Settings Section -->
-        <div class="flex items-center space-x-2 ml-auto">
-          <div class="relative">
-            <button
-              id="simpleTexSetting-button"
-              class="btn-icon w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
-              @click="toggleSetting"
-            >
-              <img src="../assets/icons/setting.svg" />
-            </button>
-            <!-- Settings Input Panel -->
-            <div
-              v-if="showSetting"
-              class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg p-4 z-30"
-            >
-              <label class="block text-sm font-medium mb-2">
-                {{ t('FormulaEdit.enterApiConfig') }}
-              </label>
-              <input
-                type="text"
-                spellcheck="false"
-                v-model="appId"
-                :placeholder="t('FormulaEdit.simpleTexAppId')"
-                class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-                @contextmenu="onContextMenu"
-              />
-              <input
-                type="text"
-                spellcheck="false"
-                v-model="appSecret"
-                :placeholder="t('FormulaEdit.simpleTexAppSecret')"
-                class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 mt-2"
-                @contextmenu="onContextMenu"
-              />
-              <div class="flex justify-center mt-1">
-                <button class="btn-style3 btn-status2" @click="saveConfig">
-                  {{ t('common.save') }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Latex Input Textarea -->
@@ -307,17 +249,13 @@
   const colorPickerRef = ref<HTMLElement | null>(null);
 
   // UI State
-  const alertVisible1 = ref(false); // API Key saved alert
   const alertVisible2 = ref(false); // OCR success alert
   const alertVisible3 = ref(false); // API Key missing alert
-  const alertVisible_empty = ref(false); // Empty input alert
   const colorPickerVisible = ref(false);
   const sizePickerVisible = ref(false);
   const showSetting = ref(false);
 
   // Configuration State
-  const appId = ref('');
-  const appSecret = ref('');
   const selectedFont = ref('mathit');
 
   // Constant Data
@@ -465,13 +403,6 @@
   const previewImage = ref<string | null>(null);
   const dragStartPosition = ref<{ x: number; y: number } | null>(null);
 
-  // Settings Management
-  function toggleSetting() {
-    showSetting.value = !showSetting.value;
-    appId.value = '';
-    appSecret.value = '';
-  }
-
   // AI Analysis Handler
   const handleAIAnalysis = () => {
     console.log('AI Analysis triggered');
@@ -571,22 +502,4 @@
   const handleDeletePreview = () => {
     previewImage.value = null;
   };
-
-  // Save API Configuration
-  async function saveConfig() {
-    if (!appId.value || !appSecret.value) {
-      alertVisible_empty.value = true; // Show error alert
-      return;
-    }
-    await window.servicesApi.saveJsonConfig('simpletex', {
-      appId: appId.value,
-      appSecret: appSecret.value,
-    } as SimpleTexConfig);
-
-    // Reset UI
-    appId.value = '';
-    appSecret.value = '';
-    showSetting.value = false;
-    alertVisible1.value = true; // Show success alert
-  }
 </script>

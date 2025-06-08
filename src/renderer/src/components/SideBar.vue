@@ -102,38 +102,6 @@
         />
       </div>
 
-      <!-- Alert Components -->
-      <AlterItem
-        v-model:visible="alertVisible_initial"
-        :title="t('SideBar.chatApiSaveTitle')"
-        :message="t('SideBar.chatApiSaveMessage')"
-        :buttons="[{ text: t('common.ok'), type: 'primary' }]"
-      />
-
-      <AlterItem
-        v-model:visible="alertVisible_existed"
-        :title="t('SideBar.chatApiExistUpdateTitle')"
-        :message="t('SideBar.chatApiExistUpdateMessage')"
-        :buttons="[
-          {
-            text: t('common.cancel'),
-            type: 'secondary',
-            callback: () => {
-              apiKey = '';
-            },
-          },
-          {
-            text: t('common.ok'),
-            type: 'primary',
-            callback: () => {
-              updateKey();
-              showSetting = false;
-              alertVisible_existed = false;
-            },
-          },
-        ]"
-      />
-
       <AlterItem
         v-model:visible="alertVisible_error"
         :title="t('SideBar.chatApiNotSetTitle')"
@@ -141,40 +109,8 @@
         :buttons="[{ text: t('common.ok'), type: 'primary' }]"
       />
 
-      <!-- Settings Button & Panel -->
-      <div class="flex items-center space-x-2">
-        <div class="relative">
-          <button
-            class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
-            @click="toggleSetting"
-          >
-            <img src="../assets/icons/setting.svg" />
-          </button>
-
-          <!-- Settings Panel -->
-          <div
-            v-if="showSetting"
-            class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg p-4 z-30"
-          >
-            <label class="block text-sm font-medium mb-2">
-              {{ t('SideBar.enterApiKey') }}
-            </label>
-            <input
-              type="text"
-              spellcheck="false"
-              v-model="apiKey"
-              :placeholder="t('SideBar.chatApiKey')"
-              @contextmenu="onContextMenu"
-              class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-            />
-            <div class="flex justify-center mt-1">
-              <button class="btn-style3 btn-status2" @click="saveKey">
-                {{ t('common.save') }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Placeholder -->
+      <div class="w-8"></div>
     </div>
 
     <!-- Chat Content Area -->
@@ -328,8 +264,6 @@
   const shouldAutoScroll = ref(true); // Auto-scroll state
 
   // Alert states
-  const alertVisible_initial = ref(false); // API key saved
-  const alertVisible_existed = ref(false); // API key exists
   const alertVisible_error = ref(false); // API key missing
   const alertVisible_empty = ref(false); // Empty input error
 
@@ -345,7 +279,6 @@
   // History sidebar states
   const isHistoryDrawerOpen = ref(false); // History sidebar open state
   const showSetting = ref(false); // Settings panel state
-  const apiKey = ref(''); // API key input
 
   // Title editing states
   const editableTitle = ref(''); // Editable title value
@@ -398,12 +331,6 @@
   function toggleDrawer() {
     isDrawerOpen.value = !isDrawerOpen.value;
     if (!isDrawerOpen.value) isHistoryDrawerOpen.value = false; // Close history sidebar when main closes
-  }
-
-  // Settings toggle handler
-  function toggleSetting() {
-    showSetting.value = !showSetting.value;
-    apiKey.value = ''; // Clear input on toggle
   }
 
   // Select history topic handler
@@ -518,39 +445,6 @@
     }
     shouldAutoScroll.value = true; // Reset auto-scroll
     scrollToBottom(); // Scroll to end after response
-  }
-
-  // Save API key handler
-  async function saveKey() {
-    if (!apiKey.value.trim()) {
-      alertVisible_empty.value = true; // Show error if key is empty
-      return;
-    }
-
-    const currentKey = (await window.servicesApi.getJsonConfig(
-      'deepseek'
-    )) as DeepSeekConfig;
-
-    if (Object.keys(currentKey).length === 0) {
-      // Save new key
-      console.log('Saving new API key');
-      showSetting.value = false;
-      updateKey();
-      alertVisible_initial.value = true;
-      apiKey.value = '';
-    } else {
-      // Key exists, prompt update
-      console.log('API key already exists');
-      alertVisible_existed.value = true;
-    }
-  }
-
-  // Update API key handler
-  async function updateKey() {
-    await window.chatClientApi.deepseekUpdateApiKey(apiKey.value); // Update client
-    await window.servicesApi.saveJsonConfig('deepseek', {
-      apiKey: apiKey.value,
-    } as DeepSeekConfig); // Save to config
   }
 
   // Event bus subscriptions
