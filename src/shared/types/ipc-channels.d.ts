@@ -540,5 +540,16 @@ declare global {
        */
       openUrlInBrowser: (url: string) => Promise<void>;
     };
+
+    utilsApi: {
+      /**
+       * Show context menu
+       */
+      showContextMenu: (params: {
+        selectedText: string;
+        hasSelection: boolean;
+        isInput: boolean;
+      }) => Promise<void>;
+    };
   }
 }

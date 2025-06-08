@@ -1,4 +1,10 @@
-import { BrowserWindow, ipcMain, IpcMainInvokeEvent } from 'electron';
+import {
+  BrowserWindow,
+  ipcMain,
+  IpcMainInvokeEvent,
+  Menu,
+  MenuItemConstructorOptions,
+} from 'electron';
 import {
   AppSettingsConfig,
   ChatMessage,
@@ -588,4 +594,61 @@ ipcMain.handle(
   safeIpcHandler<[string], Promise<void>>(async (event, url: string) => {
     return openUrlInBrowser(url);
   })
+);
+
+// *****************************************
+// Right-click Handler
+// *****************************************
+
+ipcMain.on(
+  'utils:showContextMenu',
+  (
+    event,
+    params: { selectedText: string; hasSelection: boolean; isInput: boolean }
+  ) => {
+    let menuTemplate: MenuItemConstructorOptions[];
+    if (params.isInput) {
+      menuTemplate = [
+        {
+          label: 'Cut',
+          role: 'cut',
+          accelerator: 'CmdOrCtrl+X',
+          enabled: params.hasSelection ?? false,
+        },
+        {
+          label: 'Copy',
+          role: 'copy',
+          accelerator: 'CmdOrCtrl+C',
+          enabled: params.hasSelection ?? false,
+        },
+        {
+          label: 'Paste',
+          role: 'paste',
+          accelerator: 'CmdOrCtrl+V',
+        },
+        {
+          label: 'Select All',
+          role: 'selectAll',
+          accelerator: 'CmdOrCtrl+A',
+        },
+      ];
+    } else {
+      menuTemplate = [
+        {
+          label: 'Copy',
+          role: 'copy',
+          accelerator: 'CmdOrCtrl+C',
+          enabled: params.hasSelection ?? false,
+        },
+        {
+          label: 'Select All',
+          role: 'selectAll',
+        },
+      ];
+    }
+
+    const menu = Menu.buildFromTemplate(menuTemplate);
+    const win = BrowserWindow.fromWebContents(event.sender);
+    menu.popup({ window: win ?? undefined });
+  }
 );

@@ -361,6 +361,16 @@ contextBridge.exposeInMainWorld('servicesApi', {
   },
 });
 
+contextBridge.exposeInMainWorld('utilsApi', {
+  showContextMenu: (params: {
+    selectedText: string;
+    hasSelection: boolean;
+    isInput: boolean;
+  }): void => {
+    ipcRenderer.send('utils:showContextMenu', params);
+  },
+});
+
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector: string, text: string | undefined) => {
     const element = document.getElementById(selector);
