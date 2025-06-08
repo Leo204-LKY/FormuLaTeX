@@ -486,11 +486,12 @@
         // Handle errors
         window.chatClientApi.onDeepseekError((error) => reject(error));
 
-        // Send request to AI API
-        window.chatClientApi.deepseekAsk(
-          text,
-          turnChatMessage(messagesData.value) // Format chat history
-        );
+        turnChatMessage(messagesData.value).then((messages) => {
+          window.chatClientApi.deepseekAsk(
+            text,
+            messages // Format chat history with system prompt
+          );
+        });
       });
 
       // Save final AI message
