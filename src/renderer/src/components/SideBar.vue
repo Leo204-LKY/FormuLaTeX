@@ -96,6 +96,7 @@
           spellcheck="false"
           @blur="finishEditingTitle"
           @keydown.enter="finishEditingTitle"
+          @contextmenu="onContextMenu"
           class="text-xl font-bold border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
           ref="titleInput"
         />
@@ -163,6 +164,7 @@
               spellcheck="false"
               v-model="apiKey"
               :placeholder="t('SideBar.chatApiKey')"
+              @contextmenu="onContextMenu"
               class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             <div class="flex justify-center mt-1">
@@ -187,6 +189,7 @@
         <span
           v-if="message.role === 'user'"
           class="select-text bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
+          @contextmenu="onContextMenu"
         >
           {{ message.content }}
           <!-- <MarkdownRenderer :content="message.content" /> -->
@@ -197,6 +200,7 @@
           v-else
           class="select-text bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words whitespace-pre-wrap text-left"
           v-html="renderMarkdown(message.content)"
+          @contextmenu="onContextMenu"
         ></div>
       </div>
     </div>
@@ -237,6 +241,7 @@
   import 'katex/dist/katex.min.css';
   import type { DeepSeekConfig } from '../../../server';
   import { useI18n } from 'vue-i18n';
+  import { onContextMenu } from '../utils/context-menu';
 
   // i18n
   const { t } = useI18n();

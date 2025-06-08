@@ -112,6 +112,7 @@
             spellcheck="false"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            @contextmenu="onContextMenu"
             :placeholder="t('QuickInput.enterFormulaName')"
           />
         </div>
@@ -183,6 +184,7 @@
             spellcheck="false"
             type="text"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            @contextmenu="onContextMenu"
             :placeholder="t('QuickInput.enterFormulaName')"
           />
         </div>
@@ -238,6 +240,7 @@
   } from '../utils/formulaDB';
   import type { formulas } from '@prisma/client';
   import { useI18n } from 'vue-i18n';
+  import { onContextMenu } from '../utils/context-menu';
 
   // i18n
   const { t } = useI18n();

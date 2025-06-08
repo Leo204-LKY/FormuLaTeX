@@ -133,6 +133,7 @@
                 v-model="appId"
                 :placeholder="t('FormulaEdit.simpleTexAppId')"
                 class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
+                @contextmenu="onContextMenu"
               />
               <input
                 type="text"
@@ -140,6 +141,7 @@
                 v-model="appSecret"
                 :placeholder="t('FormulaEdit.simpleTexAppSecret')"
                 class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 mt-2"
+                @contextmenu="onContextMenu"
               />
               <div class="flex justify-center mt-1">
                 <button class="btn-style3 btn-status2" @click="saveConfig">
@@ -158,6 +160,7 @@
         spellcheck="false"
         class="w-full border border-gray-200 p-2 rounded-md h-3/4"
         @input="onInputChange"
+        @contextmenu="onContextMenu"
         :placeholder="
           t('FormulaEdit.formulaInputPlaceholder', ['\\frac{a}{b} = c...'])
         "
@@ -286,6 +289,7 @@
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
   import { useI18n } from 'vue-i18n';
+  import { onContextMenu } from '../utils/context-menu';
 
   // i18n
   const { t } = useI18n();

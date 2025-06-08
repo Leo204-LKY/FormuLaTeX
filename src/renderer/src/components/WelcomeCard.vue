@@ -47,6 +47,7 @@
               v-model="deepseek_appId"
               type="text"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              @contextmenu="onContextMenu"
             />
           </div>
           <div class="mb-2">
@@ -57,6 +58,7 @@
               v-model="simpletex_appId"
               type="text"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              @contextmenu="onContextMenu"
             />
           </div>
           <div class="mb-2">
@@ -67,6 +69,7 @@
               v-model="simpletex_appSecret"
               type="password"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              @contextmenu="onContextMenu"
             />
           </div>
         </div>
@@ -104,6 +107,7 @@
   import { useI18n } from 'vue-i18n';
   import { getI18n } from '../utils/locales';
   import type { createI18n } from 'vue-i18n';
+  import { onContextMenu } from '../utils/context-menu';
 
   // i18n
   const { t } = useI18n();
