@@ -124,5 +124,11 @@
     "buttonPrevious": "上一条",
     "buttonNext": "下一条",
     "buttonStop": "完成"
+  },
+  "contextMenu": {
+    "cut": "剪切",
+    "copy": "复制",
+    "paste": "粘贴",
+    "selectAll": "全选"
   }
 }

@@ -124,5 +124,11 @@
     "buttonPrevious": "Previous",
     "buttonNext": "Next",
     "buttonStop": "Finish"
+  },
+  "contextMenu": {
+    "cut": "Cut",
+    "copy": "Copy",
+    "paste": "Paste",
+    "selectAll": "Select All"
   }
 }
