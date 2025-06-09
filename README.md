@@ -17,6 +17,10 @@
   - etc.
 - Roadmap: See [#1](https://github.com/Leo204-LKY/FormuLaTeX/issues/1) or [Project](https://github.com/users/Leo204-LKY/projects/3/views/4)
 
+### How to Use
+
+See [User Manual](/doc/03-manual/user-manual.md).
+
 ### Project Structure
 
 _**Note:** Contains only the main project files and directories_
