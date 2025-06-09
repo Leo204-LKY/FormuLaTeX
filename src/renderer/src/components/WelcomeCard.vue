@@ -51,7 +51,7 @@
             <input
               v-model="deepseek_appId"
               type="text"
-              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10"
+              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10 px-1 py-1"
               @contextmenu="onContextMenu"
             />
           </div>
@@ -62,7 +62,7 @@
             <input
               v-model="simpletex_appId"
               type="text"
-              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10"
+              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10 px-1 py-1"
               @contextmenu="onContextMenu"
             />
           </div>
@@ -73,7 +73,7 @@
             <input
               v-model="simpletex_appSecret"
               type="password"
-              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10"
+              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10 px-1 py-1"
               @contextmenu="onContextMenu"
             />
           </div>
