@@ -16,10 +16,11 @@
       <h2 class="text-xl font-bold">{{ t('QuickInput.quickInput') }}</h2>
       <button
         id="createFormula-button"
-        class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
+        class="flex gap-1 text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
         @click="openFormulaModal()"
       >
-        {{ t('common.new') }}
+        <PlusCircle />
+        {{ t('QuickInput.newFormula') }}
       </button>
     </div>
 
@@ -241,6 +242,7 @@
   import type { formulas } from '@prisma/client';
   import { useI18n } from 'vue-i18n';
   import { onContextMenu } from '../utils/context-menu';
+  import PlusCircle from '../assets/icons/PlusCircle.vue';
 
   // i18n
   const { t } = useI18n();
