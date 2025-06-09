@@ -98,7 +98,7 @@ export function encryptFile(
     return iv;
   } catch (e) {
     console.error('File encryption failed: ', e);
-    return '';
+    throw new Error('File Encryption Failed: \n' + e);
   }
 }
 
@@ -130,5 +130,6 @@ export function decryptFile(
     console.log(`File decrypted successfully to: ${decryptPath}`);
   } catch (e) {
     console.error('File decryption failed: ', e);
+    throw new Error('File Encryption Failed: \n' + e);
   }
 }
