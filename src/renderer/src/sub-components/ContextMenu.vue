@@ -11,14 +11,14 @@
         class="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer justify-center text-center"
         @click="emitEdit"
       >
-        Edit
+        {{ t('contextMenu.edit') }}
       </li>
       <hr class="border-t border-gray-200 my-0" />
       <li
         class="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer justify-center text-center"
         @click="emitDelete"
       >
-        Delete
+        {{ t('contextMenu.delete') }}
       </li>
     </ul>
   </div>
@@ -27,6 +27,10 @@
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue';
   import { contextMenuEventBus } from '../eventBus';
+  import { useI18n } from 'vue-i18n';
+
+  // i18n
+  const { t } = useI18n();
 
   interface Expression {
     name: string | null;
