@@ -11,7 +11,6 @@
     "mathBb": "MathBB",
     "crossMark": "✕",
     "save": "保存",
-    "new": "+ 新規作成",
     "emptyInputTitle": "入力が空です",
     "emptyInputMessage": "入力内容が空です！確認して入力してください。"
   },
@@ -31,6 +30,7 @@
   },
   "QuickInput": {
     "quickInput": "クイック入力",
+    "newFormula": "新しい数式",
     "tags": {
       "History": "履歴",
       "Common": "一般",
@@ -50,11 +50,14 @@
   "SideBar": {
     "history": "履歴",
     "chatTitle": "チャットタイトル",
+    "newChat": "新しいチャット",
     "chatApiNotSetTitle": "DeepSeek APIキーが未設定",
     "chatApiNotSetMessage": "DeepSeek API設定がまだ設定されていません。設定画面で設定してください。",
     "chatInputPlaceholder": "数式について何でも質問してください...",
     "send": "送信",
-    "newChatDefaultTitle": "新しいチャット"
+    "newChatDefaultTitle": "新しいチャット",
+    "emptyMessageTip": "以下に入力して質問を始めてください！",
+    "noHistoryTip": "まだチャット履歴がありません。新しいチャットを始めましょう！"
   },
   "SymbolSelect": {
     "types": {

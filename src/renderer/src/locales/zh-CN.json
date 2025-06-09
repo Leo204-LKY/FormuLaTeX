@@ -11,7 +11,6 @@
     "mathBb": "MathBB",
     "crossMark": "✕",
     "save": "保存",
-    "new": "+ 新建",
     "emptyInputTitle": "输入为空",
     "emptyInputMessage": "输入不能为空！请检查并填写输入内容。"
   },
@@ -31,6 +30,7 @@
   },
   "QuickInput": {
     "quickInput": "快速输入",
+    "newFormula": "新建公式",
     "tags": {
       "History": "历史",
       "Common": "通用",
@@ -50,11 +50,14 @@
   "SideBar": {
     "history": "历史对话",
     "chatTitle": "对话标题",
+    "newChat": "新对话",
     "chatApiNotSetTitle": "DeepSeek API 密钥未设置",
     "chatApiNotSetMessage": "尚未设置 DeepSeek API 配置，请在设置中进行配置。",
     "chatInputPlaceholder": "问我任何关于公式的问题...",
     "send": "发送",
-    "newChatDefaultTitle": "新对话"
+    "newChatDefaultTitle": "新对话",
+    "emptyMessageTip": "开始提问，请在下方输入！",
+    "noHistoryTip": "尚无对话历史。开始新对话！"
   },
   "SymbolSelect": {
     "types": {

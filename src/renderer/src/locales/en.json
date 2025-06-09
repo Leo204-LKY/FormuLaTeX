@@ -11,7 +11,6 @@
     "mathBb": "MathBB",
     "crossMark": "✕",
     "save": "Save",
-    "new": "+ New",
     "emptyInputTitle": "Empty Input",
     "emptyInputMessage": "Can't be empty! Please check and fill the input."
   },
@@ -31,6 +30,7 @@
   },
   "QuickInput": {
     "quickInput": "Quick Input",
+    "newFormula": "New Formula",
     "tags": {
       "History": "History",
       "Common": "Common",
@@ -50,11 +50,14 @@
   "SideBar": {
     "history": "History",
     "chatTitle": "Chat Title",
+    "newChat": "New Chat",
     "chatApiNotSetTitle": "DeepSeek API Key Not Set",
     "chatApiNotSetMessage": "You have not set the DeepSeek API config, please set it in the settings.",
     "chatInputPlaceholder": "Ask me anything about formula...",
     "send": "Send",
-    "newChatDefaultTitle": "New Chat"
+    "newChatDefaultTitle": "New Chat",
+    "emptyMessageTip": "Start asking by typing below!",
+    "noHistoryTip": "No chat history yet. Start a new chat!"
   },
   "SymbolSelect": {
     "types": {

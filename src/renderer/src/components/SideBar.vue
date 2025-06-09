@@ -36,6 +36,13 @@
     </div>
     <div ref="itemRef" class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
       <ul class="space-y-2">
+        <div
+          v-if="historyTopics.length === 0"
+          class="flex items-center justify-center text-lg text-center h-full w-full text-gray-400 select-none"
+          style="min-height: 200px"
+        >
+          {{ t('SideBar.noHistoryTip') }}
+        </div>
         <li
           v-for="topic in historyTopics"
           :key="topic.id"
@@ -74,10 +81,11 @@
           <img src="../assets/icons/showMore.svg" alt="History" />
         </button>
         <button
-          class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
+          class="flex gap-1 text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
           @click="createNewChat(t('SideBar.newChatDefaultTitle'))"
         >
-          {{ t('common.new') }}
+          <PlusCircle />
+          {{ t('SideBar.newChat') }}
         </button>
       </div>
 
@@ -121,6 +129,16 @@
 
     <!-- Chat Content Area -->
     <div ref="chatContainer" class="flex-1 p-4 h-3/4 overflow-y-auto space-y-4">
+      <!-- Empty State -->
+      <div
+        v-if="messagesData.length === 0"
+        class="flex items-center justify-center text-2xl h-full w-full text-gray-400 select-none"
+        style="min-height: 200px"
+      >
+        {{ t('SideBar.emptyMessageTip') }}
+      </div>
+
+      <!-- Message Rendering -->
       <div
         v-for="(message, index) in messagesData"
         :key="index"
@@ -130,7 +148,7 @@
         <!-- User Messages -->
         <span
           v-if="message.role === 'user'"
-          class="select-text bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words whitespace-pre-wrap text-left"
+          class="select-text bg-gray-200 p-2 rounded-md inline-block max-w-md h-auto break-words text-left"
           @contextmenu="onContextMenu"
         >
           {{ message.content }}
@@ -140,7 +158,7 @@
         <!-- AI Response Messages (with Markdown rendering) -->
         <div
           v-else
-          class="select-text bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words whitespace-pre-wrap text-left"
+          class="select-text bg-gray-200 p-2 rounded-md inline-block max-w-[90%] h-auto break-words text-left prose prose-p:mb-0"
           v-html="renderMarkdown(message.content)"
           @contextmenu="onContextMenu"
         ></div>
@@ -148,17 +166,35 @@
     </div>
 
     <!-- Bottom Input Area -->
-    <div
-      class="flex items-center p-4 bg-white fixed bottom-0 left-0 right-0 max-h-64"
-    >
-      <textarea
-        v-model="inputText"
-        :placeholder="t('SideBar.chatInputPlaceholder')"
-        class="flex-1 p-2 border rounded-md mr-2 min-h-32 focus:outline-none shadow-md focus:ring-2 focus:ring-gray-500 w-full"
-      ></textarea>
-      <button @click="sendMessage" class="btn-style3 btn-status2">
-        {{ t('SideBar.send') }}
-      </button>
+    <div class="flex items-center p-4 bg-white fixed bottom-0 left-0 right-0">
+      <div
+        class="flex flex-1 items-end w-full border rounded-md shadow-md bg-white p-2 transition-all"
+        :class="
+          isInputFocused
+            ? 'border-blue-300 ring-3 ring-blue-500'
+            : 'border-gray-300'
+        "
+      >
+        <textarea
+          v-model="inputText"
+          :placeholder="t('SideBar.chatInputPlaceholder')"
+          ref="textarea"
+          @input="autoResize"
+          @focus="isInputFocused = true"
+          @blur="isInputFocused = false"
+          @keydown.enter.prevent="handleEnter"
+          @contextmenu="onContextMenu"
+          class="flex-1 p-2 max-h-32 min-h-32 focus:outline-none transition-all w-full resize-none bg-white"
+        ></textarea>
+        <button
+          @click="sendMessage"
+          :disabled="!inputText.trim()"
+          class="h-10 w-10 flex px-3 py-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors items-center justify-center ml-2 disabled:cursor-not-allowed disabled:bg-gray-300"
+          :alt="t('SideBar.send')"
+        >
+          <SendFill class="w-8 h-8" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -174,16 +210,16 @@
     createMessage,
     updateConversation,
   } from '../utils/chatDB';
-  import DOMPurify from 'dompurify';
   import type { messages } from '@prisma/client';
   import { turnChatMessage } from '../utils/turnChatMessage';
   import AlterItem from '../sub-components/AlterItem.vue';
-  import MarkdownIt from 'markdown-it';
-  import katex from 'katex';
   import 'katex/dist/katex.min.css';
   import type { DeepSeekConfig } from '../../../shared/interfaces';
   import { useI18n } from 'vue-i18n';
   import { onContextMenu } from '../utils/context-menu';
+  import PlusCircle from '../assets/icons/PlusCircle.vue';
+  import SendFill from '../assets/icons/SendFill.vue';
+  import { renderMarkdown } from '../utils/markdown';
 
   // i18n
   const { t } = useI18n();
@@ -196,72 +232,6 @@
     title: string;
     id: string;
   }
-
-  // Markdown rendering with KaTeX support
-  const renderMarkdown = (content: string): string => {
-    // Preprocess content to handle line breaks in LaTeX blocks
-    content = content
-      .replace(/\\\[\s*\n+/g, '\\[')
-      .replace(/\n+\s*\\\]/g, '\\]');
-
-    // Inline formula handling ($...$ and \(...\))
-    content = content.replace(
-      /(?:\\?[$])([^$]*)(?:\\?[$])|\\\((.*?)\\\)/g,
-      (match, inline, inlineBlock) => {
-        const tex = inline || inlineBlock;
-        try {
-          return katex.renderToString(tex, {
-            throwOnError: false,
-            displayMode: false,
-          });
-        } catch (e) {
-          console.error('KaTeX inline render error:', e);
-          return match;
-        }
-      }
-    );
-
-    // Block formula handling ($$...$$, \[...\], and [text])
-    content = content.replace(
-      /(?:\\?[$][$])([^$]*)(?:\\?[$][$])|\\\[(.*?)\\\]|^\s*\[(.*?)\]\s*$/gm,
-      (match, block, blockBracket, blockSquare) => {
-        const tex = block || blockBracket || blockSquare;
-        try {
-          return katex.renderToString(tex.trim(), {
-            throwOnError: false,
-            displayMode: true,
-          });
-        } catch (e) {
-          console.error('KaTeX block render error:', e);
-          return match;
-        }
-      }
-    );
-
-    // Initialize Markdown parser
-    const md = new MarkdownIt({
-      html: true,
-      breaks: false,
-      linkify: true,
-    });
-
-    // Render and sanitize HTML output
-    const html = md.render(content);
-    return DOMPurify.sanitize(html, {
-      ADD_TAGS: [
-        'math',
-        'mrow',
-        'annotation',
-        'semantics',
-        'mi',
-        'mo',
-        'mn',
-        'msqrt',
-        'mfrac',
-      ],
-      ADD_ATTR: ['class', 'style', 'aria-hidden'],
-    });
-  };
 
   const itemRef = ref<HTMLElement | null>(null);
 
@@ -281,6 +251,41 @@
     title: t('SideBar.chatTitle'),
     id: 'default',
   }); // Current chat topic
+
+  // TextArea auto resize
+  const textarea = ref<HTMLTextAreaElement | null>(null);
+  const isInputFocused = ref(false);
+
+  const autoResize = () => {
+    const el = textarea.value;
+    if (el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 128) + 'px'; // Limit max height to 128px (Tailwind's max-h-32)
+    }
+  };
+
+  // Handle Enter key for sending messages
+  function handleEnter(e: KeyboardEvent) {
+    if (e.shiftKey || e.ctrlKey || e.metaKey) {
+      // Allow multi-line input with Shift/Ctrl/Meta + Enter
+      const el = textarea.value;
+      if (el) {
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        const value = el.value;
+        inputText.value =
+          value.substring(0, start) + '\n' + value.substring(end);
+        nextTick(() => {
+          el.selectionStart = el.selectionEnd = start + 1;
+        });
+      }
+    } else {
+      // Send message if has input
+      if (inputText.value.trim()) {
+        sendMessage();
+      }
+    }
+  }
 
   // History sidebar states
   const isHistoryDrawerOpen = ref(false); // History sidebar open state
