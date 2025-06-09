@@ -152,6 +152,8 @@
     "cut": "切り取り",
     "copy": "コピー",
     "paste": "貼り付け",
-    "selectAll": "すべて選択"
+    "selectAll": "すべて選択",
+    "edit": "編集",
+    "delete": "削除"
   }
 }

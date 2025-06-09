@@ -503,7 +503,7 @@
   // Open User Manual
   function openUserManual() {
     window.servicesApi.openUrlInBrowser(
-      'https://github.com/Leo204-LKY/FormuLaTeX/tree/main/doc/03-user-manual/user-manual.md'
+      'https://github.com/Leo204-LKY/FormuLaTeX/tree/main/doc/03-manual/user-manual.md'
     );
   }
 

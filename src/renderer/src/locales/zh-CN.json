@@ -152,6 +152,8 @@
     "cut": "剪切",
     "copy": "复制",
     "paste": "粘贴",
-    "selectAll": "全选"
+    "selectAll": "全选",
+    "edit": "编辑",
+    "delete": "删除"
   }
 }
