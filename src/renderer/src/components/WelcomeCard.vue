@@ -31,8 +31,13 @@
           @change="changeLanguage"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
-          <option value="zh-CN">简体中文</option>
-          <option value="en">English</option>
+          <option
+            v-for="locale in availableLocales"
+            :key="locale.value"
+            :value="locale.value"
+          >
+            {{ locale.label }}
+          </option>
         </select>
       </div>
 
@@ -105,7 +110,7 @@
   import { ref, onMounted } from 'vue';
   import type { SimpleTexConfig } from '../../../shared/interfaces';
   import { useI18n } from 'vue-i18n';
-  import { getI18n } from '../utils/locales';
+  import { getI18n, availableLocales } from '../utils/locales';
   import type { createI18n } from 'vue-i18n';
   import { onContextMenu } from '../utils/context-menu';
 

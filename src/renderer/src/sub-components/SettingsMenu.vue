@@ -58,8 +58,13 @@
           @change="changeLanguage"
           class="ml-auto border rounded px-2 py-1"
         >
-          <option value="en">English</option>
-          <option value="zh-CN">简体中文</option>
+          <option
+            v-for="locale in availableLocales"
+            :key="locale.value"
+            :value="locale.value"
+          >
+            {{ locale.label }}
+          </option>
         </select>
       </div>
 
@@ -284,7 +289,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { getI18n } from '../utils/locales';
+  import { availableLocales, getI18n } from '../utils/locales';
   import type { createI18n } from 'vue-i18n';
   import Tooltip from './Tooltip.vue';
   import type {
