@@ -53,7 +53,22 @@
 
   // Symbol data grouped by category
   const symbolData: { [key: string]: string[][] } = {
-    Common: [['+', '-', '*', '/']],
+    Common: [
+      ['+', '-', '*', '/', '\\alpha', '\\beta', '\\gamma', '\\delta'],
+      [
+        '=',
+        '\\neq',
+        '\\approx',
+        '\\equiv',
+        '\\epsilon',
+        '\\zeta',
+        '\\eta',
+        '\\theta',
+      ],
+      ['<', '>', '\\leq', '\\geq'],
+      ['\\in', '\\notin', '\\subset', '\\supset'],
+      ['\\forall', '\\exists', '\\nexists', '\\therefore'],
+    ],
     Operations: [
       [
         '+',
@@ -266,7 +281,22 @@
     ],
     Matric: [['[', ']', '{', '}']],
     Mark: [['•', '◦', '▫']],
-    Equations: [['x + y = z', 'a² + b² = c²']],
+    Equations: [
+      [
+        'x + y = z',
+        '\\sqrt{x^2 + y^2}',
+        '\\frac{a}{b} = c',
+        'a^2 + b^2 = c^2',
+        '\\log_a b = c',
+        '\\sin^2 x + \\cos^2 x = 1',
+        '\\int_a^b f(x) dx',
+        '\\sum_{i=1}^n i = \\frac{n(n+1)}{2}',
+        '\\lim_{x \\to \\infty} f(x) = L',
+        '\\prod_{i=1}^n i = n!',
+        '\\binom{n}{k} = \\frac{n!}{k!(n-k)!}',
+        '\\mathbb{E}[X] = \\sum_{i=1}^n x_i p_i',
+      ],
+    ],
     Accents: [
       [
         '\\ddot{x}',

@@ -84,9 +84,15 @@
       <!-- Chat Title Editing Area -->
       <div class="relative">
         <h2
-          v-if="!editingTitle"
+          v-if="!editingTitle && currentTopic.id !== 'default'"
           class="text-xl font-bold cursor-pointer"
           @click="startEditingTitle"
+        >
+          {{ currentTopic.title }}
+        </h2>
+        <h2
+          v-else-if="!editingTitle && currentTopic.id === 'default'"
+          class="text-xl font-bold cursor-not-allowed"
         >
           {{ currentTopic.title }}
         </h2>
