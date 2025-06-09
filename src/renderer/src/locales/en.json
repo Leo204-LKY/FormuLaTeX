@@ -94,7 +94,7 @@
   },
   "UserTour": {
     "title": "User Tour",
-    "subtitle": "This is your first time using FormuLaTex. 🤗Do you need to simply show you how to use the software? (You can always restart the tour in Settings)",
+    "subtitle": "This is your first time using FormuLaTex. 🤗 Do you need a brief introduction to the app's features? (You can always restart the tour in Settings)",
     "Nobutton": "No, thanks",
     "Yesbutton": "Yes, start tour",
     "step1": {
