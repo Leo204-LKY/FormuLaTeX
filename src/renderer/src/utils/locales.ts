@@ -1,6 +1,4 @@
 import { createI18n } from 'vue-i18n';
-import en from '../locales/en.json';
-import zhCN from '../locales/zh-CN.json';
 
 // Dynamically import all locale JSON files
 const localeModules = import.meta.glob('../locales/*.json', { eager: true });
@@ -37,10 +35,7 @@ export async function getI18n() {
     i18n = createI18n({
       locale,
       fallbackLocale: 'en',
-      messages: {
-        en,
-        'zh-CN': zhCN,
-      },
+      messages,
     });
   }
 
