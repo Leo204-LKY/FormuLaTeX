@@ -138,7 +138,8 @@
     "edit": "编辑",
     "save": "保存",
     "cancel": "取消",
-    "close": "关闭"
+    "close": "关闭",
+    "notSet": "未设置"
   },
   "contextMenu": {
     "cut": "剪切",

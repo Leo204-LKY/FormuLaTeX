@@ -22,30 +22,51 @@
       class="p-4 overflow-y-auto"
       style="height: calc(100% - 160px)"
     >
-      <button
-        class="w-full text-left bg-white hover:bg-gray-200 px-4 py-2 rounded-xl shadow-sm transition-all mb-4"
-        @click="restartUserTour"
-      >
-        {{ t('SettingsMenu.restartTour') }}
-      </button>
-      <button
-        class="w-full text-left bg-white hover:bg-gray-200 px-4 py-2 rounded-xl shadow-sm transition-all mb-4"
-        @click="openGithub"
-      >
-        {{ t('SettingsMenu.openGitHubRepo') }}
-      </button>
-      <button
-        class="w-full text-left bg-white hover:bg-gray-200 px-4 py-2 rounded-xl shadow-sm transition-all mb-4"
-        @click="openUserManual"
-      >
-        {{ t('SettingsMenu.openUserManual') }}
-      </button>
-      <button
-        class="w-full text-left bg-white hover:bg-gray-200 px-4 py-2 rounded-xl shadow-sm transition-all mb-4"
-        @click="feedback"
-      >
-        {{ t('SettingsMenu.bugReportAndFeedback') }}
-      </button>
+      <!-- Restart Tour -->
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-left">{{ t('SettingsMenu.restartTour') }}</span>
+        <button
+          class="ml-auto flex items-center border-1 border-blue-500 text-blue-500 rounded px-2 py-1 transition-colors duration-150 bg-white hover:bg-blue-500 hover:text-white focus:outline-none h-8 w-8 justify-center"
+          @click="restartUserTour"
+        >
+          <ArrowRight class="h-8 w-8" />
+        </button>
+      </div>
+
+      <!-- Open GitHub Repo -->
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-left">{{ t('SettingsMenu.openGitHubRepo') }}</span>
+        <button
+          class="ml-auto flex items-center border-1 border-blue-500 text-blue-500 rounded px-2 py-1 transition-colors duration-150 bg-white hover:bg-blue-500 hover:text-white focus:outline-none h-8 w-8 justify-center"
+          @click="openGithub"
+        >
+          <ArrowUpRight class="h-8 w-8" />
+        </button>
+      </div>
+
+      <!-- Open User Manual -->
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-left">{{ t('SettingsMenu.openUserManual') }}</span>
+        <button
+          class="ml-auto flex items-center border-1 border-blue-500 text-blue-500 rounded px-2 py-1 transition-colors duration-150 bg-white hover:bg-blue-500 hover:text-white focus:outline-none h-8 w-8 justify-center"
+          @click="openUserManual"
+        >
+          <ArrowUpRight class="h-8 w-8" />
+        </button>
+      </div>
+
+      <!-- Bug Report and Feedback -->
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-left">
+          {{ t('SettingsMenu.bugReportAndFeedback') }}
+        </span>
+        <button
+          class="ml-auto flex items-center border-1 border-blue-500 text-blue-500 rounded px-2 py-1 transition-colors duration-150 bg-white hover:bg-blue-500 hover:text-white focus:outline-none h-8 w-8 justify-center"
+          @click="feedback"
+        >
+          <ArrowUpRight class="h-8 w-8" />
+        </button>
+      </div>
 
       <!-- Divider -->
       <hr class="my-2 border-gray-300" />
@@ -56,7 +77,7 @@
         <select
           v-model="currentLocale"
           @change="changeLanguage"
-          class="ml-auto border rounded px-2 py-1"
+          class="ml-auto border rounded px-2 py-1 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all h-10 w-2/3"
         >
           <option
             v-for="locale in availableLocales"
@@ -118,12 +139,11 @@
           {{ t('SettingsMenu.deepseekApiKey') }}
         </label>
         <input
-          v-model="deepseekApiKey"
           ref="deepseekApiKeyInputRef"
           :type="
             isDeepseekConfigExists && !isDeepseekEditing ? 'password' : 'text'
           "
-          class="ml-auto border rounded-xl shadow-inner px-3 py-2 w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          class="ml-auto border rounded px-2 py-1 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all h-10 w-2/3"
           :class="{
             'border-red-500': deepseekApiKeyError,
             'select-none pointer-events-none': !isDeepseekEditing,
@@ -132,9 +152,9 @@
           }"
           :disabled="!isDeepseekEditing"
           :value="
-            isDeepseekConfigExists && !isDeepseekEditing
-              ? '****************************************'
-              : deepseekApiKey
+            isDeepseekConfigExists || isDeepseekEditing
+              ? deepseekApiKey
+              : t('SettingsMenu.notSet')
           "
           @input="
             (e) => {
@@ -200,12 +220,11 @@
           {{ t('SettingsMenu.simpleTexAppId') }}
         </label>
         <input
-          v-model="simpletexAppId"
           ref="simpletexAppIdInputRef"
           :type="
             isSimpletexConfigExists && !isSimpletexEditing ? 'password' : 'text'
           "
-          class="ml-auto border rounded-xl shadow-inner px-3 py-2 w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          class="ml-auto border rounded px-2 py-1 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all h-10 w-2/3"
           :class="{
             'border-red-500': simpletexAppIdError,
             'select-none pointer-events-none': !isSimpletexEditing,
@@ -214,9 +233,9 @@
           }"
           :disabled="!isSimpletexEditing"
           :value="
-            isSimpletexConfigExists && !isSimpletexEditing
-              ? '****************************************'
-              : simpletexAppId
+            isSimpletexConfigExists || isSimpletexEditing
+              ? simpletexAppId
+              : t('SettingsMenu.notSet')
           "
           @input="
             (e) => {
@@ -236,12 +255,11 @@
           {{ t('SettingsMenu.simpleTexAppSecret') }}
         </label>
         <input
-          v-model="simpletexAppSecret"
           ref="simpletexAppSecretInputRef"
           :type="
             isSimpletexConfigExists && !isSimpletexEditing ? 'password' : 'text'
           "
-          class="ml-auto border rounded-xl shadow-inner px-3 py-2 w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          class="ml-auto border rounded px-2 py-1 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all h-10 w-2/3"
           :class="{
             'border-red-500': simpletexAppSecretError,
             'select-none pointer-events-none': !isSimpletexEditing,
@@ -250,9 +268,9 @@
           }"
           :disabled="!isSimpletexEditing"
           :value="
-            isSimpletexConfigExists && !isSimpletexEditing
-              ? '****************************************'
-              : simpletexAppSecret
+            isSimpletexConfigExists || isSimpletexEditing
+              ? simpletexAppSecret
+              : t('SettingsMenu.notSet')
           "
           @input="
             (e) => {
@@ -297,6 +315,8 @@
     SimpleTexConfig,
   } from '../../../shared/interfaces';
   import { useI18n } from 'vue-i18n';
+  import ArrowRight from '../assets/icons/ArrowRight.vue';
+  import ArrowUpRight from '../assets/icons/ArrowUpRight.vue';
 
   // i18n
   const currentLocale = ref('en');
@@ -333,6 +353,18 @@
       await window.servicesApi.isConfigExist('deepseek');
     isSimpletexConfigExists.value =
       await window.servicesApi.isConfigExist('simpletex');
+
+    deepseekApiKey.value = isDeepseekConfigExists.value
+      ? '****************************************'
+      : '';
+
+    simpletexAppId.value = isSimpletexConfigExists.value
+      ? '****************************************'
+      : '';
+
+    simpletexAppSecret.value = isSimpletexConfigExists.value
+      ? '****************************************'
+      : '';
 
     appVersion.value =
       (await window.servicesApi.getAppVersion()) || '[UNKNOWN]';
@@ -377,6 +409,10 @@
     deepseekApiKeyError.value = false;
     deepseekConfigNotSavedError.value = false;
 
+    deepseekApiKey.value = isDeepseekConfigExists.value
+      ? '****************************************'
+      : '';
+
     isDeepseekEditing.value = false;
   }
 
@@ -395,6 +431,9 @@
 
     await window.chatClientApi.deepseekUpdateApiKey(apiKey); // Update client
 
+    deepseekApiKey.value = '****************************************'; // Mask the API key in the input
+
+    isDeepseekConfigExists.value = true;
     isDeepseekEditing.value = false;
     deepseekConfigNotSavedError.value = false;
   }
@@ -410,6 +449,14 @@
   function cancelEditSimpleTex() {
     simpletexAppIdError.value = false;
     simpletexAppSecretError.value = false;
+
+    simpletexAppId.value = isSimpletexConfigExists.value
+      ? '****************************************'
+      : '';
+
+    simpletexAppSecret.value = isSimpletexConfigExists.value
+      ? '****************************************'
+      : '';
 
     isSimpletexEditing.value = false;
     simpletexConfigNotSavedError.value = false;
@@ -431,6 +478,11 @@
       appSecret: appSecret,
     } as SimpleTexConfig);
 
+    //Mask the Config in the input
+    simpletexAppId.value = '****************************************';
+    simpletexAppSecret.value = '****************************************';
+
+    isSimpletexConfigExists.value = true;
     isSimpletexEditing.value = false;
     simpletexConfigNotSavedError.value = false;
   }

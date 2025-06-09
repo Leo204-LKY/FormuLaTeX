@@ -138,7 +138,8 @@
     "edit": "Edit",
     "save": "Save",
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "notSet": "Not Set"
   },
   "contextMenu": {
     "cut": "Cut",
