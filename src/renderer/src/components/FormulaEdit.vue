@@ -100,7 +100,7 @@
         ref="textareaRef"
         v-model="latexInput"
         spellcheck="false"
-        class="w-full border border-gray-200 p-2 rounded-md h-3/4"
+        class="w-full border border-gray-200 p-2 rounded-md h-3/4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none focus:outline-none"
         @input="onInputChange"
         @contextmenu="onContextMenu"
         :placeholder="
@@ -196,12 +196,15 @@
         </div>
 
         <!-- AI Analysis Button -->
+        <!-- AI Analysis Button -->
         <button
           id="askAI-button"
-          class="select-none bg-purple-500 text-white text-sm px-4 py-2 rounded-md"
+          class="select-none text-sm px-4 py-2 rounded-md font-semibold border-2 bg-white transition-all duration-300 relative overflow-hidden"
           @click="handleAIAnalysis"
         >
-          {{ t('FormulaEdit.askAi') }}
+          <span>
+            {{ t('FormulaEdit.askAi') }}
+          </span>
         </button>
       </div>
     </div>
@@ -503,3 +506,77 @@
     previewImage.value = null;
   };
 </script>
+
+<style scoped>
+  #askAI-button {
+    background: #fff;
+    color: #8b5cf6;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+  }
+
+  #askAI-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6);
+    border-radius: 0.375rem;
+    padding: 2px;
+  }
+
+  #askAI-button::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    z-index: -1;
+    background: #fff;
+    border-radius: calc(0.375rem - 2px);
+    transition: opacity 0.3s ease;
+  }
+
+  #askAI-button:hover::before {
+    opacity: 0;
+  }
+
+  #askAI-button:hover::after {
+    background: linear-gradient(120deg, #ec4899, #8b5cf6, #3b82f6, #ec4899);
+    background-size: 200% 200%;
+    animation: gradient-slide 3s ease-in-out infinite;
+  }
+
+  #askAI-button:hover {
+    color: #fff;
+  }
+
+  #askAI-button:hover {
+    color: #fff;
+  }
+
+  #askAI-button span {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes gradient-slide {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+</style>
