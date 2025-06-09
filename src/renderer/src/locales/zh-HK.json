@@ -83,7 +83,10 @@
     "language": "選擇語言：",
     "skipButton": "暫時跳過",
     "submitButton": "完成",
-    "okButton": "確定"
+    "okButton": "確定",
+    "deepseekApiKey": "DeepSeek API 金鑰",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret"
   },
   "UserTour": {
     "title": "使用者導覽",

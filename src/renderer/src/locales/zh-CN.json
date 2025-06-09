@@ -83,7 +83,10 @@
     "language": "选择语言：",
     "skipButton": "暂时跳过",
     "submitButton": "完成",
-    "okButton": "确定"
+    "okButton": "确定",
+    "deepseekApiKey": "DeepSeek API 密钥",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret"
   },
   "UserTour": {
     "title": "用户引导",
@@ -124,14 +127,14 @@
     "bugReportAndFeedback": "问题反馈与建议",
     "language": "语言",
     "deepseekApiSettings": "DeepSeek API 设置",
-    "deepseekApiKey": "API Key",
+    "deepseekApiKey": "API 密钥",
     "simpleTexApiSettings": "SimpleTex API 设置",
     "simpleTexAppId": "App ID",
     "simpleTexAppSecret": "App Secret",
     "version": "版本：{0}",
     "developBy": "由 Group Kappa 开发",
     "translator": "翻译者: {0}",
-    "deepseekApiKeyEmptyError": "API Key 不能为空",
+    "deepseekApiKeyEmptyError": "API 密钥不能为空",
     "simpleTexAppIdEmptyError": "App ID 不能为空",
     "simpleTexAppSecretEmptyError": "App Secret 不能为空",
     "saveOrCancelFirst": "请先保存或取消修改",

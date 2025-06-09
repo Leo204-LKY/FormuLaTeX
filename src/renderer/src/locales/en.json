@@ -83,7 +83,10 @@
     "language": "Select language: ",
     "skipButton": "Skip for now",
     "submitButton": "Complete",
-    "okButton": "OK"
+    "okButton": "OK",
+    "deepseekApiKey": "DeepSeek API Key",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret"
   },
   "UserTour": {
     "title": "User Tour",

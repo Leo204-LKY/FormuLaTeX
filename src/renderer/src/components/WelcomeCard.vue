@@ -29,7 +29,7 @@
         <select
           v-model="currentLocale"
           @change="changeLanguage"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          class="mt-1 block w-full rounded-md border-2 border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10"
         >
           <option
             v-for="locale in availableLocales"
@@ -46,34 +46,34 @@
         <div class="mt-4">
           <div class="mb-2">
             <label class="block text-xs font-medium text-gray-600">
-              DeepSeek API:
+              {{ t('WelcomeCard.deepseekApiKey') }}
             </label>
             <input
               v-model="deepseek_appId"
               type="text"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10"
               @contextmenu="onContextMenu"
             />
           </div>
           <div class="mb-2">
             <label class="block text-xs font-medium text-gray-600">
-              SimpleTex App ID:
+              {{ t('WelcomeCard.simpleTexAppId') }}
             </label>
             <input
               v-model="simpletex_appId"
               type="text"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10"
               @contextmenu="onContextMenu"
             />
           </div>
           <div class="mb-2">
             <label class="block text-xs font-medium text-gray-600">
-              SimpleTex App Secret:
+              {{ t('WelcomeCard.simpleTexAppSecret') }}
             </label>
             <input
               v-model="simpletex_appSecret"
               type="password"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              class="mt-1 block border-2 w-full rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all h-10"
               @contextmenu="onContextMenu"
             />
           </div>
