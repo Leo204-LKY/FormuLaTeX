@@ -45,7 +45,8 @@
     "editFormula": "編輯公式",
     "enterFormulaName": "輸入公式名稱…",
     "enterLatexFormula": "輸入 LaTeX 公式…",
-    "saveFormula": "儲存公式"
+    "saveFormula": "儲存公式",
+    "noSavedQuickInputTip": "尚未儲存任何公式。快來建立新公式吧！"
   },
   "SideBar": {
     "history": "歷史對話",

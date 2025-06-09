@@ -45,7 +45,8 @@
     "editFormula": "数式を編集",
     "enterFormulaName": "数式名を入力…",
     "enterLatexFormula": "LaTeX数式を入力…",
-    "saveFormula": "数式を保存"
+    "saveFormula": "数式を保存",
+    "noSavedQuickInputTip": "まだ数式が保存されていません。新しい数式を作成しましょう！"
   },
   "SideBar": {
     "history": "履歴",

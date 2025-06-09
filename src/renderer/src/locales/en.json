@@ -45,7 +45,8 @@
     "editFormula": "Edit Formula",
     "enterFormulaName": "Enter formula name...",
     "enterLatexFormula": "Enter LaTeX formula...",
-    "saveFormula": "Save Formula"
+    "saveFormula": "Save Formula",
+    "noSavedQuickInputTip": "No formulas saved yet. Create a new formula now!"
   },
   "SideBar": {
     "history": "History",

@@ -48,6 +48,13 @@
       ref="expressionListRef"
       class="flex-1 overflow-y-auto scroll-hidden pr-3"
     >
+      <div
+        v-if="displayItems.length === 0"
+        class="flex items-center justify-center text-lg text-center h-full w-full text-gray-400 select-none"
+        style="min-height: 200px"
+      >
+        {{ t('QuickInput.noSavedQuickInputTip') }}
+      </div>
       <ExpressionItem
         v-for="expr in displayItems"
         :key="expr.formula_id"
@@ -112,7 +119,7 @@
             v-model="newFormulaName"
             spellcheck="false"
             type="text"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all focus:outline-none"
             @contextmenu="onContextMenu"
             :placeholder="t('QuickInput.enterFormulaName')"
           />
@@ -126,8 +133,9 @@
             v-model="newFormulaContent"
             spellcheck="false"
             rows="5"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none focus:outline-none"
             :placeholder="t('QuickInput.enterLatexFormula')"
+            @contextmenu="onContextMenu"
           ></textarea>
         </div>
       </div>
@@ -184,7 +192,7 @@
             v-model="newFormulaName"
             spellcheck="false"
             type="text"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all focus:outline-none"
             @contextmenu="onContextMenu"
             :placeholder="t('QuickInput.enterFormulaName')"
           />
@@ -198,7 +206,8 @@
             v-model="newFormulaContent"
             spellcheck="false"
             rows="5"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none focus:outline-none"
+            @contextmenu="onContextMenu"
             :placeholder="t('QuickInput.enterLatexFormula')"
           ></textarea>
         </div>
