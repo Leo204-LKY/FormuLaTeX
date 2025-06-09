@@ -11,7 +11,7 @@
       <div
         v-if="visible"
         :style="tooltipStyle"
-        class="fixed bg-red-500 text-white border border-red-500 rounded px-2 py-1 text-xs z-50 whitespace-nowrap pointer-events-auto"
+        class="fixed bg-red-500 text-white border border-red-500 rounded px-2 py-1 text-xs z-50 whitespace-nowrap pointer-events-auto select-none"
       >
         {{ content }}
         <span
