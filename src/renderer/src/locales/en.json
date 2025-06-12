@@ -11,22 +11,16 @@
     "mathBb": "MathBB",
     "crossMark": "✕",
     "save": "Save",
-    "new": "+ New",
     "emptyInputTitle": "Empty Input",
     "emptyInputMessage": "Can't be empty! Please check and fill the input."
   },
   "FormulaEdit": {
     "formulaEditing": "Formula Editing",
-    "enterApiConfig": "Enter API Config:",
-    "formulaApiKeySaveTitle": "Success",
-    "formulaApiKeySaveMessage": "SimpleTex ID and secret has been saved successfully!",
     "formulaRecognitionSuccessTitle": "Formula Recognition Success",
     "formulaRecognitionSuccessMessage": "Formula has been recognized successfully!",
     "simpleTexNotSetTitle": "SimpleTex ID and Secret Not Set",
     "simpleTexNotSetMessage": "You have not set the SimpleTex API config, please set it in the settings.",
     "formulaInputPlaceholder": "Enter your formula latex here, e.g. {0}",
-    "simpleTexAppId": "SimpleTex App ID",
-    "simpleTexAppSecret": "SimpleTex App Secret",
     "uploadImage": "Upload Image",
     "dragAndDropImage": "Drag and drop an image here, or click to select an image",
     "supportImageTypes": "Supported image types: PNG, JPG, JPEG",
@@ -36,6 +30,7 @@
   },
   "QuickInput": {
     "quickInput": "Quick Input",
+    "newFormula": "New Formula",
     "tags": {
       "History": "History",
       "Common": "Common",
@@ -50,22 +45,20 @@
     "editFormula": "Edit Formula",
     "enterFormulaName": "Enter formula name...",
     "enterLatexFormula": "Enter LaTeX formula...",
-    "saveFormula": "Save Formula"
+    "saveFormula": "Save Formula",
+    "noSavedQuickInputTip": "No formulas saved yet. Create a new formula now!"
   },
   "SideBar": {
     "history": "History",
     "chatTitle": "Chat Title",
-    "chatApiSaveTitle": "Success",
-    "chatApiSaveMessage": "DeepSeek API Key has been saved successfully!",
-    "chatApiExistUpdateTitle": "Update API",
-    "chatApiExistUpdateMessage": "DeepSeek API already exists, do you want to update it?",
+    "newChat": "New Chat",
     "chatApiNotSetTitle": "DeepSeek API Key Not Set",
     "chatApiNotSetMessage": "You have not set the DeepSeek API config, please set it in the settings.",
-    "enterApiKey": "Enter API Key",
-    "chatApiKey": "DeepSeek API Key",
     "chatInputPlaceholder": "Ask me anything about formula...",
     "send": "Send",
-    "newChatDefaultTitle": "New Chat"
+    "newChatDefaultTitle": "New Chat",
+    "emptyMessageTip": "Start asking by typing below!",
+    "noHistoryTip": "No chat history yet. Start a new chat!"
   },
   "SymbolSelect": {
     "types": {
@@ -79,5 +72,88 @@
       "Equations": "Equations",
       "Accents": "Accents"
     }
+  },
+  "ErrorDialog": {
+    "title": "An Error Occurred",
+    "logfileTip": "Log file has been saved to: ",
+    "reportTip": "If the issue persists, please report it on GitHub and attach the log file.",
+    "dismiss": "Dismiss",
+    "showFile": "Show File",
+    "report": "Report"
+  },
+  "WelcomeCard": {
+    "title": "Welcome to FormuLaTeX",
+    "subtitle": "Please complete the initial configuration",
+    "language": "Select language: ",
+    "skipButton": "Skip for now",
+    "submitButton": "Complete",
+    "okButton": "OK",
+    "deepseekApiKey": "DeepSeek API Key",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret"
+  },
+  "UserTour": {
+    "title": "User Tour",
+    "subtitle": "This is your first time using FormuLaTeX. 🤗 Do you need a brief introduction to the app's features? (You can always restart the tour in Settings)",
+    "Nobutton": "No, thanks",
+    "Yesbutton": "Yes, start tour",
+    "step1": {
+      "whole": "This is the Quick Input area where you can create and manage your formulas.",
+      "createFormula-button": "Click the New button to create a new formula.",
+      "tags-list": "This is the tag list where you can manage formulas under different categories.",
+      "expression-list": "This shows the formulas under the current tag. Right-click a formula to edit or delete it."
+    },
+    "step2": {
+      "whole": "This is the Symbol Select area where you can choose commonly used mathematical symbols."
+    },
+    "step3": {
+      "whole": "This is the Formula Editing & Preview area. You can edit formula content on the left and preview it on the right.",
+      "tools-bar": "This is the toolbar where you can choose the font, size, and color of the formula.",
+      "upload-button": "Click the Upload Image button to recognize formulas in an image.",
+      "askAI-button": "Click the Ask AI button to jump to the AI chat area."
+    },
+    "step4": {
+      "whole": "Click this button to open the AI chat panel, where you can ask any questions about formulas."
+    },
+    "step5": {
+      "settings-button": "The Settings menu is located here, where you can configure the app language, DeepSeek and SimpleTex API settings, and more."
+    },
+    "buttonSkip": "Skip",
+    "buttonPrevious": "Previous",
+    "buttonNext": "Next",
+    "buttonStop": "Finish"
+  },
+  "SettingsMenu": {
+    "title": "Settings",
+    "restartTour": "Restart User Tour",
+    "openGitHubRepo": "Open GitHub Repository",
+    "openUserManual": "Open User Manual",
+    "bugReportAndFeedback": "Bug Report and Feedback",
+    "language": "Language",
+    "deepseekApiSettings": "DeepSeek API Settings",
+    "deepseekApiKey": "API Key",
+    "simpleTexApiSettings": "SimpleTex API Settings",
+    "simpleTexAppId": "App ID",
+    "simpleTexAppSecret": "App Secret",
+    "version": "Version: {0}",
+    "developBy": "By Group Kappa",
+    "translator": "Translator: {0}",
+    "deepseekApiKeyEmptyError": "API Key cannot be empty!",
+    "simpleTexAppIdEmptyError": "App ID cannot be empty!",
+    "simpleTexAppSecretEmptyError": "App Secret cannot be empty!",
+    "saveOrCancelFirst": "Please save or cancel editing first.",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "notSet": "Not Set"
+  },
+  "contextMenu": {
+    "cut": "Cut",
+    "copy": "Copy",
+    "paste": "Paste",
+    "selectAll": "Select All",
+    "edit": "Edit",
+    "delete": "Delete"
   }
 }

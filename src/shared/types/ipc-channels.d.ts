@@ -20,6 +20,26 @@ export {};
 declare global {
   interface Window {
     /**
+     * Backend Error API
+     */
+    backendErrorApi: {
+      /**
+       * Backend error callback
+       * @param callback Callback function to handle backend errors
+       */
+      onBackendError: (
+        callback: (
+          error: {
+            type: string;
+            message: string;
+            stack?: string;
+          },
+          logFilePath: string
+        ) => void
+      ) => void;
+    };
+
+    /**
      * Chat client API
      */
     chatClientApi: {
@@ -112,6 +132,13 @@ declare global {
        * @param apiKey API key
        */
       deepseekUpdateApiKey: (apiKey: string) => Promise<void>;
+
+      /**
+       * Generates a system prompt for the AI assistant in the FormuLaTeX App.
+       * @param replyLanguage The language in which the AI should respond to the user.
+       * @returns The system prompt for the AI assistant.
+       */
+      getSystemPrompt: (replyLanguage: string) => Promise<string>;
     };
 
     /**
@@ -467,21 +494,82 @@ declare global {
 
       /**
        * Get app setting
-       * @param settingName The name of the setting to retrieve
-       * @returns The value of the setting or null if it does not exist
        */
-      getAppSetting: (
-        settingName: keyof AppSettingsConfig
-      ) => Promise<string | null>;
+      getAppSetting: {
+        /**
+         * Get app setting
+         * @param settingName The name of the setting to retrieve
+         * @returns The value of the setting or null if it does not exist
+         */
+        <K extends keyof AppSettingsConfig>(
+          settingName: K
+        ): Promise<AppSettingsConfig[K] | undefined>;
+
+        /**
+         * Get app setting
+         * @param settingName The name of the setting to retrieve
+         * @param defaultValue The default value to return if the setting does not exist
+         * @returns The value of the setting or defaultValue if it does not exist
+         */
+        <K extends keyof AppSettingsConfig>(
+          settingName: K,
+          defaultValue: NonNullable<AppSettingsConfig[K]>
+        ): Promise<NonNullable<AppSettingsConfig[K]>>;
+      };
 
       /**
        * Save app setting
        * @param settingName The name of the setting to save
        * @param value The value to save for the setting
        */
-      saveAppSetting: (
-        settingName: keyof AppSettingsConfig,
-        value: string
+      saveAppSetting: <K extends keyof AppSettingsConfig>(
+        settingName: K,
+        value: AppSettingsConfig[K]
+      ) => Promise<void>;
+
+      /**
+       * Save log file to app data directory
+       * @param logContent Content to save in the log file
+       * @param logFileName Name of the log file (default: yyyy-MM-dd-HH-mm-ss-log)
+       * @returns The path to the saved log file
+       */
+      saveLog: (logContent: string, logFileName: string?) => Promise<string>;
+
+      /**
+       * Open file directory in system file explorer
+       * @param filePath Path to the file or directory to open
+       */
+      showFileInFolder: (filePath: string) => Promise<void>;
+
+      /**
+       * Open URL in default browser
+       * @param url URL to open
+       */
+      openUrlInBrowser: (url: string) => Promise<void>;
+
+      /**
+       * Get app version
+       * @returns The version of the app (e.g., "1.0.0")
+       */
+      getAppVersion: () => Promise<string>;
+    };
+
+    utilsApi: {
+      /**
+       * Show context menu
+       */
+      showContextMenu: (
+        params: {
+          selectedText: string;
+          hasSelection: boolean;
+          isInput: boolean;
+        },
+        locales: {
+          cut: string;
+          copy: string;
+          paste: string;
+          selectAll: string;
+        }
       ) => Promise<void>;
     };
   }

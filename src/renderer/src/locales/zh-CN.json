@@ -1,5 +1,5 @@
 {
-  "language": "中文（简体）",
+  "language": "简体中文（中国大陆）",
   "translator": "Leo204-LKY",
   "appName": "FormuLaTeX",
   "appTitle": "FormuLaTeX - 基于 AI 的公式工具",
@@ -11,22 +11,16 @@
     "mathBb": "MathBB",
     "crossMark": "✕",
     "save": "保存",
-    "new": "+ 新建",
     "emptyInputTitle": "输入为空",
     "emptyInputMessage": "输入不能为空！请检查并填写输入内容。"
   },
   "FormulaEdit": {
     "formulaEditing": "公式编辑",
-    "enterApiConfig": "输入 API 配置：",
-    "formulaApiKeySaveTitle": "成功",
-    "formulaApiKeySaveMessage": "SimpleTex ID 和密钥已成功保存！",
     "formulaRecognitionSuccessTitle": "公式识别成功",
     "formulaRecognitionSuccessMessage": "公式已成功识别！",
     "simpleTexNotSetTitle": "SimpleTex ID 和密钥未设置",
     "simpleTexNotSetMessage": "尚未设置 SimpleTex API 配置，请在设置中进行配置。",
     "formulaInputPlaceholder": "请输入公式 LaTeX，例如 {0}",
-    "simpleTexAppId": "SimpleTex App ID",
-    "simpleTexAppSecret": "SimpleTex App Secret",
     "uploadImage": "上传图片",
     "dragAndDropImage": "拖放图片到此处，或点击选择图片",
     "supportImageTypes": "支持的图片类型：PNG，JPG，JPEG",
@@ -36,6 +30,7 @@
   },
   "QuickInput": {
     "quickInput": "快速输入",
+    "newFormula": "新建公式",
     "tags": {
       "History": "历史",
       "Common": "通用",
@@ -50,22 +45,20 @@
     "editFormula": "编辑公式",
     "enterFormulaName": "输入公式名称…",
     "enterLatexFormula": "输入 LaTeX 公式…",
-    "saveFormula": "保存公式"
+    "saveFormula": "保存公式",
+    "noSavedQuickInputTip": "尚未保存任何公式。快来创建新公式吧！"
   },
   "SideBar": {
     "history": "历史对话",
     "chatTitle": "对话标题",
-    "chatApiSaveTitle": "成功",
-    "chatApiSaveMessage": "DeepSeek API 密钥已成功保存！",
-    "chatApiExistUpdateTitle": "更新 API",
-    "chatApiExistUpdateMessage": "DeepSeek API 已存在，是否要更新？",
+    "newChat": "新对话",
     "chatApiNotSetTitle": "DeepSeek API 密钥未设置",
     "chatApiNotSetMessage": "尚未设置 DeepSeek API 配置，请在设置中进行配置。",
-    "enterApiKey": "输入 API 密钥",
-    "chatApiKey": "DeepSeek API Key",
     "chatInputPlaceholder": "问我任何关于公式的问题...",
     "send": "发送",
-    "newChatDefaultTitle": "新对话"
+    "newChatDefaultTitle": "新对话",
+    "emptyMessageTip": "开始提问，请在下方输入！",
+    "noHistoryTip": "尚无对话历史。开始新对话！"
   },
   "SymbolSelect": {
     "types": {
@@ -79,5 +72,88 @@
       "Equations": "方程",
       "Accents": "重音符号"
     }
+  },
+  "ErrorDialog": {
+    "title": "发生错误",
+    "logfileTip": "日志文件已保存到：",
+    "reportTip": "如果问题仍然存在，请在 GitHub 上向我们反馈，并附上日志文件。",
+    "dismiss": "忽略",
+    "showFile": "查看文件",
+    "report": "报告问题"
+  },
+  "WelcomeCard": {
+    "title": "欢迎使用 FormuLaTeX",
+    "subtitle": "请完成初始设置",
+    "language": "选择语言：",
+    "skipButton": "暂时跳过",
+    "submitButton": "完成",
+    "okButton": "确定",
+    "deepseekApiKey": "DeepSeek API 密钥",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret"
+  },
+  "UserTour": {
+    "title": "用户引导",
+    "subtitle": "这是你第一次使用FormuLaTeX。🤗是否需要操作引导？（可以随时在设置中重新开始引导）",
+    "Nobutton": "不需要",
+    "Yesbutton": "需要",
+    "step1": {
+      "whole": "这里是快速输入区域，你可以在这里创建和管理公式。",
+      "createFormula-button": "点击新建按钮，创建公式。",
+      "tags-list": "这是标签列表，你可以管理不同标签下的公式。",
+      "expression-list": "这里展示当前标签下的公式，右键公式区域可以修改和删除公式。"
+    },
+    "step2": {
+      "whole": "这里是符号选择区域，你可以在这里选择常用的数学符号。"
+    },
+    "step3": {
+      "whole": "这里是公式修改和预览区域，你可以在左侧编辑公式内容，并在右侧预览它们。",
+      "tools-bar": "这是工具栏，你可以在这里选择公式的字体、大小、颜色。",
+      "upload-button": "点击上传图片按钮，识别含有公式的图片。",
+      "askAI-button": "点击询问 AI 按钮，跳转到 AI 对话区域。"
+    },
+    "step4": {
+      "whole": "点击这个按钮可以打开 AI 对话界面，你可以在这里询问任何有关公式的问题。"
+    },
+    "step5": {
+      "settings-button": "设置菜单位于这里，你可以在这里配置 App 语言、DeepSeek 和 SimpleTex API 的相关信息等。"
+    },
+    "buttonSkip": "跳过",
+    "buttonPrevious": "上一条",
+    "buttonNext": "下一条",
+    "buttonStop": "完成"
+  },
+  "SettingsMenu": {
+    "title": "设置",
+    "restartTour": "重新开始用户引导",
+    "openGitHubRepo": "打开 GitHub 仓库",
+    "openUserManual": "打开用户手册",
+    "bugReportAndFeedback": "问题反馈与建议",
+    "language": "语言",
+    "deepseekApiSettings": "DeepSeek API 设置",
+    "deepseekApiKey": "API 密钥",
+    "simpleTexApiSettings": "SimpleTex API 设置",
+    "simpleTexAppId": "App ID",
+    "simpleTexAppSecret": "App Secret",
+    "version": "版本：{0}",
+    "developBy": "由 Group Kappa 开发",
+    "translator": "翻译者: {0}",
+    "deepseekApiKeyEmptyError": "API 密钥不能为空",
+    "simpleTexAppIdEmptyError": "App ID 不能为空",
+    "simpleTexAppSecretEmptyError": "App Secret 不能为空",
+    "saveOrCancelFirst": "请先保存或取消修改",
+    "edit": "编辑",
+    "save": "保存",
+    "cancel": "取消",
+    "close": "关闭",
+    "notSet": "未设置"
+  },
+  "contextMenu": {
+    "cut": "剪切",
+    "copy": "复制",
+    "paste": "粘贴",
+    "selectAll": "全选",
+    "edit": "编辑",
+    "delete": "删除"
   }
 }

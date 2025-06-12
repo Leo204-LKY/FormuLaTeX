@@ -1,0 +1,159 @@
+{
+  "language": "繁體中文（香港）",
+  "translator": "AI 翻譯（結果可能不準確）",
+  "appName": "FormuLaTeX",
+  "appTitle": "FormuLaTeX - 基於 AI 的公式工具",
+  "common": {
+    "ok": "OK",
+    "cancel": "取消",
+    "mathIt": "MathIt",
+    "mathSf": "MathSF",
+    "mathBb": "MathBB",
+    "crossMark": "✕",
+    "save": "儲存",
+    "emptyInputTitle": "輸入為空",
+    "emptyInputMessage": "輸入不能為空！請檢查並填寫輸入內容。"
+  },
+  "FormulaEdit": {
+    "formulaEditing": "公式編輯",
+    "formulaRecognitionSuccessTitle": "公式識別成功",
+    "formulaRecognitionSuccessMessage": "已成功識別公式！",
+    "simpleTexNotSetTitle": "SimpleTex ID 及密鑰未設定",
+    "simpleTexNotSetMessage": "尚未設定 SimpleTex API 配置，請在設定中設定。",
+    "formulaInputPlaceholder": "請輸入公式 LaTeX，例如 {0}",
+    "uploadImage": "上傳圖片",
+    "dragAndDropImage": "將圖片拖放到此處，或點擊以選擇圖片",
+    "supportImageTypes": "支援的圖片格式：PNG，JPG，JPEG",
+    "askAi": "詢問 AI",
+    "formulaPreview": "公式預覽",
+    "renderError": "錯誤：公式渲染失敗！"
+  },
+  "QuickInput": {
+    "quickInput": "快速輸入",
+    "newFormula": "新建公式",
+    "tags": {
+      "History": "歷史",
+      "Common": "通用",
+      "Math": "數學",
+      "Physics": "物理"
+    },
+    "createSuccessTitle": "成功",
+    "createSuccessMessage": "公式已成功建立！",
+    "createFormula": "建立新公式",
+    "formulaName": "公式名稱",
+    "formulaContent": "公式內容",
+    "editFormula": "編輯公式",
+    "enterFormulaName": "輸入公式名稱…",
+    "enterLatexFormula": "輸入 LaTeX 公式…",
+    "saveFormula": "儲存公式",
+    "noSavedQuickInputTip": "尚未儲存任何公式。快來建立新公式吧！"
+  },
+  "SideBar": {
+    "history": "歷史對話",
+    "chatTitle": "對話標題",
+    "newChat": "新對話",
+    "chatApiNotSetTitle": "DeepSeek API 金鑰未設定",
+    "chatApiNotSetMessage": "尚未設定 DeepSeek API 配置，請在設定中設定。",
+    "chatInputPlaceholder": "問我任何有關公式的問題…",
+    "send": "發送",
+    "newChatDefaultTitle": "新對話",
+    "emptyMessageTip": "開始提問，請在下方輸入！",
+    "noHistoryTip": "尚無對話歷史。開始新對話！"
+  },
+  "SymbolSelect": {
+    "types": {
+      "Common": "常用",
+      "Operations": "運算符",
+      "Relations": "關係",
+      "Arrows": "箭咀",
+      "Greek": "希臘字母",
+      "Matric": "矩陣",
+      "Mark": "標記",
+      "Equations": "方程",
+      "Accents": "重音符號"
+    }
+  },
+  "ErrorDialog": {
+    "title": "發生錯誤",
+    "logfileTip": "日誌檔已儲存到：",
+    "reportTip": "如問題仍然存在，請在 GitHub 上回報，並附上日誌檔案。",
+    "dismiss": "忽略",
+    "showFile": "查看檔案",
+    "report": "回報問題"
+  },
+  "WelcomeCard": {
+    "title": "歡迎使用 FormuLaTeX",
+    "subtitle": "請完成初始設定",
+    "language": "選擇語言：",
+    "skipButton": "暫時跳過",
+    "submitButton": "完成",
+    "okButton": "確定",
+    "deepseekApiKey": "DeepSeek API 金鑰",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret"
+  },
+  "UserTour": {
+    "title": "使用者導覽",
+    "subtitle": "這是你第一次使用FormuLaTeX。🤗是否需要操作導覽？（可隨時在設定中重新開始）",
+    "Nobutton": "不需要",
+    "Yesbutton": "需要",
+    "step1": {
+      "whole": "這裏是快速輸入區域，你可以在這裏建立及管理公式。",
+      "createFormula-button": "點擊新增按鈕，建立公式。",
+      "tags-list": "這是標籤清單，你可以管理不同標籤下的公式。",
+      "expression-list": "這裏展示當前標籤下的公式，右鍵可修改或刪除公式。"
+    },
+    "step2": {
+      "whole": "這裏是符號選擇區域，你可以在這裏選擇常用的數學符號。"
+    },
+    "step3": {
+      "whole": "這裏是公式修改及預覽區域，你可在左邊編輯內容，右邊預覽公式。",
+      "tools-bar": "這是工具列，你可在這裏選擇公式的字型、大小、顏色。",
+      "upload-button": "點擊上傳圖片按鈕，識別包含公式的圖片。",
+      "askAI-button": "點擊詢問 AI 按鈕，跳到 AI 對話區。"
+    },
+    "step4": {
+      "whole": "點擊此按鈕可開啟 AI 對話界面，在這裏詢問任何有關公式的問題。"
+    },
+    "step5": {
+      "settings-button": "設定選單位於此，你可以在這裏設定 App 語言、DeepSeek 及 SimpleTex API 等相關資料。"
+    },
+    "buttonSkip": "跳過",
+    "buttonPrevious": "上一條",
+    "buttonNext": "下一條",
+    "buttonStop": "完成"
+  },
+  "SettingsMenu": {
+    "title": "設定",
+    "restartTour": "重新開始使用者導覽",
+    "openGitHubRepo": "開啟 GitHub 倉庫",
+    "openUserManual": "開啟使用者手冊",
+    "bugReportAndFeedback": "問題回饋與建議",
+    "language": "語言",
+    "deepseekApiSettings": "DeepSeek API 設定",
+    "deepseekApiKey": "API 金鑰",
+    "simpleTexApiSettings": "SimpleTex API 設定",
+    "simpleTexAppId": "App ID",
+    "simpleTexAppSecret": "App Secret",
+    "version": "版本：{0}",
+    "developBy": "由 Group Kappa 開發",
+    "translator": "譯者: {0}",
+    "deepseekApiKeyEmptyError": "API 金鑰不能為空",
+    "simpleTexAppIdEmptyError": "App ID 不能為空",
+    "simpleTexAppSecretEmptyError": "App Secret 不能為空",
+    "saveOrCancelFirst": "請先儲存或取消修改",
+    "edit": "編輯",
+    "save": "儲存",
+    "cancel": "取消",
+    "close": "關閉",
+    "notSet": "未設定"
+  },
+  "contextMenu": {
+    "cut": "剪下",
+    "copy": "複製",
+    "paste": "貼上",
+    "selectAll": "全選",
+    "edit": "編輯",
+    "delete": "刪除"
+  }
+}

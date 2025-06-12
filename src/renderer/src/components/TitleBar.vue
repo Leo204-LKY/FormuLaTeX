@@ -10,37 +10,29 @@
       />
       <span class="text-lg font-bold text-gray-800">FormuLaTeX</span>
     </div>
-    <select
-      v-model="currentLocale"
-      @change="changeLanguage"
-      class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-700"
+    <button
+      id="settings-button"
+      class="w-10 h-10 flex items-center justify-center border border-gray-300 bg-white rounded-md transition-colors duration-150 hover:bg-blue-100 focus:outline-none focus:ring-2"
+      @click="isSettingsOpen = true"
     >
-      <option value="en">English</option>
-      <option value="zh-CN">简体中文</option>
-    </select>
+      <img src="../assets/icons/setting.svg" alt="Settings" />
+    </button>
+    <SettingsMenu
+      :is-open="isSettingsOpen"
+      @close="isSettingsOpen = false"
+      @restart-tour="onRestartTour"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
-  import { getI18n } from '../utils/locales';
-  import type { createI18n } from 'vue-i18n';
+  import { ref } from 'vue';
+  import SettingsMenu from '../sub-components/SettingsMenu.vue';
 
-  const currentLocale = ref('en');
-  let i18n: ReturnType<typeof createI18n> | undefined;
+  const isSettingsOpen = ref(false);
 
-  onMounted(async () => {
-    i18n = await getI18n();
-    currentLocale.value = i18n!.global.locale as string;
-  });
-
-  function changeLanguage() {
-    if (i18n) {
-      i18n.global.locale = currentLocale.value;
-      window.servicesApi.saveAppSetting('language', currentLocale.value);
-      document.title = (i18n.global as import('vue-i18n').Composer).t(
-        'appTitle'
-      );
-    }
+  const emit = defineEmits(['restart-tour']);
+  function onRestartTour() {
+    emit('restart-tour');
   }
 </script>

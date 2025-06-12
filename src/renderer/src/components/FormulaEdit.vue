@@ -1,21 +1,15 @@
 <template>
   <div class="bg-white border border-gray-200 rounded-md p-4 h-full flex">
-    <AlterItem
-      class="z-[9999]"
-      v-model:visible="alertVisible_empty"
-      :title="t('common.emptyInputTitle')"
-      :message="t('common.emptyInputMessage')"
-      :buttons="[{ text: t('common.ok'), type: 'primary' }]"
-    />
     <!-- Formula Editing Area -->
     <div class="w-1/2 border-r border-dashed border-blue-500 p-4 h-full">
-      <h2 class="text-lg font-bold mb-4">
+      <h2 class="select-none text-lg font-bold mb-4">
         {{ t('FormulaEdit.formulaEditing') }}
       </h2>
 
       <!-- Toolbar -->
       <div
-        class="flex items-center space-x-2 border border-dashed border-gray-200 p-2 rounded-md"
+        id="tools-bar"
+        class="select-none flex items-center space-x-2 border border-dashed border-gray-200 p-2 rounded-md"
       >
         <!-- Undo Button -->
         <button
@@ -80,7 +74,6 @@
             <img src="../assets/icons/color.svg" />
           </button>
           <!-- Color Picker Panel -->
-          <!-- TODO: Add color picker component -->
           <div
             v-if="colorPickerVisible"
             class="absolute z-10 top-10 left-0 bg-white border border-gray-300 rounded-md p-2 shadow-md"
@@ -100,54 +93,6 @@
         <button class="btn-icon" @click="toggleClear">
           <img src="../assets/icons/clear.svg" />
         </button>
-
-        <!-- API Key Save Alert -->
-        <AlterItem
-          v-model:visible="alertVisible1"
-          :title="t('FormulaEdit.formulaApiKeySaveTitle')"
-          :message="t('FormulaEdit.formulaApiKeySaveMessage')"
-          :buttons="[{ text: t('common.ok'), type: 'primary' }]"
-        />
-
-        <!-- Settings Section -->
-        <div class="flex items-center space-x-2 ml-auto">
-          <div class="relative">
-            <button
-              class="btn-icon w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-200 active:bg-gray-300"
-              @click="toggleSetting"
-            >
-              <img src="../assets/icons/setting.svg" />
-            </button>
-            <!-- Settings Input Panel -->
-            <div
-              v-if="showSetting"
-              class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg p-4 z-30"
-            >
-              <label class="block text-sm font-medium mb-2">
-                {{ t('FormulaEdit.enterApiConfig') }}
-              </label>
-              <input
-                type="text"
-                spellcheck="false"
-                v-model="appId"
-                :placeholder="t('FormulaEdit.simpleTexAppId')"
-                class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500"
-              />
-              <input
-                type="text"
-                spellcheck="false"
-                v-model="appSecret"
-                :placeholder="t('FormulaEdit.simpleTexAppSecret')"
-                class="w-full py-1.5 text-xs border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 mt-2"
-              />
-              <div class="flex justify-center mt-1">
-                <button class="btn-style3 btn-status2" @click="saveConfig">
-                  {{ t('common.save') }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Latex Input Textarea -->
@@ -155,8 +100,9 @@
         ref="textareaRef"
         v-model="latexInput"
         spellcheck="false"
-        class="w-full border border-gray-200 p-2 rounded-md h-3/4"
+        class="w-full border border-gray-200 p-2 rounded-md h-3/4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none focus:outline-none"
         @input="onInputChange"
+        @contextmenu="onContextMenu"
         :placeholder="
           t('FormulaEdit.formulaInputPlaceholder', ['\\frac{a}{b} = c...'])
         "
@@ -179,15 +125,19 @@
       />
 
       <!-- Image Upload Section -->
-      <div class="flex justify-around items-center mt-4">
-        <button class="btn-style3 btn-status2" @click="showUploadModal = true">
+      <div class="select-none flex justify-around items-center mt-4">
+        <button
+          id="upload-button"
+          class="btn-style3 btn-status2"
+          @click="showUploadModal = true"
+        >
           {{ t('FormulaEdit.uploadImage') }}
         </button>
 
         <!-- Image Upload Modal -->
         <div
           v-if="showUploadModal"
-          class="fixed inset-0 bg-white/10 backdrop-blur-sm bg-opacity-40 flex items-center justify-center z-50"
+          class="select-none fixed inset-0 bg-white/10 backdrop-blur-sm bg-opacity-40 flex items-center justify-center z-50"
         >
           <div
             class="bg-white rounded-lg p-6 w-96 shadow-lg relative"
@@ -205,7 +155,7 @@
             </h3>
 
             <div
-              class="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 cursor-pointer hover:border-blue-400 relative"
+              class="select-none border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-gray-500 cursor-pointer hover:border-blue-400 relative"
               @click="triggerFileInput"
             >
               <!-- Image Preview -->
@@ -246,18 +196,22 @@
         </div>
 
         <!-- AI Analysis Button -->
+        <!-- AI Analysis Button -->
         <button
-          class="bg-purple-500 text-white text-sm px-4 py-2 rounded-md"
+          id="askAI-button"
+          class="select-none text-sm px-4 py-2 rounded-md font-semibold border-2 bg-white transition-all duration-300 relative overflow-hidden"
           @click="handleAIAnalysis"
         >
-          {{ t('FormulaEdit.askAi') }}
+          <span>
+            {{ t('FormulaEdit.askAi') }}
+          </span>
         </button>
       </div>
     </div>
 
     <!-- Formula Preview Area -->
     <div class="flex-1 p-4 h-full">
-      <h2 class="text-lg font-bold mb-4">
+      <h2 class="select-none text-lg font-bold mb-4">
         {{ t('FormulaEdit.formulaPreview') }}
       </h2>
       <div
@@ -276,10 +230,11 @@
   import { isDrawerOpenEventBus, inputEventBus } from '../eventBus';
   import AlterItem from '../sub-components/AlterItem.vue';
   import { Buffer } from 'buffer';
-  import type { SimpleTexConfig } from '../../../server';
+  import type { SimpleTexConfig } from '../../../shared/interfaces';
   import katex from 'katex';
   import 'katex/dist/katex.min.css';
   import { useI18n } from 'vue-i18n';
+  import { onContextMenu } from '../utils/context-menu';
 
   // i18n
   const { t } = useI18n();
@@ -297,17 +252,13 @@
   const colorPickerRef = ref<HTMLElement | null>(null);
 
   // UI State
-  const alertVisible1 = ref(false); // API Key saved alert
   const alertVisible2 = ref(false); // OCR success alert
   const alertVisible3 = ref(false); // API Key missing alert
-  const alertVisible_empty = ref(false); // Empty input alert
   const colorPickerVisible = ref(false);
   const sizePickerVisible = ref(false);
   const showSetting = ref(false);
 
   // Configuration State
-  const appId = ref('');
-  const appSecret = ref('');
   const selectedFont = ref('mathit');
 
   // Constant Data
@@ -455,13 +406,6 @@
   const previewImage = ref<string | null>(null);
   const dragStartPosition = ref<{ x: number; y: number } | null>(null);
 
-  // Settings Management
-  function toggleSetting() {
-    showSetting.value = !showSetting.value;
-    appId.value = '';
-    appSecret.value = '';
-  }
-
   // AI Analysis Handler
   const handleAIAnalysis = () => {
     console.log('AI Analysis triggered');
@@ -561,22 +505,78 @@
   const handleDeletePreview = () => {
     previewImage.value = null;
   };
-
-  // Save API Configuration
-  async function saveConfig() {
-    if (!appId.value || !appSecret.value) {
-      alertVisible_empty.value = true; // Show error alert
-      return;
-    }
-    await window.servicesApi.saveJsonConfig('simpletex', {
-      appId: appId.value,
-      appSecret: appSecret.value,
-    } as SimpleTexConfig);
-
-    // Reset UI
-    appId.value = '';
-    appSecret.value = '';
-    showSetting.value = false;
-    alertVisible1.value = true; // Show success alert
-  }
 </script>
+
+<style scoped>
+  #askAI-button {
+    background: #fff;
+    color: #8b5cf6;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+  }
+
+  #askAI-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6);
+    border-radius: 0.375rem;
+    padding: 2px;
+  }
+
+  #askAI-button::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    z-index: -1;
+    background: #fff;
+    border-radius: calc(0.375rem - 2px);
+    transition: opacity 0.3s ease;
+  }
+
+  #askAI-button:hover::before {
+    opacity: 0;
+  }
+
+  #askAI-button:hover::after {
+    background: linear-gradient(120deg, #ec4899, #8b5cf6, #3b82f6, #ec4899);
+    background-size: 200% 200%;
+    animation: gradient-slide 3s ease-in-out infinite;
+  }
+
+  #askAI-button:hover {
+    color: #fff;
+  }
+
+  #askAI-button:hover {
+    color: #fff;
+  }
+
+  #askAI-button span {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes gradient-slide {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+</style>

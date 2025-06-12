@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white border border-gray-200 rounded-md p-4 flex flex-col h-screen"
+    class="select-none bg-white border border-gray-200 rounded-md p-4 flex flex-col h-screen"
     style="height: 100%"
   >
     <AlterItem
@@ -15,10 +15,12 @@
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-bold">{{ t('QuickInput.quickInput') }}</h2>
       <button
-        class="text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-200 text-white hover:bg-blue-400 transition-colors"
+        id="createFormula-button"
+        class="flex gap-1 text-sm px-3 py-1.5 items-center justify-center rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors"
         @click="openFormulaModal()"
       >
-        {{ t('common.new') }}
+        <PlusCircle />
+        {{ t('QuickInput.newFormula') }}
       </button>
     </div>
 
@@ -46,6 +48,13 @@
       ref="expressionListRef"
       class="flex-1 overflow-y-auto scroll-hidden pr-3"
     >
+      <div
+        v-if="displayItems.length === 0"
+        class="flex items-center justify-center text-lg text-center h-full w-full text-gray-400 select-none"
+        style="min-height: 200px"
+      >
+        {{ t('QuickInput.noSavedQuickInputTip') }}
+      </div>
       <ExpressionItem
         v-for="expr in displayItems"
         :key="expr.formula_id"
@@ -73,6 +82,7 @@
 
   <!-- Success alert after creating formula -->
   <AlterItem
+    class="select-none"
     v-model:visible="alertVisible_create"
     :title="t('QuickInput.createSuccessTitle')"
     :message="t('QuickInput.createSuccessMessage')"
@@ -82,7 +92,7 @@
   <!-- Create formula modal -->
   <div
     v-if="isModalOpen"
-    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    class="select-none fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
   >
     <div
       class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl relative transform transition-all duration-300 scale-100 opacity-100"
@@ -109,7 +119,8 @@
             v-model="newFormulaName"
             spellcheck="false"
             type="text"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all focus:outline-none"
+            @contextmenu="onContextMenu"
             :placeholder="t('QuickInput.enterFormulaName')"
           />
         </div>
@@ -122,8 +133,9 @@
             v-model="newFormulaContent"
             spellcheck="false"
             rows="5"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none focus:outline-none"
             :placeholder="t('QuickInput.enterLatexFormula')"
+            @contextmenu="onContextMenu"
           ></textarea>
         </div>
       </div>
@@ -144,7 +156,7 @@
           class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center min-w-[100px]"
           @click="saveFormula"
         >
-          Save Formula
+          {{ t('QuickInput.saveFormula') }}
         </button>
       </div>
     </div>
@@ -153,7 +165,7 @@
   <!-- Edit formula modal -->
   <div
     v-if="isModalOpen_edit"
-    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    class="select-none fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
   >
     <div
       class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl relative transform transition-all duration-300 scale-100 opacity-100"
@@ -180,7 +192,8 @@
             v-model="newFormulaName"
             spellcheck="false"
             type="text"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all focus:outline-none"
+            @contextmenu="onContextMenu"
             :placeholder="t('QuickInput.enterFormulaName')"
           />
         </div>
@@ -193,14 +206,15 @@
             v-model="newFormulaContent"
             spellcheck="false"
             rows="5"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none focus:outline-none"
+            @contextmenu="onContextMenu"
             :placeholder="t('QuickInput.enterLatexFormula')"
           ></textarea>
         </div>
       </div>
 
       <!-- Action buttons -->
-      <div class="mt-7 flex justify-center space-x-4">
+      <div class="select-none mt-7 flex justify-center space-x-4">
         <button
           class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]"
           @click="
@@ -236,6 +250,8 @@
   } from '../utils/formulaDB';
   import type { formulas } from '@prisma/client';
   import { useI18n } from 'vue-i18n';
+  import { onContextMenu } from '../utils/context-menu';
+  import PlusCircle from '../assets/icons/PlusCircle.vue';
 
   // i18n
   const { t } = useI18n();

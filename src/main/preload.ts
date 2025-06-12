@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { AppSettingsConfig, ChatMessage } from '../server';
+import { AppSettingsConfig, ChatMessage } from '../shared/interfaces';
 import { DeepSeekModel } from '../server/api/chat-client';
 import {
   favourites,
@@ -15,6 +15,19 @@ import {
 document.addEventListener('DOMContentLoaded', () => {
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
+});
+
+contextBridge.exposeInMainWorld('backendErrorApi', {
+  onBackendError: (
+    callback: (
+      error: { type: string; message: string; stack?: string },
+      logFilePath?: string
+    ) => void
+  ) => {
+    ipcRenderer.on('backend:error', (_event, error, logFilePath) =>
+      callback(error, logFilePath)
+    );
+  },
 });
 
 contextBridge.exposeInMainWorld('chatClientApi', {
@@ -40,6 +53,10 @@ contextBridge.exposeInMainWorld('chatClientApi', {
 
   deepseekUpdateApiKey: (apiKey: string): Promise<void> => {
     return ipcRenderer.invoke('deepseek:updateApiKey', apiKey);
+  },
+
+  getSystemPrompt: (replyLanuage: string): Promise<string> => {
+    return ipcRenderer.invoke('chatClient:getSystemPrompt', replyLanuage);
   },
 });
 
@@ -310,17 +327,63 @@ contextBridge.exposeInMainWorld('servicesApi', {
     return ipcRenderer.invoke('services:isConfigExist', configName);
   },
 
-  getAppSetting: (
-    settingName: keyof AppSettingsConfig
-  ): Promise<string | null> => {
-    return ipcRenderer.invoke('services:getAppSetting', settingName);
+  getAppSetting: <K extends keyof AppSettingsConfig>(
+    settingName: K,
+    defaultValue?: AppSettingsConfig[K]
+  ): Promise<AppSettingsConfig[K]> => {
+    if (defaultValue) {
+      return ipcRenderer.invoke(
+        'services:getAppSetting:withDefault',
+        settingName,
+        defaultValue
+      );
+    } else {
+      return ipcRenderer.invoke(
+        'services:getAppSetting:noDefault',
+        settingName
+      );
+    }
   },
 
-  saveAppSetting: (
-    settingName: keyof AppSettingsConfig,
-    value: string
+  saveAppSetting: <K extends keyof AppSettingsConfig>(
+    settingName: K,
+    value: AppSettingsConfig[K]
   ): Promise<void> => {
     return ipcRenderer.invoke('services:saveAppSetting', settingName, value);
+  },
+
+  saveLog: (logContent: string, logFileName?: string): Promise<void> => {
+    return ipcRenderer.invoke('services:saveLog', logContent, logFileName);
+  },
+
+  showFileInFolder: (filePath: string): Promise<void> => {
+    return ipcRenderer.invoke('services:showFileInFolder', filePath);
+  },
+
+  openUrlInBrowser: (url: string): Promise<void> => {
+    return ipcRenderer.invoke('services:openUrlInBrowser', url);
+  },
+
+  getAppVersion: (): Promise<string> => {
+    return ipcRenderer.invoke('services:getAppVersion');
+  },
+});
+
+contextBridge.exposeInMainWorld('utilsApi', {
+  showContextMenu: (
+    params: {
+      selectedText: string;
+      hasSelection: boolean;
+      isInput: boolean;
+    },
+    locales: {
+      cut: string;
+      copy: string;
+      paste: string;
+      selectAll: string;
+    }
+  ): void => {
+    ipcRenderer.send('utils:showContextMenu', params, locales);
   },
 });
 

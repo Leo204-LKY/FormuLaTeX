@@ -3,8 +3,13 @@
   <!-- Modal Overlay -->
   <div
     v-show="visible"
-    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300"
-    :class="{ 'opacity-0 pointer-events-none': !visible }"
+    class="fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 select-none"
+    :class="[
+      visible
+        ? 'opacity-100 pointer-events-auto'
+        : 'opacity-0 pointer-events-none',
+      props.overlay ? 'bg-black/50' : 'bg-transparent',
+    ]"
     @click.self="closeOnOverlay && close()"
   >
     <!-- Modal Content -->
@@ -77,6 +82,10 @@
       type: Boolean,
       default: true,
     },
+    overlay: {
+      type: Boolean,
+      default: true,
+    },
   });
 
   // Component Events
@@ -111,9 +120,9 @@
       case 'secondary':
         return 'px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center min-w-[100px]';
       case 'danger':
-        return 'px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors';
+        return 'px-5 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center min-w-[100px]';
       default:
-        return 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors';
+        return 'px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center min-w-[100px]';
     }
   };
 

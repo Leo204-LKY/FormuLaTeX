@@ -5,6 +5,7 @@ import * as crypto from 'crypto';
 import { machineIdSync } from 'node-machine-id';
 import { generateKey } from './key-generator';
 import * as fs from 'fs';
+import * as path from 'path';
 import { getRandomStr } from '../random-str';
 
 // Encrypt algorithm and IV length
@@ -90,6 +91,12 @@ export function encryptFile(
 
     const encrypted = Buffer.concat([cipher.update(fileData), cipher.final()]);
 
+    // Ensure the directory exists
+    const dir = path.dirname(encryptPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
     fs.writeFileSync(encryptPath, iv + encrypted.toString('binary'), {
       encoding: 'binary',
       mode: writeMode,
@@ -98,7 +105,7 @@ export function encryptFile(
     return iv;
   } catch (e) {
     console.error('File encryption failed: ', e);
-    return '';
+    throw new Error('File Encryption Failed: \n' + e);
   }
 }
 
@@ -130,5 +137,6 @@ export function decryptFile(
     console.log(`File decrypted successfully to: ${decryptPath}`);
   } catch (e) {
     console.error('File decryption failed: ', e);
+    throw new Error('File Encryption Failed: \n' + e);
   }
 }

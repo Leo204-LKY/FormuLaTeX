@@ -1,0 +1,159 @@
+{
+  "language": "日本語",
+  "translator": "AI翻訳（結果可能不准确）",
+  "appName": "FormuLaTeX",
+  "appTitle": "FormuLaTeX - AIベースの数式ツール",
+  "common": {
+    "ok": "OK",
+    "cancel": "キャンセル",
+    "mathIt": "MathIt",
+    "mathSf": "MathSF",
+    "mathBb": "MathBB",
+    "crossMark": "✕",
+    "save": "保存",
+    "emptyInputTitle": "入力が空です",
+    "emptyInputMessage": "入力内容が空です！確認して入力してください。"
+  },
+  "FormulaEdit": {
+    "formulaEditing": "数式編集",
+    "formulaRecognitionSuccessTitle": "数式認識成功",
+    "formulaRecognitionSuccessMessage": "数式が正常に認識されました！",
+    "simpleTexNotSetTitle": "SimpleTex IDとSecretが未設定",
+    "simpleTexNotSetMessage": "SimpleTex API設定がまだ設定されていません。設定画面で設定してください。",
+    "formulaInputPlaceholder": "LaTeX数式を入力してください 例：{0}",
+    "uploadImage": "画像をアップロード",
+    "dragAndDropImage": "ここに画像をドラッグ＆ドロップ、またはクリックして選択",
+    "supportImageTypes": "対応画像形式：PNG、JPG、JPEG",
+    "askAi": "AIに質問",
+    "formulaPreview": "数式プレビュー",
+    "renderError": "エラー：数式のレンダリングに失敗しました！"
+  },
+  "QuickInput": {
+    "quickInput": "クイック入力",
+    "newFormula": "新しい数式",
+    "tags": {
+      "History": "履歴",
+      "Common": "一般",
+      "Math": "数学",
+      "Physics": "物理"
+    },
+    "createSuccessTitle": "成功",
+    "createSuccessMessage": "数式が正常に作成されました！",
+    "createFormula": "新しい数式を作成",
+    "formulaName": "数式名",
+    "formulaContent": "数式内容",
+    "editFormula": "数式を編集",
+    "enterFormulaName": "数式名を入力…",
+    "enterLatexFormula": "LaTeX数式を入力…",
+    "saveFormula": "数式を保存",
+    "noSavedQuickInputTip": "まだ数式が保存されていません。新しい数式を作成しましょう！"
+  },
+  "SideBar": {
+    "history": "履歴",
+    "chatTitle": "チャットタイトル",
+    "newChat": "新しいチャット",
+    "chatApiNotSetTitle": "DeepSeek APIキーが未設定",
+    "chatApiNotSetMessage": "DeepSeek API設定がまだ設定されていません。設定画面で設定してください。",
+    "chatInputPlaceholder": "数式について何でも質問してください...",
+    "send": "送信",
+    "newChatDefaultTitle": "新しいチャット",
+    "emptyMessageTip": "以下に入力して質問を始めてください！",
+    "noHistoryTip": "まだチャット履歴がありません。新しいチャットを始めましょう！"
+  },
+  "SymbolSelect": {
+    "types": {
+      "Common": "一般",
+      "Operations": "演算子",
+      "Relations": "関係",
+      "Arrows": "矢印",
+      "Greek": "ギリシャ文字",
+      "Matric": "行列",
+      "Mark": "記号",
+      "Equations": "方程式",
+      "Accents": "アクセント"
+    }
+  },
+  "ErrorDialog": {
+    "title": "エラーが発生しました",
+    "logfileTip": "ログファイルが保存されました：",
+    "reportTip": "問題が解決しない場合は、GitHubで報告し、ログファイルを添付してください。",
+    "dismiss": "閉じる",
+    "showFile": "ファイルを表示",
+    "report": "問題を報告"
+  },
+  "WelcomeCard": {
+    "title": "FormuLaTeXへようこそ",
+    "subtitle": "初期設定を完了してください",
+    "language": "言語を選択：",
+    "skipButton": "後でスキップ",
+    "submitButton": "完了",
+    "okButton": "OK",
+    "deepseekApiKey": "DeepSeek API キー",
+    "simpleTexAppId": "SimpleTex App ID",
+    "simpleTexAppSecret": "SimpleTex App Secret"
+  },
+  "UserTour": {
+    "title": "ユーザーガイド",
+    "subtitle": "初めてFormuLaTeXを使用するようですね。🤗 簡単に使い方を案内しますか？（設定画面でいつでも再開できます）",
+    "Nobutton": "いいえ",
+    "Yesbutton": "はい、ガイドを開始",
+    "step1": {
+      "whole": "ここはクイック入力エリアで、数式を作成および管理できます。",
+      "createFormula-button": "新規作成ボタンをクリックして数式を作成します。",
+      "tags-list": "ここはタグリストで、タグごとに数式を管理できます。",
+      "expression-list": "ここは現在のタグ下の数式が表示されます。右クリックで編集または削除できます。"
+    },
+    "step2": {
+      "whole": "ここは数式でよく使う記号を選択できるシンボル選択エリアです。"
+    },
+    "step3": {
+      "whole": "ここは数式編集とプレビューエリアです。左側で数式を編集し、右側でプレビューします。",
+      "tools-bar": "ここはツールバーで、フォント、サイズ、色を選択できます。",
+      "upload-button": "画像アップロードボタンをクリックして画像から数式を認識します。",
+      "askAI-button": "AIに質問ボタンをクリックしてAIチャットエリアに移動します。"
+    },
+    "step4": {
+      "whole": "このボタンをクリックすると、AIチャットパネルが開き、数式について質問できます。"
+    },
+    "step5": {
+      "settings-button": "設定メニューはここにあります。アプリの言語、DeepSeek API、SimpleTex APIなどの設定が可能です。"
+    },
+    "buttonSkip": "スキップ",
+    "buttonPrevious": "前へ",
+    "buttonNext": "次へ",
+    "buttonStop": "完了"
+  },
+  "SettingsMenu": {
+    "title": "設定",
+    "restartTour": "ユーザーガイドを再起動",
+    "openGitHubRepo": "GitHubリポジトリを開く",
+    "openUserManual": "ユーザーマニュアルを開く",
+    "bugReportAndFeedback": "問題報告とフィードバック",
+    "language": "言語",
+    "deepseekApiSettings": "DeepSeek API設定",
+    "deepseekApiKey": "APIキー",
+    "simpleTexApiSettings": "SimpleTex API設定",
+    "simpleTexAppId": "App ID",
+    "simpleTexAppSecret": "App Secret",
+    "version": "バージョン：{0}",
+    "developBy": "Group Kappaによる開発",
+    "translator": "翻訳者: {0}",
+    "deepseekApiKeyEmptyError": "APIキーを入力してください",
+    "simpleTexAppIdEmptyError": "App IDを入力してください",
+    "simpleTexAppSecretEmptyError": "App Secretを入力してください",
+    "saveOrCancelFirst": "先に保存またはキャンセルしてください",
+    "edit": "編集",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "notSet": "未設定"
+  },
+  "contextMenu": {
+    "cut": "切り取り",
+    "copy": "コピー",
+    "paste": "貼り付け",
+    "selectAll": "すべて選択",
+    "edit": "編集",
+    "delete": "削除"
+  }
+}

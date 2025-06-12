@@ -3,7 +3,10 @@ import * as crypto from 'crypto';
 import FormData from 'form-data';
 import * as fs from 'fs/promises'; // Use Promise API
 import { getCurrentTimestamp, getRandomStr } from '../utils';
-import type { SimpleTexConfig, SimpleTexResponse } from '../interfaces';
+import type {
+  SimpleTexConfig,
+  SimpleTexResponse,
+} from '../../shared/interfaces';
 import { getEncryptedJsonConfig } from '../services';
 
 const BASE_URL = 'https://server.simpletex.cn/api/latex_ocr_turbo'; // Lightweight Model

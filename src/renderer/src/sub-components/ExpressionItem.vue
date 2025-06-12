@@ -1,17 +1,17 @@
 <template>
-  <div
-    class="mb-4 relative"
-    ref="itemRef"
-    @contextmenu.prevent="handleRightClick"
-  >
+  <div class="mb-4 relative select-none" ref="itemRef">
     <div class="flex justify-between items-center mb-2">
-      <span class="bg-green-100 text-xs px-1 py-0.5 rounded-md">
+      <span
+        class="bg-green-100 text-xs px-1 py-0.5 rounded-md select-text"
+        @contextmenu="onContextMenu"
+      >
         {{ expression.name }}
       </span>
     </div>
     <div
       class="bg-green-50 text-center p-4 border border-green-200 cursor-pointer hover:bg-green-100 transition"
       @click="handleClick"
+      @contextmenu.prevent="handleRightClick"
     >
       <KatexRenderer :expression="expression.latex_code" :displayMode="true" />
     </div>
@@ -22,6 +22,7 @@
   import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue';
   import { selectExpressionEventBus, contextMenuEventBus } from '../eventBus';
   import KatexRenderer from '../sub-components/KatexRenderer.vue';
+  import { onContextMenu } from '../utils/context-menu';
 
   const itemRef = ref<HTMLElement | null>(null);
   const emit = defineEmits(['edit', 'delete']);

@@ -1,4 +1,4 @@
-import type { ChatMessage, DeepSeekConfig } from '../../interfaces';
+import type { ChatMessage, DeepSeekConfig } from '../../../shared/interfaces';
 import { getEncryptedJsonConfig } from '../../services';
 import { AbstractChatClient } from './abstract-chat-client';
 
