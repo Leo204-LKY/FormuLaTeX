@@ -22,10 +22,6 @@
 
 See [User Manual](/doc/03-manual/user-manual.md).
 
-### How to Use
-
-See [User Manual](/doc/03-manual/user-manual.md).
-
 ### Project Structure
 
 _**Note:** Contains only the main project files and directories_
